@@ -1,0 +1,154 @@
+import React,{useRef, useState} from 'react'
+import { Alert, Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/esm/CardHeader'
+import { Forgettenpass, GenrateOTP } from '../config/myService'
+import { useNavigate} from 'react-router-dom'
+import PageHeader from './PageHeader'
+
+export default function Forgetten() {
+    const [flag, setflag] = useState(true)
+    const [GenratedOtp, setGenratedOtp] = useState('')
+    const [UserEmail, setUserEmail] = useState('')
+    const Email = useRef('')
+    const NewPassword = useRef('')
+    const ConfirmPassword = useRef('')
+    const OTP = useRef('')
+    const history=useNavigate()
+    const [ALERT, setALERT] = useState('')
+    const [Show, setShow] = useState(false)
+    const [ErrorForgetten, setErrorForgetten] = useState({ErrorNewPassword:'',ErrorConfirmPassword:''})
+    const regForPassword=RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
+    const sendotp=()=>{
+        let email={email:Email.current.value}
+        GenrateOTP(email)
+        .then(res=>{
+            if(res.data.err===1){
+                alert(res.data.msg)
+            }
+            else{
+                setUserEmail(email)
+                console.log(res.data.otp);
+                setGenratedOtp(res.data.otp)
+                alert(res.data.msg)
+                setflag(false)
+            }
+        })
+        .catch(err=>{
+            if(err){
+                history('/ServerError')
+            }
+        })
+        
+    }
+    const handle=(event)=>{
+        const name=event.target.name;
+        switch(name){
+            case "confirmpass":
+                    let error_for_confirm=NewPassword.current.value===ConfirmPassword.current.value?'':'Password must be match';
+                    setErrorForgetten({
+                         ...ErrorForgetten,ErrorConfirmPassword:error_for_confirm
+                    })
+                    break;
+
+            case "newpass":
+                let error_for_password=regForPassword.test(NewPassword.current.value)?'':'Enter Valid pattern '
+                setErrorForgetten({
+                    ...ErrorForgetten,ErrorNewPassword:error_for_password
+                })
+            break;
+        }
+    }
+    const setnull=(event)=>{
+        const name=event.target.name;
+        switch(name){
+
+                    case "confirmpass":
+                        setErrorForgetten({
+                            ...ErrorForgetten,ErrorConfirmPassword:''
+                        })
+                        break;
+
+            case "newpass":
+                setErrorForgetten({
+                    ...ErrorForgetten,ErrorNewPassword:''
+                })
+            break;
+        }
+    }
+    const changepass=()=>{
+        let otp=OTP.current.value;
+        if(otp===GenratedOtp){
+            if(NewPassword.current.value!='' && ConfirmPassword.current.value!=''){
+                let data={email:UserEmail,password:NewPassword.current.value}
+                Forgettenpass(data)
+                .then(res=>{
+                    if(res.data.err==1){
+                        setShow(true)
+                        setALERT(res.data.msg)
+                    }
+                    else{
+                        setShow(true)
+                        setALERT(res.data.msg)
+                        history('/LoginPage')
+                    }
+                })
+                .catch(err=>{
+                    if(err){
+                        history('/ServerError')
+                    }
+                })
+            }       
+            else{
+                setShow(true)
+                setALERT('Enter new password or confirm  password')
+            }
+        }
+        else{
+            setShow(true)
+            setALERT('Enter valid OTP')
+        }
+    }
+    return (        <>
+        
+        <div className='container-fluid'>
+            {
+               Show?
+                <Alert variant='danger' onClose={()=>setShow(false)} dismissible>
+                    <Alert.Heading>{ALERT}</Alert.Heading>
+                </Alert>:''
+            }
+            <Row>
+                <Col lg={3}/>
+                <Col lg={6} className='text-center'>
+                   <Card className='bg-light p-3'>
+                       <CardHeader className='mb-3'>
+                        <FormLabel ><h3>Recover Password</h3></FormLabel>
+                       </CardHeader>
+                       <Card.Text>
+
+                       <FormGroup>
+                       <FormControl type='email' name='email' placeholder='Enter Email here' className='mt-3 mb-3 inputotp' ref={Email} />
+                       </FormGroup>
+                       {
+                        flag?
+                        <Button variant='dark' className='m-3 ' onClick={sendotp}>Send OTP</Button>:
+                        <FormControl type='text' name='otp' placeholder='Enter OTP here' className='mt-3 mb-3 ' ref={OTP}/>
+                       }
+                        
+                        <Form className='text-start'>
+                        <FormControl type='password' name='newpass' placeholder='Enter New Password ' ref={NewPassword}  onBlur={handle} onFocus={setnull} className='mt-3 mb-3 '/>
+                        <FormLabel style={{color:'red'}} >{ErrorForgetten.ErrorNewPassword}</FormLabel><br/>
+                        <FormControl type='password' name='confirmpass' placeholder='Enter confirm Password' ref={ConfirmPassword} onBlur={handle} onFocus={setnull} className='mt-3 mb-3'/>
+                        <FormLabel style={{color:'red'}} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel><br/>
+                        <Button variant='dark' className='m-3' onClick={changepass}>Submit</Button>
+
+                        </Form>
+                        </Card.Text>
+                   </Card>
+                </Col>
+                <Col lg={3}/>
+            </Row>
+        </div>
+        </>
+    )
+}

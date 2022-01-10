@@ -1,0 +1,1 @@
+export const ECOMMERCES_URL="http://localhost:8899/api/";

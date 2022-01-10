@@ -1,0 +1,16 @@
+.bottom-border{
+    box-shadow: 1px 1px 9px #343434;
+    width: 100%;
+    font-size: 25px;
+    padding: 10px;
+}
+.card-effect{
+    border-bottom: solid 1px ;
+}
+.cardtext {
+    display: inline-block;
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}

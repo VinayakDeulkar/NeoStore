@@ -1,0 +1,82 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.navlink{
+  text-decoration: none;;
+  font-size: 20px;
+  margin-left: 20px;
+  color: white;
+}
+.navlink:hover{
+  color: red;
+}
+.cartbutton{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.navmargin{
+  margin-right: 50px;
+}
+
+.verticalline{
+  border-left: 3px solid black;
+}
+.marginlogin{
+  margin-bottom: 3%;
+}
+.SocialButton{
+  margin-top: 30px;
+  height: 60px;
+  width: 300px;
+  font-size: 20px;
+} 
+.facebook{
+  background-color: #3b5998;
+}
+.google{
+  background-color: white;
+}
+.Center{
+  margin-left: 20%;
+  margin-top: 5%;
+}
+.sup{
+  background-color: #cc0000;
+  color: white;
+  border-radius: 50%;
+}
