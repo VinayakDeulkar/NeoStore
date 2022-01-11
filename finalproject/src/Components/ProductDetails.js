@@ -198,10 +198,11 @@ export default function ProductDetails() {
                             <ReactImageMagnify {...{
                                 smallImage: {
                                     alt: 'Wristwatch by Ted Baker London',
-                                    // isFluidWidth: true,
+                                    // isFluidWidth: false,
                                     width:parseInt(ImageDimension.imageWidth),
                                     height:parseInt(ImageDimension.imageHeight),
-                                    src: `/Image/${MainImage}`
+                                    src: `/Image/${MainImage}`,
+                                    // sizes:"(min-width: 360px)330vw"
                                 },
                                 largeImage: {
                                     src: `/Image/${MainImage}`,

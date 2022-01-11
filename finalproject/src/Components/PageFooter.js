@@ -15,7 +15,7 @@ export default function PageFooter() {
                     </Col>
                     <Col lg={4} className='text-center '>
                         <h4>Information </h4>
-                        <p >Terms and Condition</p>
+                        <p > <a href='termsandcondition.pdf' target='_blank' className='pdf'> Terms and Condition</a></p>
                         <p>Gurantee and Return Policy </p>
                         <p>Contact Us</p>
                         <p>Privacy Policy</p>

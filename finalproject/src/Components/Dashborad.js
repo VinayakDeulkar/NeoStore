@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { GetPopularProduct } from '../config/myService'
 import '../Css/Dashborad.css'
 import ReactStarsRating from 'react-awesome-stars-rating'
+import ReactPaginate from 'react-paginate'
 import {v4 as uuidv4} from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import jwt_decode from 'jwt-decode'
@@ -14,6 +15,10 @@ export default function Dashborad() {
     const dispatch=useDispatch()
     const Login = useSelector(state => state.Login)
     const uuid = useSelector(state => state.uuid)
+    const [pagenumber, setpagenumber] = useState(0)
+    const productsPerPage = 4;
+    const pageVisited = pagenumber * productsPerPage
+    const pageCount = Math.ceil(ProductData.length / productsPerPage)
     useEffect(() => {
         GetPopularProduct()
         .then(res=>{
@@ -30,6 +35,9 @@ export default function Dashborad() {
     const DisplayProduct=(element)=>{
       history('/ProductDetails',{state:element})
   }
+  const handlePageClicked=({selected})=>{
+    setpagenumber(selected)
+}
   const AddToCart=(element)=>{
     if(Login){
         console.log('inside login');
@@ -116,7 +124,7 @@ export default function Dashborad() {
 <Row>
     <h3 className='text-center'>Popular Product</h3>
 {
-        ProductData && ProductData.map((ele)=>
+        ProductData && ProductData.slice(pageVisited, pageVisited + productsPerPage).map((ele)=>
         <Col lg={3} md={6} sm={12} xs={12} key={ele._id}>
         <Card className='cardSIze' border='light'  >
         <Card.Img variant="top" src={`/Image/${ele.product_image}`} className='CardImage' onClick={()=>DisplayProduct(ele)} />
@@ -135,6 +143,21 @@ export default function Dashborad() {
         </Col>
         )
     }
+    <ReactPaginate
+                    previousLabel={"<<"}
+                    nextLabel={">>"}
+                    pageCount={pageCount}
+                    onPageChange={handlePageClicked}
+                    containerClassName={'pagination justify-content-center'}
+                    pageClassName={'page-item'}
+                    pageLinkClassName={'page-link'}
+                    previousClassName={'page-item'}
+                    previousLinkClassName={'page-link'}
+                    nextClassName={'page-item'}
+                    nextLinkClassName={'page-link'}
+                    activeClassName={'active'}
+
+                />
 </Row>
 </Container>
         </div>

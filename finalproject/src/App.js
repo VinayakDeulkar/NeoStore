@@ -6,6 +6,7 @@ import ProductDetails from './Components/ProductDetails';
 import Profile from './Components/Profile';
 import Address from './Components/Address';
 import ChangePassword from './Components/ChangePassword';
+import Pdf from './Components/Pdf';
 // import loading from 'lazyloading.gif'
 const PageHeader=React.lazy(()=>import('./Components/PageHeader'))
 const LoginPage=React.lazy(()=>import('./Components/LoginPage'))
@@ -44,8 +45,10 @@ function App() {
                     <Route path='/Forgotten' exact element={<Forgetten/>}/>
                     <Route path='/Product' exact element={<Product/>}/>
                     <Route path='/CheckOut' exact element={<CheckOut/>}/>
+                    <Route path='/Order' exact element={<Order/>}/>
                     <Route path='/ProductDetails' exact element={<ProductDetails/>}/>
                     <Route path='/Cart' exact element={<Cart/>}/>
+                    <Route path='/Pdf' exact  element={<Pdf/>}/>
                     <Route path='/MyAccount' exact element={<MyAccount/>}>
                                     <Route path='' exact element={<Order/>}/>
                                     <Route path='Profile' exact element={<Profile/>}/>

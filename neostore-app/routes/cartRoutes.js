@@ -1,7 +1,6 @@
 const express=require('express')
 const router=express.Router();
 const cartModel=require('../db/cartSchema')
-
 router.post('/addtocart',(req,res)=>{
     console.log(req.body);
     cartModel.find({customer_id:req.body.customer_id,product_id:req.body.product_id},(err,data)=>{
@@ -131,6 +130,18 @@ router.post('/deleteItem',(req,res)=>{
         }
         else{
             res.status(200).json({err:0,msg:'Item Delete successfully'})
+        }
+    })
+})
+router.post('/orderDone',(req,res)=>{
+    cartModel.deleteMany({customer_id:req.body.id},(err,data)=>{
+        if(err){
+            console.log(err);
+            res.status(400).json({err:1,msg:'Unable to delete'})
+        }
+        else{
+            console.log(data);
+            res.status(200).json({err:0,msg:'Cart Delete successfully',itemdelete:data})
         }
     })
 })

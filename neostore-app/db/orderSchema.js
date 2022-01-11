@@ -4,16 +4,13 @@ const orderSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"userdata"
     },
-    product_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Product"
-    },
+    product_id:[],
     delivery_address:{
-        type:String,
+        type:Object,
         required:true
     },
-    product_cost:{
-        type:Number,
+    isDelivered:{
+        type:Boolean,
         required:true
     },
     total_Productcost:{
@@ -26,4 +23,4 @@ const orderSchema=new mongoose.Schema({
     }
 })
 
-module.exports=mongoose.model('Cart',orderSchema);
+module.exports=mongoose.model('Order',orderSchema);

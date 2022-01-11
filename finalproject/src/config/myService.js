@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ECOMMERCES_URL } from './url';
 const token=localStorage.getItem('_token');
+console.log(token);
 export function AddUser(data){
     return axios.post(`${ECOMMERCES_URL}user/adduser`,data)
 }
@@ -72,4 +73,13 @@ export function DECQUANTITY(data){
 }
 export function DELETEITEM(data){
     return axios.post(`${ECOMMERCES_URL}cart/deleteItem`,data)
+}
+export function CONFIRMORDER(data){
+    return axios.post(`${ECOMMERCES_URL}order/confirmorder`,data)
+}
+export function DELETECONFIRMEDORDER(data){
+    return axios.post(`${ECOMMERCES_URL}cart/orderDone`,data)
+}
+export function GETORDER(data){
+    return axios.post(`${ECOMMERCES_URL}order/orderdetails`,data,{headers:{'Authorization':`Basic ${token}`}})
 }

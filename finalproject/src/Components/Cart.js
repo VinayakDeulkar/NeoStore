@@ -145,12 +145,19 @@ export default function Cart() {
         })
     }
     const checkout=()=>{
-        if(Login){
-            history('/CheckOut')
+        console.log(CartItems);
+        if(CartItems[0]){
+            if(Login){
+                history('/CheckOut')
+            }
+            else{
+                history('/LoginPage')
+            }
         }
         else{
-            history('/LoginPage')
+            alert('select item first')
         }
+        
     }
     const deleteItem=(element)=>{
         let id={id:element._id}
