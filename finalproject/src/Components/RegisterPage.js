@@ -5,6 +5,20 @@ import { useNavigate} from 'react-router-dom'
 import { Facebook, Mailbox, Phone } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { AddUser,UserSocialLogin } from '../config/myService';
+
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function RegisterPage() {
     const FirstName = useRef('');
     const LastName = useRef('');
@@ -12,13 +26,12 @@ export default function RegisterPage() {
     const Password = useRef('');
     const ConfirmPassword = useRef('');
     const MobileNo = useRef('')
+    const [openSnackbar] = useSnackbar(options)
     const regForEmail=RegExp(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/);
     const regForPassword=RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const regFoMob = RegExp(/^[0-9]{10}$/)
     const regForName = RegExp(/[A-Za-z ]+/)
     const history=useNavigate()
-    const [ALERT, setALERT] = useState('')
-    const [Show, setShow] = useState(false)
     const [ErrorRegister, setErrorRegister] = useState({Errorfirstname:'',Errorlastname:'',ErrorEmail:'',ErrorPassword:'',ErrorConfirm:'',ErrorMobile:''})
     const handle=(event)=>{
         const name=event.target.name;
@@ -104,11 +117,11 @@ export default function RegisterPage() {
             .then(res=>{
                 if(res.data.err==1){
                     console.log(res.data.msg);
-                    setShow(true)
-                    setALERT(res.data.msg)
+                    openSnackbar(res.data.msg)
                 }
                 else{
                     localStorage.setItem('_token',res.data.token)
+                    openSnackbar(res.data.msg)
                      history("/dashboard"); 
                 }
             })
@@ -121,7 +134,8 @@ export default function RegisterPage() {
     };
 
     const handleSocialLoginFailure = (err) => {
-        console.error(err);
+        
+        openSnackbar('Unable to login')
     };
     const RegisterUser=()=>{
         let data={firstname:FirstName.current.value,lastname:LastName.current.value,email:Email.current.value,password:Password.current.value,mobileno:MobileNo.current.value}
@@ -131,12 +145,11 @@ export default function RegisterPage() {
             .then(res=>{
                 console.log(res);
                 if(res.data.err==0){
-                    console.log(res.data.msg);
+                    openSnackbar(res.data.msg)
                     history('/LoginPage')
                 }
                 else{
-                    setALERT(res.data.msg)
-                    setShow(true)
+                    openSnackbar(res.data.msg)
                     console.log('error occured');
                 }
             })
@@ -150,11 +163,7 @@ export default function RegisterPage() {
     return (        <>
         
         <div className=' container-fluid'>
-        {
-                Show?<Alert variant='danger' onClose={()=>setShow(false)} dismissible>
-                    <Alert.Heading>{ALERT}</Alert.Heading>
-                </Alert>:''
-            }
+      
             <Row className='padding marginlogin mt-3'>
                 <Col lg={12} className='text-center mr-3'>
                 <SocialButton

@@ -1,19 +1,32 @@
 import React,{useRef, useState} from 'react'
-import { Button, Col, Form, FormControl, InputGroup, FormLabel,  Row, Alert } from 'react-bootstrap'
+import { Button, Col, Form, FormControl, InputGroup, FormLabel,  Row } from 'react-bootstrap'
 import { Facebook,  Phone } from 'react-bootstrap-icons';
 import SocialButton from './SocialButton'
 import { Link ,useNavigate} from 'react-router-dom';
 import { ChangeUuid, CheckUser, UserSocialLogin,GETCARTCOUNT } from '../config/myService';
 import jwt_decode from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux';
+
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function LoginPage() {
     const Email = useRef('')
     const Password = useRef('')
     const [Error, setError] = useState({Erroremail:'',ErrorPassword:''})
     const history=useNavigate()
     const dispatch = useDispatch()
-    const [ALERT, setALERT] = useState('')
-    const [Show, setShow] = useState(false)
+    const [openSnackbar] = useSnackbar(options)
     const Uuid = useSelector(state => state.uuid)
     const regForEmail=RegExp(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/);
     const regForPassword=RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
@@ -57,8 +70,7 @@ export default function LoginPage() {
             .then(res=>{
                 if(res.data.err==1){
                     console.log(res.data.msg);
-                    setShow(true)
-                    setALERT(res.data.msg)
+                    openSnackbar(res.data.msg)
                 }
                 else{
                     localStorage.removeItem('uuid')
@@ -67,6 +79,7 @@ export default function LoginPage() {
                         let decode=jwt_decode(res.data.token);
                         console.log(decode.uid[0]);
                         let data={id:decode.uid[0]._id,cartid:Uuid}
+                        openSnackbar(res.data.msg)
                         ChangeUuid(data)
                         .then(res=>{
                             if(res.data.err==0){
@@ -103,7 +116,7 @@ export default function LoginPage() {
     };
 
     const handleSocialLoginFailure = (err) => {
-        setALERT('Unable to Login try later')
+        openSnackbar('Unable to Login')
     };
     const checkuser=()=>{
         let data={email:Email.current.value,password:Password.current.value}
@@ -119,6 +132,7 @@ export default function LoginPage() {
               let decode=jwt_decode(res.data.token);
               console.log(decode.uid[0]);
               let data={id:decode.uid[0]._id,cartid:Uuid}
+              openSnackbar(res.data.msg)
               ChangeUuid(data)
               .then(res=>{
                   if(res.data.err==0){
@@ -148,8 +162,7 @@ export default function LoginPage() {
             } 
             else {
               console.log(res.data.msg);
-                setShow(true)
-                setALERT(res.data.msg)
+              openSnackbar(res.data.msg)
             }
           })
         .catch(err=>{
@@ -162,11 +175,6 @@ export default function LoginPage() {
         <>
         
         <div className='container-fluid'>
-            {
-                Show?<Alert variant='danger' onClose={()=>setShow(false)} dismissible>
-                    <Alert.Heading>{ALERT}</Alert.Heading>
-                </Alert>:''
-            }
 
             <Row className='paddingfooter marginlogin mt-5'>
                 <Col lg={6} className='text-center'>

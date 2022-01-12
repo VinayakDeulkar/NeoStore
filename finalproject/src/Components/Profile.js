@@ -5,9 +5,23 @@ import { Pen } from 'react-bootstrap-icons'
 import { ProfileUpdate } from '../config/myService'
 import {  useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Profile() {
     const [User, setUser] = useState('')
     const [show, setshow] = useState(true)
+    const [openSnackbar] = useSnackbar(options)
     const [UpdateUser, setUpdateUser] = useState('')
     const history=useNavigate()
     const dispatch=useDispatch()
@@ -32,7 +46,7 @@ export default function Profile() {
       .then(res=>{
         if(res.data.err==1){
             console.log(res.data.msg);
-            alert(res.data.msg);
+            openSnackbar(res.data.msg)
         }
         else{
             localStorage.setItem('_token',res.data.token)
@@ -42,12 +56,14 @@ export default function Profile() {
             setUser(updatedata)
             setUpdateUser(updatedata)
             setshow(true)
+            openSnackbar(res.data.msg)
         }
     })
     .catch(err=>{
         if(err.message!='Network Error'){
             localStorage.clear()
             dispatch({type:'disable'})
+            openSnackbar('Session expired Login again please')
             history('/LoginPage')
         }
         else{

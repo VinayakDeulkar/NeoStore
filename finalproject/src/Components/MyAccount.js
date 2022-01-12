@@ -6,11 +6,25 @@ import { ProfilePicUpdate } from '../config/myService'
 import jwt_decode from 'jwt-decode'
 import { useDispatch } from 'react-redux'
 
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function MyAccount() {
     const [Show, setShow] = useState(false)
     const [User, setUser] = useState('')
     const history=useNavigate()
     const dispatch=useDispatch()
+    const [openSnackbar] = useSnackbar(options)
     useEffect(() => {
         if(localStorage.getItem('_token')){
             let token=localStorage.getItem('_token')
@@ -37,14 +51,18 @@ export default function MyAccount() {
                     console.log(decode.uid[0]);
                     let data=decode.uid[0];
                     setUser(data)
+                    
+                    openSnackbar(res.data.msg)
                 }
                 else{
-                 alert(res.data.msg)
+                 
+                    openSnackbar(res.data.msg)
                 }
             })
             .catch(err=>{
                 if(err.message!='Network Error'){
                     localStorage.clear()
+                     openSnackbar('Session expired Login again please')
                     dispatch({type:'disable'})
                     history('/LoginPage')
                 }
@@ -54,7 +72,8 @@ export default function MyAccount() {
             })
         }
         else{
-            alert('select file')
+            
+            openSnackbar('Select Profile Picture ')
         }
             
         setShow(false)

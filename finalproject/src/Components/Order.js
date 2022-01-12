@@ -5,10 +5,24 @@ import { Button, Container, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import '../Css/Order.css'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Order() {
     const [Order, setOrder] = useState('')
     const dispatch = useDispatch()
     const history = useNavigate()
+    const [openSnackbar] = useSnackbar(options)
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token);
@@ -25,6 +39,7 @@ export default function Order() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
+                    openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
                 else {

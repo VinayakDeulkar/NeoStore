@@ -1,21 +1,33 @@
 import React,{useRef, useState} from 'react'
-import { Alert, Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
+import {  Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import { Forgettenpass, GenrateOTP } from '../config/myService'
 import { useNavigate} from 'react-router-dom'
 import PageHeader from './PageHeader'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 
 export default function Forgetten() {
     const [flag, setflag] = useState(true)
     const [GenratedOtp, setGenratedOtp] = useState('')
+    const [openSnackbar] = useSnackbar(options)
     const [UserEmail, setUserEmail] = useState('')
     const Email = useRef('')
     const NewPassword = useRef('')
     const ConfirmPassword = useRef('')
     const OTP = useRef('')
     const history=useNavigate()
-    const [ALERT, setALERT] = useState('')
-    const [Show, setShow] = useState(false)
     const [ErrorForgetten, setErrorForgetten] = useState({ErrorNewPassword:'',ErrorConfirmPassword:''})
     const regForPassword=RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const sendotp=()=>{
@@ -23,13 +35,13 @@ export default function Forgetten() {
         GenrateOTP(email)
         .then(res=>{
             if(res.data.err===1){
-                alert(res.data.msg)
+                openSnackbar(res.data.msg)
             }
             else{
                 setUserEmail(email)
                 console.log(res.data.otp);
                 setGenratedOtp(res.data.otp)
-                alert(res.data.msg)
+                openSnackbar(res.data.msg)
                 setflag(false)
             }
         })
@@ -83,12 +95,10 @@ export default function Forgetten() {
                 Forgettenpass(data)
                 .then(res=>{
                     if(res.data.err==1){
-                        setShow(true)
-                        setALERT(res.data.msg)
+                        openSnackbar(res.data.msg)
                     }
                     else{
-                        setShow(true)
-                        setALERT(res.data.msg)
+                        openSnackbar(res.data.msg)
                         history('/LoginPage')
                     }
                 })
@@ -99,24 +109,18 @@ export default function Forgetten() {
                 })
             }       
             else{
-                setShow(true)
-                setALERT('Enter new password or confirm  password')
+                
+                openSnackbar('Enter new password and confirm password')
             }
         }
         else{
-            setShow(true)
-            setALERT('Enter valid OTP')
+            
+            openSnackbar('Enter Valid Otp')
         }
     }
     return (        <>
         
         <div className='container-fluid'>
-            {
-               Show?
-                <Alert variant='danger' onClose={()=>setShow(false)} dismissible>
-                    <Alert.Heading>{ALERT}</Alert.Heading>
-                </Alert>:''
-            }
             <Row>
                 <Col lg={3}/>
                 <Col lg={6} className='text-center'>

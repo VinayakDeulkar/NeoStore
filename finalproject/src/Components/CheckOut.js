@@ -7,7 +7,21 @@ import { Col, Container, Nav, Row, Tab, Table, Card, Button, Form, Modal, FormGr
 import { X } from 'react-bootstrap-icons';
 import { UserAddress, DELETEAddress, EDITADDRESS } from '../config/myService'
 import '../Css/CheckOut.css'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function CheckOut() {
+    const [openSnackbar] = useSnackbar(options)
     const [CartItems, setCartItems] = useState('')
     const [UserData, setUserData] = useState('')
     const dispatch = useDispatch()
@@ -50,6 +64,7 @@ export default function CheckOut() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
+                    openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
                 else {
@@ -68,6 +83,7 @@ export default function CheckOut() {
                         console.log(res.data.err);
                         let id1 = { id: UserData._id }
                         console.log(id1);
+                        openSnackbar(res.data.msg)
                          DELETECONFIRMEDORDER(id1).then(res => {
                                 console.log(res.data);
                                 if (res.data.err == 0) {
@@ -87,6 +103,7 @@ export default function CheckOut() {
                                 if (err.message != 'Network Error') {
                                     localStorage.clear()
                                     dispatch({type:'disable'})
+                                    openSnackbar('Session expired Login again please')
                                     history('/LoginPage')
                                 }
                                 else {
@@ -99,6 +116,7 @@ export default function CheckOut() {
             .catch(err => {
                 console.log(err);
                 if (err.message != 'Network Error') {
+                    openSnackbar('Session expired Login again please')
                     localStorage.clear()
                     dispatch({type:'disable'})
                     history('/LoginPage')
@@ -112,7 +130,7 @@ export default function CheckOut() {
                 
         }
         else {
-            alert('Please select Address')
+            openSnackbar('Please select Address')
         }
     }
     const handleClose = () => {
@@ -129,14 +147,15 @@ export default function CheckOut() {
         console.log(finalData);
         UserAddress(finalData)
             .then(res => {
-                if (res.data.err == 1) {
-                    alert(res.data.msg);
+                if (res.data.err == 1) { 
+                    openSnackbar(res.data.msg)
                 }
                 else {
                     localStorage.setItem('_token', res.data.token)
                     let decode = jwt_decode(res.data.token);
                     let data = decode.uid[0];
                     setUserData(data)
+                     openSnackbar(res.data.msg)
                 }
             })
             .catch(err => {
@@ -145,6 +164,7 @@ export default function CheckOut() {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
                     dispatch({type:'cart',payload:0})
+                    openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
                 else {
@@ -159,12 +179,13 @@ export default function CheckOut() {
         DELETEAddress(data)
             .then(res => {
                 if (res.data.err == 1) {
-                    alert(res.data.msg);
+                    openSnackbar(res.data.msg)
                 }
                 else {
                     localStorage.setItem('_token', res.data.token)
                     let decode = jwt_decode(res.data.token);
                     let data = decode.uid[0];
+                    openSnackbar(res.data.msg)
                     setUserData(data)
                 }
             })
@@ -173,6 +194,7 @@ export default function CheckOut() {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
                     dispatch({type:'cart',payload:0})
+                    openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
                 else {
@@ -191,7 +213,7 @@ export default function CheckOut() {
         EDITADDRESS(data)
             .then(res => {
                 if (res.data.err == 1) {
-                    alert(res.data.msg);
+                    openSnackbar(res.data.msg)
                 }
                 else {
                     localStorage.setItem('_token', res.data.token)
@@ -199,13 +221,14 @@ export default function CheckOut() {
                     let data = decode.uid[0];
                     setUserData(data)
                     setEditShow(false)
+                    openSnackbar(res.data.msg)
                 }
             })
             .catch(err => {
-                console.log(err);
                 if (err.message != 'Network Error') {
                     dispatch({ type: 'disable' })
                     dispatch({type:'cart',payload:0})
+                    openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                     localStorage.clear()
                 }

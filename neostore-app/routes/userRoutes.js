@@ -147,7 +147,7 @@ router.post('/ChangePassword', autenticateToken, (req, res) => {
                     else {
                         let payload = { uid: data }
                         const token = jwt.sign(payload, jwtSecret, { expiresIn: 360 })
-                        res.status(200).json({ "err": 0, "msg": "Login Success", "token": token })
+                        res.status(200).json({ "err": 0, "msg": "Password Changed Successfully", "token": token })
                     }
 
 

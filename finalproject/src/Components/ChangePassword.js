@@ -4,12 +4,25 @@ import { CHNAGEPASSWORD } from '../config/myService'
 import jwt_decode from 'jwt-decode'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function ChangePassword() {
     const Oldpassword = useRef('')
     const NewPassword = useRef('')
     const ConfirmPassword = useRef('')
     const [User, setUser] = useState('')
+    const [openSnackbar] = useSnackbar(options)
     const regForPassword=RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const history=useNavigate()
     const dispatch=useDispatch()
@@ -72,22 +85,25 @@ export default function ChangePassword() {
         .then(res=>{
             if(res.data.err==1){
                 console.log(res.data.msg);
-                alert(res.data.msg);
+                openSnackbar(res.data.msg)
             }
             else{
                 localStorage.setItem('_token',res.data.token)
                 let decode=jwt_decode(res.data.token);
+                openSnackbar(res.data.msg)
                  history("/MyAccount"); 
             }
         })
         .catch(err=>{
             console.log(err.message);
             if(err.message!='Network Error'){
+                openSnackbar('Session expired Login again please')
                 localStorage.clear()
                 dispatch({type:'disable'})
                 history('/LoginPage')
             }
             else{
+                openSnackbar('Server Error')
                 history('/ServerError')
             }
         })

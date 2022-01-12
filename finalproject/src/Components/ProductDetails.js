@@ -10,6 +10,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactImageMagnify from 'react-image-magnify'
 import jwt_decode from 'jwt-decode'
 import { ADDTOCART ,GETCARTCOUNT} from '../config/myService';
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 // import {SideBySideMagnifier} from 'react-image-magnifiers'
 // import ReactImageZoom from 'react-image-zoom'
 function getWindowDimensions() {
@@ -23,6 +36,7 @@ export default function ProductDetails() {
     const location = useLocation()
     const history = useNavigate()
     const [MainImage, setMainImage] = useState('')
+    const [openSnackbar] = useSnackbar(options)
     const [ShowRating, setShowRating] = useState(false)
     const dispatch = useDispatch()
     const [key, setkey] = useState('desc')
@@ -106,9 +120,10 @@ export default function ProductDetails() {
             .then(res => {
                 if (res.data.err == 1) {
                     console.log(res.data.msg);
-                    alert(res.data.msg);
+                    openSnackbar(res.data.msg)
                 }
                 else {
+                    openSnackbar(res.data.msg)
                     setProductRATING(finalRating)
                     setShowRating(false)
                 }
@@ -116,6 +131,7 @@ export default function ProductDetails() {
             .catch(err => {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
+                    openSnackbar('Session expired Login again please')
                     dispatch({ type: 'disable' })
                     history('/LoginPage')
                 }
@@ -143,6 +159,7 @@ export default function ProductDetails() {
             .then(res=>{
                 console.log(res.data.msg);
                 let data={id:decode.uid[0]._id}
+                openSnackbar(res.data.msg)
                 GETCARTCOUNT(data)
                 .then(res=>{
                     console.log(res.data.count);
@@ -169,6 +186,7 @@ export default function ProductDetails() {
             .then(res=>{
                 console.log(res.data.msg);
                 let data={id:uuid}
+                openSnackbar(res.data.msg)
                 GETCARTCOUNT(data)
                 .then(res=>{
                     console.log(res.data.count);

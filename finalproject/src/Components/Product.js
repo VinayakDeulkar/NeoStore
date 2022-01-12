@@ -9,8 +9,22 @@ import '../Css/Product.css'
 import ReactPaginate from 'react-paginate'
 import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Product() {
     const [ProductData, setProductData] = useState('')
+    const [openSnackbar] = useSnackbar(options)
     const [ShowCategory, setShowCategory] = useState(false);
     const [ShowColor, setShowColor] = useState(false)
     const [FilterProduct, setFilterProduct] = useState('')
@@ -102,21 +116,6 @@ export default function Product() {
             setFilterProduct(res.data.data)
         })
         .catch(err=>{if(err){history('/ServerError')}})
-        // if(Selected.SelectedCategory==''){
-        //     let filterData=ProductData.filter(pro => pro.color_id.color_name==element.color_name);
-        //     setSelected({
-        //         ...Selected,SelectedColor:element.color_name
-        //     })
-        //     setFilterProduct(filterData)
-        // }
-        // else{
-        //     let filterData=ProductData.filter(pro => pro.category_id.category_name==Selected.SelectedCategory&&pro.color_id.color_name==element.color_name);
-        //     setFilterProduct(filterData)
-        //     setSelected({
-        //         ...Selected,SelectedColor:element.color_name
-        //     })
-        // }
-
     }
     const showAll=()=>{
         setFilterProduct(ProductData)
@@ -160,9 +159,9 @@ export default function Product() {
             ADDTOCART(data)
             .then(res=>{
                 console.log(res.data.msg);
-                alert(res.data.msg)
                 let data={id:decode.uid[0]._id}
                 console.log(data);
+                openSnackbar(res.data.msg)
                 GETCARTCOUNT(data)
                 .then(res=>{
                     console.log(res.data.count);
@@ -190,6 +189,7 @@ export default function Product() {
             .then(res=>{
                 console.log(res.data.msg);
                 let data={id:uuid}
+                openSnackbar(res.data.msg)
                 GETCARTCOUNT(data)
                 .then(res=>{
                     console.log(res.data.count);

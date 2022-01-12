@@ -5,12 +5,25 @@ import { DELETEAddress, EDITADDRESS, UserAddress } from '../config/myService'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Address() {
     const [Show, setShow] = useState(false)
     const [User, setUser] = useState('')
     const [EditShow, setEditShow] = useState(false)
     const [UpdateAddress, setUpdateAddress] = useState('')
+    const [openSnackbar] = useSnackbar(options)
     const Address = useRef('')
     const Pincode = useRef('')
     const City = useRef('')
@@ -36,23 +49,26 @@ export default function Address() {
         UserAddress(finalData)
         .then(res=>{
             if(res.data.err==1){
-                alert(res.data.msg);
+                openSnackbar(res.data.msg)
             }
             else{
                 localStorage.setItem('_token',res.data.token)
                 let decode=jwt_decode(res.data.token);
                 let data=decode.uid[0];
                 setUser(data)
+                openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{
             console.log(err.message);
             if(err.message!='Network Error'){
+                openSnackbar('Session expired Login again please')
                 localStorage.clear()
                 dispatch({type:'disable'})
                 history('/LoginPage')
             }
             else{
+                openSnackbar('Server Error')
                 history('/ServerError')
             }
         })
@@ -64,17 +80,19 @@ export default function Address() {
         DELETEAddress(data)
         .then(res=>{
             if(res.data.err==1){
-                alert(res.data.msg);
+                openSnackbar(res.data.msg)
             }
             else{
                 localStorage.setItem('_token',res.data.token)
                 let decode=jwt_decode(res.data.token);
                 let data=decode.uid[0];
                 setUser(data)
+                openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{
             if(err.message!='Network Error'){
+                openSnackbar('Session expired Login again please')
                 localStorage.clear()
                 dispatch({type:'disable'})
                 history('/LoginPage')
@@ -95,7 +113,7 @@ export default function Address() {
         EDITADDRESS(data)
         .then(res=>{
             if(res.data.err==1){
-                alert(res.data.msg);
+                openSnackbar(res.data.msg)
             }
             else{
                 localStorage.setItem('_token',res.data.token)
@@ -103,10 +121,12 @@ export default function Address() {
                 let data=decode.uid[0];
                 setUser(data)
                 setEditShow(false)
+                openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{
             if(err.message!='Network Error'){
+                openSnackbar('Session expired Login again please')
                 localStorage.clear()
                 dispatch({type:'disable'})
                 history('/LoginPage')

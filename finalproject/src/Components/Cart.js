@@ -6,10 +6,24 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import '../Css/Cart.css'
 import { Trash } from 'react-bootstrap-icons'
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Cart() {
     const uuid = useSelector(state => state.uuid)
     const [CartItems, setCartItems] = useState([])
     const Login = useSelector(state => state.Login)
+    const [openSnackbar] = useSnackbar(options)
     const history=useNavigate()
     const dispatch = useDispatch()
     const [Review, setReview] = useState({Subtotal:0,GST:0,OrderTotal:0})
@@ -74,9 +88,11 @@ export default function Cart() {
         .then(res=>{
             if(res.data.err==0){
                 let cid={id:element.customer_id}
+                openSnackbar(res.data.msg)
                 GETCART(cid)
             .then(res=>{
                 console.log(res.data.cartData);
+                
                 setCartItems(res.data.cartData)
                 let Subtotal=0;
                 let GST=0;
@@ -96,8 +112,7 @@ export default function Cart() {
                 }
             })
             }
-            else{
-                console.log(res.data.msg);
+            else{openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{
@@ -113,6 +128,7 @@ export default function Cart() {
         .then(res=>{
             if(res.data.err==0){
                 let cid={id:element.customer_id}
+                openSnackbar(res.data.msg)
                 GETCART(cid)
             .then(res=>{
                 setCartItems(res.data.cartData)
@@ -135,7 +151,7 @@ export default function Cart() {
             })
             }
             else{
-                console.log(res.data.msg);
+                openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{
@@ -151,11 +167,11 @@ export default function Cart() {
                 history('/CheckOut')
             }
             else{
+                openSnackbar('Need to Login First')
                 history('/LoginPage')
             }
         }
-        else{
-            alert('select item first')
+        else{openSnackbar('Please Select items')
         }
         
     }
@@ -165,6 +181,8 @@ export default function Cart() {
         .then(res=>{
             if(res.data.err==0){
                 let cid={id:element.customer_id}
+                
+                openSnackbar(res.data.msg)
                 GETCART(cid)
             .then(res=>{
                 setCartItems(res.data.cartData)
@@ -179,7 +197,6 @@ export default function Cart() {
                 setReview({
                     ...Review,Subtotal:Subtotal,GST:GST,OrderTotal:OrderTotal
                 })
-                
                 let data={id:element.customer_id}
                 GETCARTCOUNT(data)
                 .then(res=>{
@@ -199,7 +216,7 @@ export default function Cart() {
             })
             }
             else{
-                console.log(res.data.msg);
+                openSnackbar(res.data.msg)
             }
         })
         .catch(err=>{

@@ -18,7 +18,7 @@ router.post('/addtocart',(req,res)=>{
                         res.status(400).json({err:1,msg:'unable to insert'})
                     }
                     else{
-                        res.status(200).json({err:0,msg:' product added success fully'})
+                        res.status(200).json({err:0,msg:' product quantity added success fully'})
                     }
                 })
             }

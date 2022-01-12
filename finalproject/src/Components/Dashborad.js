@@ -9,6 +9,20 @@ import {v4 as uuidv4} from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import jwt_decode from 'jwt-decode'
 import { ADDTOCART,GETCARTCOUNT } from '../config/myService'
+
+import {useSnackbar} from 'react-simple-snackbar'
+const options = {
+    position: 'bottom-left',
+    style: {
+      fontSize: '20px',
+      textAlign: 'center',
+      color: '#8A2BE2',
+    },
+    closeStyle: {
+      color: 'lightcoral',
+      fontSize: '16px',
+    },
+  }
 export default function Dashborad() {
     const [ProductData, setProductData] = useState('')
     const history=useNavigate()
@@ -16,6 +30,7 @@ export default function Dashborad() {
     const Login = useSelector(state => state.Login)
     const uuid = useSelector(state => state.uuid)
     const [pagenumber, setpagenumber] = useState(0)
+    const [openSnackbar] = useSnackbar(options)
     const productsPerPage = 4;
     const pageVisited = pagenumber * productsPerPage
     const pageCount = Math.ceil(ProductData.length / productsPerPage)
@@ -49,6 +64,7 @@ export default function Dashborad() {
         .then(res=>{
             console.log(res.data.msg);
             let data={id:decode.uid[0]._id}
+            openSnackbar(res.data.msg)
             GETCARTCOUNT(data)
             .then(res=>{
                 console.log(res.data.count);
@@ -75,6 +91,7 @@ export default function Dashborad() {
         .then(res=>{
             console.log(res.data.msg);
             let data={id:uuid}
+            openSnackbar(res.data.msg)
             GETCARTCOUNT(data)
             .then(res=>{
                 console.log(res.data.count);
