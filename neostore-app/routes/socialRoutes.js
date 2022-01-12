@@ -142,7 +142,7 @@ router.post('/addAddress',autenticateToken,(req,res)=>{
           
     userSchema.find({email:req.body.email},(err,data)=>{
         if(err){
-            res.status(400).json({err:1,'msg':"unable to change profile pic"})
+            res.status(400).json({err:1,'msg':"unable add  address"})
         }
         else{
             let addressData={Address_id:Math.random(),address:req.body.ADDRESS.address,PinCode:req.body.ADDRESS.PinCode,City:req.body.ADDRESS.City,State:req.body.ADDRESS.State,Country:req.body.ADDRESS.Country}

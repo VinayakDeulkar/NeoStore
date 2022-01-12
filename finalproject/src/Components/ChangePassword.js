@@ -77,7 +77,7 @@ export default function ChangePassword() {
             else{
                 localStorage.setItem('_token',res.data.token)
                 let decode=jwt_decode(res.data.token);
-                 history("/Profile"); 
+                 history("/MyAccount"); 
             }
         })
         .catch(err=>{

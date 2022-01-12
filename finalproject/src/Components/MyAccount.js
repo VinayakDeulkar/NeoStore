@@ -76,7 +76,7 @@ export default function MyAccount() {
                            <Link to='Profile' className='nav-link text-dark' > <PersonBadge/> Profile</Link>
                            <Link to='Address' className='nav-link text-dark'> <Newspaper/> Address</Link>
                            {User.soical==false?<Link to='ChangePassword' className='nav-link text-dark'> <ArrowLeftRight/> Change Password</Link>:
-                           <Link to='#' className='nav-link text-dark ' style={{opacity:0.5}} > <ArrowLeftRight/> Change Password</Link>
+                           ''
                            }
                         </Col>
                         <Col lg={8}>

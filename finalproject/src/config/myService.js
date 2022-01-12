@@ -18,22 +18,22 @@ export function UserSocialLogin(data){
     return axios.post(`${ECOMMERCES_URL}social/usersociallogin`,data)
 }
 export function ProfileUpdate(data){
-    return axios.post(`${ECOMMERCES_URL}social/profileupdate`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}social/profileupdate`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }
 export function CHNAGEPASSWORD(data){
-    return axios.post(`${ECOMMERCES_URL}user/ChangePassword`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}user/ChangePassword`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }
 export function ProfilePicUpdate(data){
-    return axios.post(`${ECOMMERCES_URL}social/UpdateProfilePic`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}social/UpdateProfilePic`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }
 export function UserAddress(data){
-    return axios.post(`${ECOMMERCES_URL}social/addAddress`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}social/addAddress`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }
 export function DELETEAddress(data){
-    return axios.post(`${ECOMMERCES_URL}user/deleteAddress`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return (console.log(token),axios.post(`${ECOMMERCES_URL}user/deleteAddress`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}}))
 }
 export function EDITADDRESS(data){
-    return axios.post(`${ECOMMERCES_URL}user/editAddress`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return (console.log(token),axios.post(`${ECOMMERCES_URL}user/editAddress`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}}))
 }
 export function GetProduct(){
     return axios.get(`${ECOMMERCES_URL}product/getProduct`)
@@ -51,7 +51,7 @@ export function GetPopularProduct(){
     return axios.get(`${ECOMMERCES_URL}product/getpopularproduct`)
 }
 export function SETRATING(data){
-    return axios.post(`${ECOMMERCES_URL}product/setrating`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}product/setrating`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }
 export function ADDTOCART(data){
     return axios.post(`${ECOMMERCES_URL}cart/addtocart`,data)
@@ -81,5 +81,5 @@ export function DELETECONFIRMEDORDER(data){
     return axios.post(`${ECOMMERCES_URL}cart/orderDone`,data)
 }
 export function GETORDER(data){
-    return axios.post(`${ECOMMERCES_URL}order/orderdetails`,data,{headers:{'Authorization':`Basic ${token}`}})
+    return axios.post(`${ECOMMERCES_URL}order/orderdetails`,data,{headers:{'Authorization':`Basic ${localStorage.getItem('_token')}`}})
 }

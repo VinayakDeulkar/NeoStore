@@ -114,6 +114,7 @@ export default function LoginPage() {
     
             if (res.data.err == 0) {
               console.log(res);
+              localStorage.removeItem('uuid')
               localStorage.setItem('_token',res.data.token)
               let decode=jwt_decode(res.data.token);
               console.log(decode.uid[0]);

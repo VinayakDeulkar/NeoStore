@@ -144,6 +144,7 @@ export default function CheckOut() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
+                    dispatch({type:'cart',payload:0})
                     history('/LoginPage')
                 }
                 else {
@@ -171,6 +172,7 @@ export default function CheckOut() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
+                    dispatch({type:'cart',payload:0})
                     history('/LoginPage')
                 }
                 else {
@@ -200,10 +202,12 @@ export default function CheckOut() {
                 }
             })
             .catch(err => {
+                console.log(err);
                 if (err.message != 'Network Error') {
-                    localStorage.clear()
                     dispatch({ type: 'disable' })
+                    dispatch({type:'cart',payload:0})
                     history('/LoginPage')
+                    localStorage.clear()
                 }
                 else {
                     history('/ServerError')
