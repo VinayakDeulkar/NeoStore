@@ -112,7 +112,7 @@ export default function PageHeader() {
         <div >
             <Navbar bg="dark" expand="lg" className='container-fluid'>
                 <Navbar.Brand href="/"><big><b><span className='text-white'>Neo</span><font color="#cc0000">STORE</font></b></big></Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" className='btn-light text-light' />
+                <Navbar.Toggle aria-controls="basic-navbar-nav" className='btn-light text-light bg-light' />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Link to='/' className='navlink '>Home</Link>
@@ -133,9 +133,8 @@ export default function PageHeader() {
                                 onFocus={navigate}
                             />
                         </Form>
+                        <div className='prfil'>
                         <Button variant='light' className='cartbutton' onClick={ShowCart}> <Cart /><sup className='sup' > {CartCount} </sup> Cart</Button>
-
-
                         {Logged ?
                             <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
                                 <Dropdown.Item href="/MyAccount">My Account</Dropdown.Item>
@@ -146,6 +145,9 @@ export default function PageHeader() {
                                 <Dropdown.Item href="/LoginPage" >Login</Dropdown.Item>
                             </DropdownButton>
                         }
+                            
+                        </div>
+
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

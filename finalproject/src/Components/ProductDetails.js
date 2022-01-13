@@ -97,6 +97,18 @@ export default function ProductDetails() {
                 imageHeight: 450, imageWidth: 450
             })
         }
+        
+        else if (windowDimensions.width == 412 ) {
+            console.log(windowDimensions.width);
+            setImageDimension({
+                imageHeight: 380, imageWidth: 390
+            })
+        }
+        else if (windowDimensions.width == 390 ) {
+            setImageDimension({
+                imageHeight: 380, imageWidth: 360
+            })
+        }
         else {
             setImageDimension({
                 imageHeight: 450, imageWidth: 450

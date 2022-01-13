@@ -1,7 +1,9 @@
 .bottom-border{
+    display: block;
     box-shadow: 1px 1px 9px #343434;
     width: 100%;
-    font-size: 25px;
+    font-size: 20px;
+    margin: 10px;
     padding: 10px;
 }
 .card-effect{
@@ -19,11 +21,33 @@
     .cardtext {
         width: 270px;
     }
+    .bottom-border{
+        display: inline-block;
+        border:  1px solid black;
+        border-radius: 20px;
+        box-shadow: none;
+        width: 20%;
+        font-size: 10px;
+        margin: 0px;
+    }
    }
    
    @media screen and (max-width: 376px) and (min-width: 374px) {
     .cardtext {
         width: 280px;
+    }
+    .bottom-border{
+        display: inline-block;
+        border:  1px solid black;
+        border-radius: 20px;
+        box-shadow: none;
+        width: 20%;
+        font-size: 10px;
+        margin: 0px;
+    }
+    .filter{
+        font-size: 10px;
+        position: absolute;
     }
     }
     
@@ -37,6 +61,19 @@
     .cardtext {
         width: 270px;
     }
+    .bottom-border{
+        display: inline-block;
+        border:  1px solid black;
+        border-radius: 20px;
+        box-shadow: none;
+        width: 20%;
+        font-size: 10px;
+        margin: 0px;
+    }
+    .filter{
+        font-size: 10px;
+        position: absolute;
+    }
     }
     
    @media screen and (max-width: 391px) and (min-width: 389px) {
@@ -48,6 +85,19 @@
     }
     .cardtext {
         width: 270px;
+    }
+    .bottom-border{
+        display: inline-block;
+        border:  1px solid black;
+        border-radius: 20px;
+        box-shadow: none;
+        width: 20%;
+        font-size: 10px;
+        margin: 0px;
+    }
+    .filter{
+        font-size: 10px;
+        position: absolute;
     }
     }
  
@@ -61,9 +111,22 @@
         .cardtext {
             width: 270px;
         }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
+        }
     }
  
-    @media screen and (max-width: 413px) and (min-width: 411px) {
+    @media screen and (max-width: 414px) and (min-width: 411px) {
         .cardImage{
             width: 350px;
            }
@@ -72,6 +135,19 @@
         }
         .cardtext {
             width: 270px;
+        }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
         }
     }
  
@@ -85,18 +161,19 @@
         .cardtext {
             width: 270px;
         } 
-    }
-    @media screen and (max-width: 769px) and (min-width: 767px) {
-     .navlink{
-         width: 80px;
-         margin-left: 20%;
-     }
-     .navbar-nav{ 
-      display: inline !important;
-     }
-     .dropstart{
-         width: 52px;
-     }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
+        }
     }
     @media screen and (max-width: 913px) and (min-width: 911px) {
         .cardImage{
@@ -108,6 +185,19 @@
         }
         .cardtext {
             width: 300px;
+        }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
         }
     }
     @media screen and (max-width: 541px) and (min-width: 539px) {
@@ -122,6 +212,19 @@
         }
         .cardtext {
             width: 150px;
+        }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
         }
     }
     @media screen and (max-width: 281px) and (min-width: 279px) {
@@ -138,6 +241,19 @@
         }
         .cardtext {
             width: 200px;
+        }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
         }
     }
     
@@ -156,6 +272,19 @@
         .cardtext {
             width: 200px;
         }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
+        }
     }
     @media screen and (max-width: 1280px) and (min-width: 1280px) {
         .card{
@@ -171,4 +300,38 @@
         .cardtext {
             width: 250px;
         }
+        .bottom-border{
+            display: inline-block;
+            border:  1px solid black;
+            border-radius: 20px;
+            box-shadow: none;
+            width: 20%;
+            font-size: 10px;
+            margin: 0px;
+        }
+        .filter{
+            font-size: 10px;
+            position: absolute;
+        }
     }
+    
+@media screen and (max-width: 320px) and (min-width: 320px) {
+    
+    .cardtext {
+        width: 270px;
+    }
+    .bottom-border{
+        display: inline-block;
+        border:  1px solid black;
+        border-radius: 20px;
+        box-shadow: none;
+        width: 30%;
+        font-size: 10px;
+        margin: 0px;
+    }
+    
+    .filter{
+        font-size: 10px;
+        position: absolute;
+    }
+   }

@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
-    position: 'bottom-left',
+    position: 'top-center',
     style: {
         fontSize: '20px',
         textAlign: 'center',
-        color: '#8A2BE2',
+        color: 'white',
     },
     closeStyle: {
         color: 'lightcoral',
@@ -213,17 +213,17 @@ export default function Product() {
             <Container fluid>
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>
-                        <p variant='light' size='lg' onClick={showAll} className='bottom-border'>All Product</p>
-                        <p variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</p>
+                        <span variant='light' onClick={showAll} className='bottom-border'>All Product</span>
+                        <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
                         {ShowCategory ?
                             <span>{Category.map((ele) =>
-                                <p variant='light' key={ele._id} style={{ width: '100%' }} onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
+                                <p variant='light' key={ele._id} style={{ width: '100%' }} className='filter' onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
                             )}</span>
-                            : ''}<br />
-                        <p variant='light' onClick={colorButton} size='lg' className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</p>
+                            : ''}
+                        <span variant='light' onClick={colorButton}  className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</span>
                         {ShowColor ?
                             <span>{Color.map((ele) =>
-                                <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3' onClick={() => ColorFilter(ele)}></Button>
+                                <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 filter' onClick={() => ColorFilter(ele)}></Button>
                             )}</span>
                             : ''}<br />
                     </Col>
