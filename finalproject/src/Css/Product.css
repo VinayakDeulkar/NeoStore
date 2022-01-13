@@ -14,3 +14,9 @@
     overflow: hidden !important;
     text-overflow: ellipsis;
 }
+@media screen and (max-width: 360px) and (min-width: 360px) {
+    /* .bottom-border{
+        display: inline;
+        font-size: 20px;
+    } */
+  }

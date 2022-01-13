@@ -36,22 +36,6 @@
     transform: rotate(360deg);
   }
 }
-.navlink{
-  text-decoration: none;;
-  font-size: 20px;
-  margin-left: 20px;
-  color: white;
-}
-.navlink:hover{
-  color: red;
-}
-.cartbutton{
-  margin-left: 20px;
-  margin-right: 20px;
-}
-.navmargin{
-  margin-right: 50px;
-}
 
 .verticalline{
   border-left: 3px solid black;
@@ -83,4 +67,7 @@
 .pdf{
   color: white;
   text-decoration: none;
+}
+.servererror{
+  font-size: 80px;
 }

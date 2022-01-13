@@ -75,7 +75,7 @@ export default function CheckOut() {
     const orderconfirm = async () => {
         console.log(SelectedAddress);
         if (SelectedAddress) {
-            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id }
+            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id ,email:UserData.email,cart:CartItems}
             console.log(data);
              CONFIRMORDER(data)
                 .then((res) => {

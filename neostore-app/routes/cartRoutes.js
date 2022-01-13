@@ -140,7 +140,6 @@ router.post('/orderDone',(req,res)=>{
             res.status(400).json({err:1,msg:'Unable to delete'})
         }
         else{
-            console.log(data);
             res.status(200).json({err:0,msg:'Cart Delete successfully',itemdelete:data})
         }
     })

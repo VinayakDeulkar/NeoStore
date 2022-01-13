@@ -1,0 +1,36 @@
+
+.navlink{
+    text-decoration: none;;
+    font-size: 20px;
+    margin-left: 20px;
+    color: white;
+  }
+  .navlink:hover{
+    color: red;
+  }
+  .cartbutton{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .navmargin{
+    margin-right: 50px;
+  }
+  .dropdownbtn{
+      margin-right: 20px;
+  }
+  @media screen and (max-width: 360px) and (min-width: 360px) {
+   .navlink{
+       width: 80px;
+       margin-left: 40px;
+   }
+   .navbar-nav{ 
+    display: inline !important;
+   }
+   .dropstart{
+       width: 52px;
+   }
+   /* .endpart{
+       background-color: red;
+    display: block !important;
+   } */
+  }

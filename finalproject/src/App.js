@@ -8,6 +8,7 @@ import Address from './Components/Address';
 import ChangePassword from './Components/ChangePassword';
 import Pdf from './Components/Pdf';
 import SnackbarProvider from 'react-simple-snackbar'
+import NotFound from './Components/NotFound';
 // import loading from 'lazyloading.gif'
 const PageHeader=React.lazy(()=>import('./Components/PageHeader'))
 const LoginPage=React.lazy(()=>import('./Components/LoginPage'))
@@ -57,6 +58,7 @@ function App() {
                                     <Route path='Address' exact element={<Address/>}/>
                                     <Route path='ChangePassword' exact element={<ChangePassword/>}/>
                     </Route>
+                    <Route path="*" exact element={<NotFound/>}/>
                     </Routes>
                     </SnackbarProvider>
             </Router>

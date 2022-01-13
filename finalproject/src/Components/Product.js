@@ -213,14 +213,14 @@ export default function Product() {
             <Container fluid>
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>
-                        <p variant='light' size='lg'  onClick={showAll} className='bottom-border'>All Product</p><br/>
-                        <p variant='light' onClick={categoryButton}  className='bottom-border ' >{ShowCategory?<CaretDownFill/>:<CaretRightFill/>}Category</p><br/>
+                        <p variant='light' size='lg'  onClick={showAll} className='bottom-border'>All Product</p>
+                        <p variant='light' onClick={categoryButton}  className='bottom-border ' >{ShowCategory?<CaretDownFill/>:<CaretRightFill/>}Category</p>
                         {ShowCategory?
                         <span>{Category.map((ele)=>
                             <p variant='light' key={ele._id} style={{width:'100%'}} onClick={()=>CategoryFilter(ele)} >{ele.category_name}</p>
                         )}</span>
                         :''}<br/>
-                        <p variant='light' onClick={colorButton} size='lg'  className='bottom-border '> {ShowColor?<CaretDownFill/>:<CaretRightFill/>}Color</p><br/>
+                        <p variant='light' onClick={colorButton} size='lg'  className='bottom-border '> {ShowColor?<CaretDownFill/>:<CaretRightFill/>}Color</p>
                         {ShowColor?
                         <span>{Color.map((ele)=>
                             <Button style={{backgroundColor:ele.color_code}} key={ele._id} size='lg' className='m-2 p-3' onClick={()=>ColorFilter(ele)}></Button>
@@ -233,7 +233,7 @@ export default function Product() {
                         Filters: <i>{Selected.SelectedCategory}</i> <i>{Selected.SelectedColor} </i>
                         </Col>
                         <Col lg={6} className='text-end'>
-                            <div className='me-4'>
+                            <div className='me-4 sortfilter'>
                             Sort By:
                             <span className='m-2' onClick={SortByRating}><StarFill size='25px'/></span>
                             <span className='m-2' onClick={SortPriceup}><Coin/><ArrowUp size='25px'/></span>

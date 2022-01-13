@@ -7,6 +7,7 @@ import {  Link, NavLink,  useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { v4 as uuidv4 } from 'uuid'
 import { GETCARTCOUNT } from '../config/myService'
+import '../Css/PageHeader.css'
 export default function PageHeader() {
     const history=useNavigate()
     const dispatch = useDispatch()
@@ -117,11 +118,11 @@ export default function PageHeader() {
       <Link to='/' className='navlink '>Home</Link>
         <Link to='/Product' className='navlink'>Product</Link>
                             {
-                                Logged?<NavLink to='/Order' className='navlink'>Order</NavLink>:
+                                Logged?<Link to='/Order' className='navlink'>Order</Link>:
                                 <Link to='/LoginPage' className='navlink' >Order</Link>
                             }
                         </Nav>
-                        <Nav className="justify-content-end ">
+                        <Nav className=" endpart">
                         <Form className="d-flex ml-2 mr-2">
                             <FormControl
                                 onChange={searchbar}
@@ -136,12 +137,12 @@ export default function PageHeader() {
                                 
                                 
                                 {Logged ?
-                                <DropdownButton  id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" style={{ marginRight: "20px" }} >
+                                <DropdownButton  id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
                                     <Dropdown.Item href="/MyAccount">My Account</Dropdown.Item>
                                     <Dropdown.Item href="/" onClick={LogoutUser}>Logout</Dropdown.Item>
                                     
                                 </DropdownButton> :
-                                <DropdownButton  id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" style={{ marginRight: "20px" }} >
+                                <DropdownButton  id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
                                     <Dropdown.Item href="/LoginPage" >Login</Dropdown.Item>
                                 </DropdownButton>
                             }

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap'
-
 export default function PageFooter() {
     return (
         <div className='container-fluid' >
@@ -19,7 +18,7 @@ export default function PageFooter() {
                         <p>Gurantee and Return Policy </p>
                         <p>Contact Us</p>
                         <p>Privacy Policy</p>
-                        <p>Locate Us</p>
+                        <p><a href="https://www.google.com/maps/place/NeoSOFT+Technologies/@18.5790021,73.7387793,15z/data=!4m5!3m4!1s0x0:0x316090d140dfd0b3!8m2!3d18.579388!4d73.7388023"  target='_blank' className='pdf'>Locate Us</a></p>
                     </Col>
                     <Col lg={4} className='text-center paddingissue'>
                         <h4>Newsletter </h4>
