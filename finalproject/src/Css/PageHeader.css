@@ -29,8 +29,130 @@
    .dropstart{
        width: 52px;
    }
-   /* .endpart{
-       background-color: red;
-    display: block !important;
-   } */
   }
+  
+  @media screen and (max-width: 376px) and (min-width: 374px) {
+    .navlink{
+        width: 80px;
+        margin-left: 40px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   
+  @media screen and (max-width: 415px) and (min-width: 413px) {
+    .navlink{
+        width: 80px;
+        margin-left: 40px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   
+  @media screen and (max-width: 391px) and (min-width: 389px) {
+    .navlink{
+        width: 80px;
+        margin-left: 40px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+
+   @media screen and (max-width: 394px) and (min-width: 392px) {
+    .navlink{
+        width: 80px;
+        margin-left: 40px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+
+   @media screen and (max-width: 413px) and (min-width: 411px) {
+    .navlink{
+        width: 80px;
+        margin-left: 50px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+
+   @media screen and (max-width: 821px) and (min-width: 819px) {
+    .navlink{
+        width: 80px;
+        margin-left: 20%;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   @media screen and (max-width: 769px) and (min-width: 767px) {
+    .navlink{
+        width: 80px;
+        margin-left: 20%;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   @media screen and (max-width: 913px) and (min-width: 911px) {
+    .navlink{
+        width: 80px;
+        margin-left: 20%;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   @media screen and (max-width: 541px) and (min-width: 539px) {
+    .navlink{
+        width: 80px;
+        margin-left: 15%;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }
+   @media screen and (max-width: 281px) and (min-width: 279px) {
+    .navlink{
+        width: 80px;
+        margin-left: 20px;
+    }
+    .navbar-nav{ 
+     display: inline !important;
+    }
+    .dropstart{
+        width: 52px;
+    }
+   }

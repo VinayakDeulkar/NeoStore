@@ -29,6 +29,21 @@
       width: 320px
    }
   }
+  @media screen and (max-width: 820px) and (min-width: 820px) {
+   
+    .CardImage{
+      width: 380px;
+    }
+    .Cardsize{
+      width: 380px;
+    }
+    .cardtext{
+      width: 350px;
+    }
+    .cardSIze{
+      width: 380px
+   }
+  }
   @media screen and (max-width: 360px) and (min-width: 360px) {
     .BannerImage{
       height: 200px;
@@ -47,6 +62,42 @@
      width: 280px;
    }
   }
+  @media screen and (max-width: 391px) and (min-width: 380px) {
+    .BannerImage{
+      height: 200px;
+    }
+    .CardImage{
+      height: 300px;
+      width: 360px;
+    }
+    .Cardsize{
+      width: 360px;
+    }
+    .cardSIze{
+      width: 360px
+   }
+   .cardtext{
+     width: 280px;
+   }
+  }
+  @media screen and (max-width: 394px) and (min-width: 391px) {
+    .BannerImage{
+      height: 200px;
+    }
+    .CardImage{
+      height: 300px;
+      width: 360px;
+    }
+    .Cardsize{
+      width: 360px;
+    }
+    .cardSIze{
+      width: 340px
+   }
+   .cardtext{
+     width: 280px;
+   }
+  }
   @media screen and (max-width: 415px)and (min-width: 400px) {
     .BannerImage{
       height: 200px;
@@ -56,7 +107,7 @@
       width: 390px;
     }
     .cardSIze{
-      width: 415px
+      width: 412px
    }
     
   }
@@ -88,11 +139,33 @@
     }
     .CardImage{
       height: 300px;
-      width: 300px;
+      width: 360px;
+    }
+    .Cardsize{
+      width: 360px;
     }
     .cardSIze{
       width: 300px
    }
+  }
+  @media screen and (max-width: 913px)  and (min-width: 911px){
+    .BannerImage{
+      height: 300px;
+      width: 100%;
+    }
+    .CardImage{
+      height: 400px;
+      width: 450px;
+    }
+    .Cardsize{
+      width: 450px;
+    }
+    .cardSIze{
+      width: 450px;
+   }
+   .cardtext {
+    width: 400px;
+}
   }
   @media screen and (min-width: 540px ) and (max-width: 540px)  {
     .BannerImage{
@@ -117,6 +190,10 @@
     .cardSIze{
       width: 270px
    }
+   
+   .cardtext {
+    width: 240px;
+}
   }
   @media screen and (min-width: 1024px) and (max-width: 1024px) {
     .BannerImage{
@@ -130,9 +207,21 @@
       margin: 20px;
       width: 200px
    }
+   .cardtext {
+    width: 180px;
+}
   }
   @media screen and (min-width: 1280px) and (max-width: 1280px) {
     .BannerImage{
       height: 400px;
+    }
+    .CardImage{
+      width: 300px;
+    }
+    .Cardsize{
+      width: 300px ;
+    }
+    .cardSIze{
+      width: 300px;
     }
   }

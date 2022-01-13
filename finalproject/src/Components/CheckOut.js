@@ -7,19 +7,19 @@ import { Col, Container, Nav, Row, Tab, Table, Card, Button, Form, Modal, FormGr
 import { X } from 'react-bootstrap-icons';
 import { UserAddress, DELETEAddress, EDITADDRESS } from '../config/myService'
 import '../Css/CheckOut.css'
-import {useSnackbar} from 'react-simple-snackbar'
+import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'bottom-left',
     style: {
-      fontSize: '20px',
-      textAlign: 'center',
-      color: '#8A2BE2',
+        fontSize: '20px',
+        textAlign: 'center',
+        color: '#8A2BE2',
     },
     closeStyle: {
-      color: 'lightcoral',
-      fontSize: '16px',
+        color: 'lightcoral',
+        fontSize: '16px',
     },
-  }
+}
 export default function CheckOut() {
     const [openSnackbar] = useSnackbar(options)
     const [CartItems, setCartItems] = useState('')
@@ -75,34 +75,34 @@ export default function CheckOut() {
     const orderconfirm = async () => {
         console.log(SelectedAddress);
         if (SelectedAddress) {
-            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id ,email:UserData.email,cart:CartItems}
+            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems }
             console.log(data);
-             CONFIRMORDER(data)
+            CONFIRMORDER(data)
                 .then((res) => {
                     if (res.data.err == 0) {
                         console.log(res.data.err);
                         let id1 = { id: UserData._id }
                         console.log(id1);
                         openSnackbar(res.data.msg)
-                         DELETECONFIRMEDORDER(id1).then(res => {
+                        DELETECONFIRMEDORDER(id1).then(res => {
+                            console.log(res.data);
+                            if (res.data.err == 0) {
                                 console.log(res.data);
-                                if (res.data.err == 0) {
-                                    console.log(res.data);
-                                    let id2 = { id: UserData._id }
-                                    GETCARTCOUNT(id2)
-                                        .then((res) => {
-                                            console.log(res.data.count);
-                                            let count = res.data.count
-                                            dispatch({ type: 'cart', payload: count })
-                                            handleShow()
-                                        })
-                                }
-                            })
+                                let id2 = { id: UserData._id }
+                                GETCARTCOUNT(id2)
+                                    .then((res) => {
+                                        console.log(res.data.count);
+                                        let count = res.data.count
+                                        dispatch({ type: 'cart', payload: count })
+                                        handleShow()
+                                    })
+                            }
+                        })
                             .catch(err => {
                                 console.log(err);
                                 if (err.message != 'Network Error') {
                                     localStorage.clear()
-                                    dispatch({type:'disable'})
+                                    dispatch({ type: 'disable' })
                                     openSnackbar('Session expired Login again please')
                                     history('/LoginPage')
                                 }
@@ -113,21 +113,21 @@ export default function CheckOut() {
                     }
 
                 })
-            .catch(err => {
-                console.log(err);
-                if (err.message != 'Network Error') {
-                    openSnackbar('Session expired Login again please')
-                    localStorage.clear()
-                    dispatch({type:'disable'})
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
-            
+                .catch(err => {
+                    console.log(err);
+                    if (err.message != 'Network Error') {
+                        openSnackbar('Session expired Login again please')
+                        localStorage.clear()
+                        dispatch({ type: 'disable' })
+                        history('/LoginPage')
+                    }
+                    else {
+                        history('/ServerError')
+                    }
+                })
 
-                
+
+
         }
         else {
             openSnackbar('Please select Address')
@@ -147,7 +147,7 @@ export default function CheckOut() {
         console.log(finalData);
         UserAddress(finalData)
             .then(res => {
-                if (res.data.err == 1) { 
+                if (res.data.err == 1) {
                     openSnackbar(res.data.msg)
                 }
                 else {
@@ -155,7 +155,7 @@ export default function CheckOut() {
                     let decode = jwt_decode(res.data.token);
                     let data = decode.uid[0];
                     setUserData(data)
-                     openSnackbar(res.data.msg)
+                    openSnackbar(res.data.msg)
                 }
             })
             .catch(err => {
@@ -163,7 +163,7 @@ export default function CheckOut() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
-                    dispatch({type:'cart',payload:0})
+                    dispatch({ type: 'cart', payload: 0 })
                     openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
@@ -193,7 +193,7 @@ export default function CheckOut() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     dispatch({ type: 'disable' })
-                    dispatch({type:'cart',payload:0})
+                    dispatch({ type: 'cart', payload: 0 })
                     openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }
@@ -227,7 +227,7 @@ export default function CheckOut() {
             .catch(err => {
                 if (err.message != 'Network Error') {
                     dispatch({ type: 'disable' })
-                    dispatch({type:'cart',payload:0})
+                    dispatch({ type: 'cart', payload: 0 })
                     openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                     localStorage.clear()

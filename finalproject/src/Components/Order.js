@@ -5,19 +5,19 @@ import { Button, Container, Table } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import '../Css/Order.css'
-import {useSnackbar} from 'react-simple-snackbar'
+import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'bottom-left',
     style: {
-      fontSize: '20px',
-      textAlign: 'center',
-      color: '#8A2BE2',
+        fontSize: '20px',
+        textAlign: 'center',
+        color: '#8A2BE2',
     },
     closeStyle: {
-      color: 'lightcoral',
-      fontSize: '16px',
+        color: 'lightcoral',
+        fontSize: '16px',
     },
-  }
+}
 export default function Order() {
     const [Order, setOrder] = useState('')
     const dispatch = useDispatch()
@@ -47,8 +47,8 @@ export default function Order() {
                 }
             })
     }, [])
-    const OpenPdf=(ele)=>{
-        history('/Pdf',{state:ele})
+    const OpenPdf = (ele) => {
+        history('/Pdf', { state: ele })
     }
     return (
         <div>
@@ -76,29 +76,29 @@ export default function Order() {
                         </tr>
                     </thead>
                     <tbody>
-                        {Order && Order.map((ele)=>
-                        <tr key={ele._id}>
-                            <td width='350px'>
-                            {ele.product_id.map((element)=>
-                                <span key={element._id}>
-                                    <img src={`/Image/${element.product_id.product_image}`} className='orderimg m-1'/>
-                                </span>
-                            )}
-                            </td>
-                            <td>
-                                <p>{ele.delivery_address.address}</p>
-                                <p>{ele.delivery_address.City}-{ele.delivery_address.PinCode}</p>
-                                <p>{ele.delivery_address.State},{ele.delivery_address.Country}</p>
-                            </td>
-                            <td>{ ele.isDelivered?<span style={{color:'Green'}}>True</span>:<span style={{color:'red'}}>False</span>}</td>
-                            <td>
-                               Rs. {ele.total_Productcost}
-                            </td>
-                            <td>{ele.order_date}</td>
-                            <td>
-                                <Button onClick={()=>OpenPdf(ele)} >Open Pdf</Button>
-                            </td>
-                        </tr>
+                        {Order && Order.map((ele) =>
+                            <tr key={ele._id}>
+                                <td width='350px'>
+                                    {ele.product_id.map((element) =>
+                                        <span key={element._id}>
+                                            <img src={`/Image/${element.product_id.product_image}`} className='orderimg m-1' />
+                                        </span>
+                                    )}
+                                </td>
+                                <td>
+                                    <p>{ele.delivery_address.address}</p>
+                                    <p>{ele.delivery_address.City}-{ele.delivery_address.PinCode}</p>
+                                    <p>{ele.delivery_address.State},{ele.delivery_address.Country}</p>
+                                </td>
+                                <td>{ele.isDelivered ? <span style={{ color: 'Green' }}>True</span> : <span style={{ color: 'red' }}>False</span>}</td>
+                                <td>
+                                    Rs. {ele.total_Productcost}
+                                </td>
+                                <td>{ele.order_date}</td>
+                                <td>
+                                    <Button onClick={() => OpenPdf(ele)} >Open Pdf</Button>
+                                </td>
+                            </tr>
                         )}
                     </tbody>
                 </Table>

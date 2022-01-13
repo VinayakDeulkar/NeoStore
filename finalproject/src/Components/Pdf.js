@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap'
-import {ArrowLeftSquare, Download} from 'react-bootstrap-icons'
+import { ArrowLeftSquare, Download } from 'react-bootstrap-icons'
 import ReactToPdf from 'react-to-pdf'
 import '../Css/Pdf.css'
 import jwt_decode from 'jwt-decode'
@@ -15,7 +15,7 @@ export default function Pdf() {
     const [OrderDetails, setOrderDetails] = useState('')
     const [UserData, setUserData] = useState('')
     const ref = React.createRef();
-    const history=useNavigate()
+    const history = useNavigate()
     useEffect(() => {
         console.log(location.state);
         let token = localStorage.getItem('_token')
@@ -24,14 +24,14 @@ export default function Pdf() {
         setUserData(decode.uid[0])
 
     }, [])
-    const backtoorder=()=>{
+    const backtoorder = () => {
         history('/Order')
     }
     return (
         <div className='m-5 pdfclass'>
             <Container fluid ref={ref}>
-                <Row  className='pdfmargin'>
-                    
+                <Row className='pdfmargin'>
+
                     <Col lg={12}>
                         <Row>
                             <Col lg={6}>
@@ -93,15 +93,15 @@ export default function Pdf() {
                     </Col>
                 </Row>
             </Container>
-            
+
             <div className='text-center'>
-                    <Button onClick={backtoorder}  className='me-2'> <ArrowLeftSquare/> Orders</Button>
-                    <ReactToPdf targetRef={ref} filename={`${OrderDetails.order_date}.pdf`} options={options} x={0} y={0} scale={0.8}>
-                        {({ toPdf }) => (
-                            <Button onClick={toPdf}> <Download/>  Download pdf</Button>
-                        )}
-                    </ReactToPdf>
-                </div>
+                <Button onClick={backtoorder} className='me-2'> <ArrowLeftSquare /> Orders</Button>
+                <ReactToPdf targetRef={ref} filename={`${OrderDetails.order_date}.pdf`} options={options} x={0} y={0} scale={0.8}>
+                    {({ toPdf }) => (
+                        <Button onClick={toPdf}> <Download />  Download pdf</Button>
+                    )}
+                </ReactToPdf>
+            </div>
         </div>
     )
 }

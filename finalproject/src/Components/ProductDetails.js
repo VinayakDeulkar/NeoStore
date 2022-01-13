@@ -9,29 +9,29 @@ import { SETRATING } from '../config/myService';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactImageMagnify from 'react-image-magnify'
 import jwt_decode from 'jwt-decode'
-import { ADDTOCART ,GETCARTCOUNT} from '../config/myService';
-import {useSnackbar} from 'react-simple-snackbar'
+import { ADDTOCART, GETCARTCOUNT } from '../config/myService';
+import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'bottom-left',
     style: {
-      fontSize: '20px',
-      textAlign: 'center',
-      color: '#8A2BE2',
+        fontSize: '20px',
+        textAlign: 'center',
+        color: '#8A2BE2',
     },
     closeStyle: {
-      color: 'lightcoral',
-      fontSize: '16px',
+        color: 'lightcoral',
+        fontSize: '16px',
     },
-  }
+}
 // import {SideBySideMagnifier} from 'react-image-magnifiers'
 // import ReactImageZoom from 'react-image-zoom'
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
     return {
-      width,
-      height
+        width,
+        height
     };
-  }
+}
 export default function ProductDetails() {
     const location = useLocation()
     const history = useNavigate()
@@ -44,62 +44,62 @@ export default function ProductDetails() {
     const uuid = useSelector(state => state.uuid)
     const [ProductRATING, setProductRATING] = useState(location.state.product_rating)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-    const [ImageDimension, setImageDimension] = useState({imageHeight:0,imageWidth:0})
+    const [ImageDimension, setImageDimension] = useState({ imageHeight: 0, imageWidth: 0 })
     useEffect(() => {
         setMainImage(location.state.product_image)
         checkScreen()
         setWindowDimensions(getWindowDimensions());
     }, [])
-    const checkScreen=()=>{
-        if(windowDimensions.width==360){
+    const checkScreen = () => {
+        if (windowDimensions.width == 360) {
             console.log('inside 360');
             setImageDimension({
-                imageHeight:330,imageWidth:330
+                imageHeight: 330, imageWidth: 330
             })
         }
-        else if(windowDimensions.width==411){
+        else if (windowDimensions.width == 411) {
             setImageDimension({
-                imageHeight:380,imageWidth:380
+                imageHeight: 380, imageWidth: 380
             })
         }
-        else if(windowDimensions.width==320){
+        else if (windowDimensions.width == 320) {
             setImageDimension({
-                imageHeight:295,imageWidth:295
+                imageHeight: 295, imageWidth: 295
             })
         }
-        else if(windowDimensions.width==375){
+        else if (windowDimensions.width == 375) {
             setImageDimension({
-                imageHeight:350,imageWidth:350
+                imageHeight: 350, imageWidth: 350
             })
         }
-        else if(windowDimensions.width==414){
+        else if (windowDimensions.width == 414) {
             setImageDimension({
-                imageHeight:390,imageWidth:390
+                imageHeight: 390, imageWidth: 390
             })
         }
-        else if(windowDimensions.width==280){
+        else if (windowDimensions.width == 280) {
             setImageDimension({
-                imageHeight:250,imageWidth:255
+                imageHeight: 250, imageWidth: 255
             })
         }
-        else if(windowDimensions.width==1280){
+        else if (windowDimensions.width == 1280) {
             setImageDimension({
-                imageHeight:450,imageWidth:450
+                imageHeight: 450, imageWidth: 450
             })
         }
-        else if(windowDimensions.width==1024){
+        else if (windowDimensions.width == 1024) {
             setImageDimension({
-                imageHeight:450,imageWidth:450
+                imageHeight: 450, imageWidth: 450
             })
         }
-        else if(windowDimensions.width==1440){
+        else if (windowDimensions.width == 1440) {
             setImageDimension({
-                imageHeight:450,imageWidth:450
+                imageHeight: 450, imageWidth: 450
             })
         }
-        else{
+        else {
             setImageDimension({
-                imageHeight:450,imageWidth:450
+                imageHeight: 450, imageWidth: 450
             })
         }
     }
@@ -148,61 +148,61 @@ export default function ProductDetails() {
             history('/LoginPage')
         }
     }
-    const AddToCart=(element)=>{
-        if(Login){
+    const AddToCart = (element) => {
+        if (Login) {
             console.log('inside login');
-            let token=localStorage.getItem('_token')
-            let decode=jwt_decode(token);
+            let token = localStorage.getItem('_token')
+            let decode = jwt_decode(token);
             console.log(decode.uid[0]);
-            let data={customer_id:decode.uid[0]._id,product_id:element._id,product_cost:element.product_cost}
+            let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
             ADDTOCART(data)
-            .then(res=>{
-                console.log(res.data.msg);
-                let data={id:decode.uid[0]._id}
-                openSnackbar(res.data.msg)
-                GETCARTCOUNT(data)
-                .then(res=>{
-                    console.log(res.data.count);
-                    dispatch({type:'cart',payload:res.data.count})
+                .then(res => {
+                    console.log(res.data.msg);
+                    let data = { id: decode.uid[0]._id }
+                    openSnackbar(res.data.msg)
+                    GETCARTCOUNT(data)
+                        .then(res => {
+                            console.log(res.data.count);
+                            dispatch({ type: 'cart', payload: res.data.count })
+                        })
+                        .catch(err => {
+                            if (err) {
+                                history('/ServerError')
+                            }
+                        })
                 })
-                .catch(err=>{
-                    if(err){
+                .catch(err => {
+                    if (err) {
                         history('/ServerError')
                     }
                 })
-            })
-            .catch(err=>{
-                if(err){
-                    history('/ServerError')
-                }
-            })
         }
-        else{
+        else {
             console.log('Inside not login');
             console.log(uuid);
-            let data={customer_id:uuid,product_id:element._id,product_cost:element.product_cost}
+            let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
             console.log(data);
             ADDTOCART(data)
-            .then(res=>{
-                console.log(res.data.msg);
-                let data={id:uuid}
-                openSnackbar(res.data.msg)
-                GETCARTCOUNT(data)
-                .then(res=>{
-                    console.log(res.data.count);
-                    dispatch({type:'cart',payload:res.data.count})
+                .then(res => {
+                    console.log(res.data.msg);
+                    let data = { id: uuid }
+                    openSnackbar(res.data.msg)
+                    GETCARTCOUNT(data)
+                        .then(res => {
+                            console.log(res.data.count);
+                            dispatch({ type: 'cart', payload: res.data.count })
+                        })
+                        .catch(err => {
+                            if (err) {
+                                history('/ServerError')
+                            }
+                        })
                 })
-                .catch(err=>{
-                    if(err){
+                .catch(err => {
+                    if (err) {
                         history('/ServerError')
                     }
                 })
-            })
-            .catch(err=>{
-                if(err){
-                    history('/ServerError')
-                }
-            })
         }
     }
     return (
@@ -213,30 +213,30 @@ export default function ProductDetails() {
                         <Button variant='dark' className='crossbutton mt-2' onClick={Cut} style={{ borderRadius: '50%' }} >X</Button>
                     </Col>
                     <Col lg={6} >
-                            <ReactImageMagnify {...{
-                                smallImage: {
-                                    alt: 'Wristwatch by Ted Baker London',
-                                    // isFluidWidth: false,
-                                    width:parseInt(ImageDimension.imageWidth),
-                                    height:parseInt(ImageDimension.imageHeight),
-                                    src: `/Image/${MainImage}`,
-                                    // sizes:"(min-width: 360px)330vw"
-                                },
-                                largeImage: {
-                                    src: `/Image/${MainImage}`,
-                                    width: 1200,
-                                    height: 1800
-                                }
-                            }} />
+                        <ReactImageMagnify {...{
+                            smallImage: {
+                                alt: 'Wristwatch by Ted Baker London',
+                                // isFluidWidth: false,
+                                width: parseInt(ImageDimension.imageWidth),
+                                height: parseInt(ImageDimension.imageHeight),
+                                src: `/Image/${MainImage}`,
+                                // sizes:"(min-width: 360px)330vw"
+                            },
+                            largeImage: {
+                                src: `/Image/${MainImage}`,
+                                width: 1200,
+                                height: 1800
+                            }
+                        }} />
                         {/* <img src={`/Image/${MainImage}`}  className='MainImage' /> */}
                         <div>
-                        <img src={`/Image/${location.state.product_image}`} className='navimage' onMouseOver={() => setImage(location.state.product_image)} onClick={() => setImage(location.state.product_image)} />
-                        {location.state.product_subImages.map((ele, index) =>
-                            <span key={index}>
-                                <img src={`/Image/${ele}`} className='navimage' onMouseOver={() => setImage(ele)} onClick={() => setImage(ele)} />
-                            </span>
-                        )
-                        }
+                            <img src={`/Image/${location.state.product_image}`} className='navimage' onMouseOver={() => setImage(location.state.product_image)} onClick={() => setImage(location.state.product_image)} />
+                            {location.state.product_subImages.map((ele, index) =>
+                                <span key={index}>
+                                    <img src={`/Image/${ele}`} className='navimage' onMouseOver={() => setImage(ele)} onClick={() => setImage(ele)} />
+                                </span>
+                            )
+                            }
                         </div>
                     </Col>
                     <Col lg={6}>
@@ -256,7 +256,7 @@ export default function ProductDetails() {
                             </span>
                         </p>
                         <p>
-                            <Button className=' m-2 ' onClick={()=>AddToCart(location.state)}>ADD TO CART</Button>
+                            <Button className=' m-2 ' onClick={() => AddToCart(location.state)}>ADD TO CART</Button>
                             <Button variant='danger' className='m-2' onClick={ProductRating} >RATE PRODUCT</Button>
                         </p>
 
