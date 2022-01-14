@@ -32,9 +32,6 @@
    .navbar-nav{ 
     display: inline !important;
    }
-   /* .dropstart{
-       width: 52px;
-   } */
     .cartbutton{
     margin-left: 70px;
     }
@@ -47,6 +44,9 @@
 .prfil{
     margin-top: 10px;
     margin-right: 30px;
+}
+.formwidth{
+    width: 336px;
 }
   }
   
@@ -71,12 +71,16 @@
         margin-top: 10px;
         margin-right: 30px;
     }
+    
+    .formwidth{
+        width: 347.6px;
+    }
    }
    
   @media screen and (max-width: 415px) and (min-width: 413px) {
     .navlink{
         width: 80px;
-        margin-left: 40px;
+        margin-left: 14%;
     }
     .navbar-nav{ 
      display: inline !important;
@@ -94,12 +98,16 @@
         margin-top: 10px;
         margin-right: 30px;
     }
+    
+    .formwidth{
+        width: 390.4px;
+    }
    }
    
   @media screen and (max-width: 391px) and (min-width: 389px) {
     .navlink{
         width: 80px;
-        margin-left: 40px;
+        margin-left: 13%;
     }
     .navbar-nav{ 
      display: inline !important;
@@ -116,13 +124,16 @@
     .prfil{
         margin-top: 10px;
         margin-right: 30px;
+    }
+    .formwidth{
+        width: 366.4px;
     }
    }
 
    @media screen and (max-width: 394px) and (min-width: 392px) {
     .navlink{
         width: 80px;
-        margin-left: 40px;
+        margin-left: 13%;
     }
     .navbar-nav{ 
      display: inline !important;
@@ -138,7 +149,10 @@
     }
     .prfil{
         margin-top: 10px;
-        margin-right: 30px;
+        margin-right: 40px;
+    }
+    .formwidth{
+        width: 369.6px;
     }
    }
 
@@ -162,6 +176,9 @@
     .prfil{
         margin-top: 10px;
         margin-right: 30px;
+    }
+    .formwidth{
+        width: 388px;
     }
    }
 
@@ -187,6 +204,9 @@
         margin-top: 10px;
         margin-right: 30px;
     }
+    .formwidth{
+        width: 796px;
+    }
    }
    @media screen and (max-width: 769px) and (min-width: 767px) {
     .navlink{
@@ -209,6 +229,9 @@
     .prfil{
         margin-top: 10px;
         margin-right: 30px;
+    }
+    .formwidth{
+        width: 744px;
     }
    }
    @media screen and (max-width: 913px) and (min-width: 911px) {
@@ -233,6 +256,9 @@
         margin-top: 10px;
         margin-right: 30px;
     }
+    .formwidth{
+        width: 888px;
+    }
    }
    @media screen and (max-width: 541px) and (min-width: 539px) {
     .navlink{
@@ -256,6 +282,9 @@
         margin-top: 10px;
         margin-right: 30px;
     }
+    .formwidth{
+        width: 516px;
+    }
    }
    @media screen and (max-width: 281px) and (min-width: 279px) {
     .navlink{
@@ -278,5 +307,8 @@
     .prfil{
         margin-top: 10px;
         margin-right: 30px;
+    }
+    .formwidth{
+        width: 256px;
     }
    }

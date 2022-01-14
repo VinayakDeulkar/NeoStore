@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux'
 
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
-    position: 'bottom-left',
+    position: 'top-center',
     style: {
         fontSize: '20px',
         textAlign: 'center',
-        color: '#8A2BE2',
+        color: 'white',
     },
     closeStyle: {
         color: 'lightcoral',

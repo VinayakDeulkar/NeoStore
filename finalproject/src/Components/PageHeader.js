@@ -128,7 +128,7 @@ export default function PageHeader() {
                                 onChange={searchbar}
                                 type="search"
                                 placeholder='Search...'
-                                className="me-2 "
+                                className="me-2 formwidth"
                                 aria-label="Search"
                                 onFocus={navigate}
                             />
@@ -137,12 +137,12 @@ export default function PageHeader() {
                         <Button variant='light' className='cartbutton' onClick={ShowCart}> <Cart /><sup className='sup' > {CartCount} </sup> Cart</Button>
                         {Logged ?
                             <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
-                                <Dropdown.Item href="/MyAccount">My Account</Dropdown.Item>
-                                <Dropdown.Item href="/" onClick={LogoutUser}>Logout</Dropdown.Item>
+                                <Dropdown.Item href="/MyAccount" className='dropitem'>My Account</Dropdown.Item>
+                                <Dropdown.Item href="/" className='dropitem' onClick={LogoutUser}>Logout</Dropdown.Item>
 
                             </DropdownButton> :
                             <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
-                                <Dropdown.Item href="/LoginPage" >Login</Dropdown.Item>
+                                <Dropdown.Item href="/LoginPage" className='dropitem' >Login</Dropdown.Item>
                             </DropdownButton>
                         }
                             

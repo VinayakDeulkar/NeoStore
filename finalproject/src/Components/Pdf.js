@@ -52,7 +52,7 @@ export default function Pdf() {
                                 <p>Is Delivered: {OrderDetails.isDelivered ? <span style={{ color: 'Green' }}>True</span> : <span style={{ color: 'red' }}>False</span>} </p>
                             </Col>
                             <Col lg={12}>
-                                <Table striped bordered hover>
+                                <Table striped bordered hover responsive>
                                     <thead>
                                         <tr className='text-center'>
                                             <th>Product</th>

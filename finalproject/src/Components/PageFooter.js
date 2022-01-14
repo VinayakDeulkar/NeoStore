@@ -16,7 +16,7 @@ export default function PageFooter() {
                     <h4>Information </h4>
                     <p > <a href='termsandcondition.pdf' target='_blank' className='pdf'> Terms and Condition</a></p>
                     <p>Gurantee and Return Policy </p>
-                    <p>Contact Us</p>
+                    <p> <a className='pdf' href="Tel: 123-456-7890" >Contact Us</a> </p>
                     <p>Privacy Policy</p>
                     <p><a href="https://www.google.com/maps/place/NeoSOFT+Technologies/@18.5790021,73.7387793,15z/data=!4m5!3m4!1s0x0:0x316090d140dfd0b3!8m2!3d18.579388!4d73.7388023" target='_blank' className='pdf'>Locate Us</a></p>
                 </Col>

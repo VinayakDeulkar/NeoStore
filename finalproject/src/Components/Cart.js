@@ -8,11 +8,11 @@ import '../Css/Cart.css'
 import { Trash } from 'react-bootstrap-icons'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
-    position: 'bottom-left',
+    position: 'top-center',
     style: {
         fontSize: '20px',
         textAlign: 'center',
-        color: '#8A2BE2',
+        color: 'white',
     },
     closeStyle: {
         color: 'lightcoral',
@@ -231,22 +231,9 @@ export default function Cart() {
         <div>
             <Container fluid>
                 <Row className='mt-2'>
-                    <Col lg={12}>
-                        <Row>
-                            <Col lg={1} className='text-end'>
-                                <span className='num'> 1 </span> Cart
-                            </Col>
-                            <Col lg={9}>
-                                <hr />
-                            </Col>
-                            <Col lg={2}>
-                                <span className='num1'> 2 </span> Delivery  Address
-                            </Col>
-                        </Row>
-                    </Col>
 
                     <Col lg={8}>
-                        <Table className='Carts'>
+                        <Table className='Carts' responsive>
                             <thead>
                                 <tr>
                                     <th>Product</th>

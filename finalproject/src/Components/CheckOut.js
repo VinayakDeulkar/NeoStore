@@ -9,11 +9,11 @@ import { UserAddress, DELETEAddress, EDITADDRESS } from '../config/myService'
 import '../Css/CheckOut.css'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
-    position: 'bottom-left',
+    position: 'top-center',
     style: {
         fontSize: '20px',
         textAlign: 'center',
-        color: '#8A2BE2',
+        color: 'white',
     },
     closeStyle: {
         color: 'lightcoral',
@@ -75,7 +75,7 @@ export default function CheckOut() {
     const orderconfirm = async () => {
         console.log(SelectedAddress);
         if (SelectedAddress) {
-            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems }
+            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems ,Subtotal:Review.Subtotal }
             console.log(data);
             CONFIRMORDER(data)
                 .then((res) => {
@@ -255,7 +255,7 @@ export default function CheckOut() {
                         <Col lg={9}>
                             <Tab.Content>
                                 <Tab.Pane eventKey="Order">
-                                    <Table>
+                                    <Table responsive>
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
@@ -415,15 +415,11 @@ export default function CheckOut() {
                         <Button onClick={Updateaddress}>Edit Address</Button>
                     </Form>
                 </Modal>
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Order Confirmed</Modal.Title>
-                    </Modal.Header>
+                <Modal show={show} onHide={handleClose} centered>
                     <Modal.Body className='text-center'>
                         <img src='/Image/orderconfirmed.gif' height='200px' width='200px' />
+                        <p>Order Placed!</p>
                     </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
                 </Modal>
             </Container>
         </div>
