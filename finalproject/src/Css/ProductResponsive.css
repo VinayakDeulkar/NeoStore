@@ -21,6 +21,13 @@
     .dropdown{
         display: inline;
     }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
+    }
    }
    
    @media screen and (max-width: 376px) and (min-width: 374px) {
@@ -43,6 +50,13 @@
     }
     .dropdown{
         display: inline;
+    }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
     }
     }
     
@@ -73,6 +87,13 @@
     .dropdown{
         display: inline;
     }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
+    }
     }
     
    @media screen and (max-width: 391px) and (min-width: 389px) {
@@ -101,6 +122,13 @@
     }
     .dropdown{
         display: inline;
+    }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
     }
     }
  
@@ -131,6 +159,13 @@
         .dropdown{
             display: inline;
         }
+        .dropdown-item{
+            width: 80px;
+        }
+        .colormenu{
+            min-width: 0px !important; 
+            width: 80px;
+        }
     }
  
     @media screen and (max-width: 414px) and (min-width: 411px) {
@@ -159,6 +194,13 @@
         }
         .dropdown{
             display: inline;
+        }
+        .dropdown-item{
+            width: 80px;
+        }
+        .colormenu{
+            min-width: 0px !important; 
+            width: 80px;
         }
     }
  
@@ -189,6 +231,13 @@
         .dropdown{
             display: inline;
         }
+        .dropdown-item{
+            width: 80px;
+        }
+        .colormenu{
+            min-width: 0px !important; 
+            width: 80px;
+        }
     }
     @media screen and (max-width: 913px) and (min-width: 911px) {
         .cardImage{
@@ -217,6 +266,13 @@
         }
         .dropdown{
             display: inline;
+        }
+        .dropdown-item{
+            width: 80px;
+        }
+        .colormenu{
+            min-width: 0px !important; 
+            width: 80px;
         }
     }
     @media screen and (max-width: 541px) and (min-width: 539px) {
@@ -270,7 +326,7 @@
             border:  1px solid black;
             border-radius: 10px;
             box-shadow: none;
-            width: 20%;
+            width: 25%;
             font-size: 10px;
             margin: 10px;
         }
@@ -281,6 +337,13 @@
         }
         .dropdown{
             display: inline;
+        }
+        .dropdown-item{
+            width: 80px;
+        }
+        .colormenu{
+            min-width: 0px !important; 
+            width: 80px;
         }
     }
     
@@ -339,6 +402,13 @@
     .dropdown{
         display: inline;
     }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
+    }
    }
    @media screen and (max-width: 769px) and (min-width: 767px) {
     
@@ -362,5 +432,12 @@
     }
     .dropdown{
         display: inline;
+    }
+    .dropdown-item{
+        width: 80px;
+    }
+    .colormenu{
+        min-width: 0px !important; 
+        width: 80px;
     }
    }

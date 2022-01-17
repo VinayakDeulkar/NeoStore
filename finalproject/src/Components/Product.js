@@ -235,7 +235,7 @@ export default function Product() {
                            Color
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
+                        <Dropdown.Menu className='colormenu text-center'>
                             {
                                 Color.map((ele)=>
                                 <Dropdown.Item  key={ele._id}  onClick={() => ColorFilter(ele)}><Button  key={ele._id} size='lg' className='m-2 p-3 'style={{ backgroundColor: ele.color_code }} onClick={() => ColorFilter(ele)}></Button></Dropdown.Item>
