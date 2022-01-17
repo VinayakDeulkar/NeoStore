@@ -3,6 +3,7 @@
     .SocialButton{
         margin-left: 0px !important;
         margin-top: 0px;
+        width: 330px;
     }
     .socialsec{
         padding-top: 12px;
@@ -20,6 +21,7 @@
     .SocialButton{
         margin-left: 0px !important;
         margin-top: 0px;
+        width: 240px !important;
     }
     .socialsec{
         padding-top: 12px;
