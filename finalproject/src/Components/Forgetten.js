@@ -141,10 +141,12 @@ export default function Forgetten() {
 
                             <Form className='text-start'>
                                 <FormControl type='password' name='newpass' placeholder='Enter New Password ' ref={NewPassword} onBlur={handle} onFocus={setnull} className='mt-3 mb-3 ' />
-                                <FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorNewPassword}</FormLabel><br />
+                                {ErrorForgetten.ErrorNewPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorNewPassword}</FormLabel>:''}<br/>
                                 <FormControl type='password' name='confirmpass' placeholder='Enter confirm Password' ref={ConfirmPassword} onBlur={handle} onFocus={setnull} className='mt-3 mb-3' />
-                                <FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel><br />
+                                {ErrorForgetten.ErrorConfirmPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel>:''}<br />
+                                <div className='text-center'>
                                 <Button variant='dark' className='m-3' onClick={changepass}>Submit</Button>
+                                </div>
 
                             </Form>
                         </Card.Text>

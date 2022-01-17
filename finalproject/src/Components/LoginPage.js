@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChangeUuid, CheckUser, UserSocialLogin, GETCARTCOUNT } from '../config/myService';
 import jwt_decode from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux';
+import '../Css/LoginResponsive.css'
 
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
@@ -177,7 +178,7 @@ export default function LoginPage() {
             <div className='container-fluid'>
 
                 <Row className='paddingfooter marginlogin mt-5'>
-                    <Col lg={6} className='text-center'>
+                    <Col lg={6} className='text-center loginpad'>
 
                         <SocialButton
                             provider="facebook"
@@ -207,12 +208,13 @@ export default function LoginPage() {
                                 <FormControl type='text' placeholder='Email Address' name='Email' ref={Email} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text><Phone /></InputGroup.Text>
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{Error.Erroremail}</FormLabel>
+                            {Error.Erroremail?
+                            <FormLabel style={{ color: 'red' }} >{Error.Erroremail}</FormLabel>:''}
                             <InputGroup className='p-2 mt-2 mb-2'>
                                 <FormControl type='password' placeholder='Password ' name='Password' ref={Password} onBlur={handle} onFocus={setnull} />
-
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{Error.ErrorPassword}</FormLabel>
+                            {Error.ErrorPassword?
+                            <FormLabel style={{ color: 'red' }} >{Error.ErrorPassword}</FormLabel>:''}
                             <br />
                             <Button className='p-2 mt-2 mb-2' onClick={checkuser} >Login</Button>
                         </Form>
@@ -222,7 +224,7 @@ export default function LoginPage() {
                             <Col lg={6} xs={6} sm={6} md={6} className='text-end'>
                                 <Link to='/RegisterPage' className='nav-link'>Register Page</Link>
                             </Col>
-                            <Col lg={6} xs={6} sm={6} md={6} className='verticalline'>
+                            <Col lg={6} xs={6} sm={6} md={6} className='verticallinesmall'>
                                 <Link to='/Forgotten' className='nav-link'>Forgotten?</Link>
                             </Col>
                         </Row>

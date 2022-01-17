@@ -1,0 +1,26 @@
+
+
+@media screen and  (max-width: 912px) {
+    .verticalline{
+      border-left: none;
+      text-align: center;
+      margin-top: 10%;
+    }
+    .mt-5{
+      margin-top: 0px !important;
+    }
+    }
+   
+@media screen and  (max-width: 280px) {
+    .verticalline{
+      border-left: none;
+      text-align: center;
+      margin-top: 10%;
+    }
+    .SocialButton{
+        width: 256px;
+    }
+    .mt-5{
+      margin-top: 0px !important;
+    }
+    }

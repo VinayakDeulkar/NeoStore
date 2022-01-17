@@ -40,14 +40,15 @@
 .verticalline{
   border-left: 3px solid black;
 }
-
-@media screen and  (max-width: 912px) {
-  .verticalline{
-    border-left: none;
-  }
-  }
+.verticallinesmall{
+  border-left: 2px solid black;
+}
 .marginlogin{
   margin-bottom: 3%;
+}
+.loginpad{
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 .SocialButton{
   margin-top: 30px;

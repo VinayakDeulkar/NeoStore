@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Facebook, Mailbox, Phone } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { AddUser, UserSocialLogin } from '../config/myService';
-
+import '../Css/RegisterResponsive.css'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'top-center',
@@ -165,7 +165,7 @@ export default function RegisterPage() {
         <div className=' container-fluid'>
 
             <Row className='padding marginlogin mt-3'>
-                <Col lg={12} className='text-center mr-3'>
+                <Col lg={12} className='text-center mr-3 socialsec'>
                     <SocialButton
                         provider="facebook"
                         appId="2362435687224371"
@@ -189,40 +189,40 @@ export default function RegisterPage() {
                     </SocialButton>
                 </Col>
                 <Col lg={3} />
-                <Col lg={6} >
+                <Col lg={6} className='formdata'>
                     <Card className='bg-light'>
-                        <Form className='p-3'>
+                        <Form className='p-3 formdata'>
                             <FormLabel ><h3>Register To NeoSTORE</h3></FormLabel>
-                            <InputGroup className=' mt-2 mb-2'>
+                          <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='First Name' aria-describedby="basic-addon2" name='FirstName' /* className=' mt-2 mb-2' */ ref={FirstName} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text id="basic-addon2" className="bg-light">T</InputGroup.Text>
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorfirstname}</FormLabel>
+                            {ErrorRegister.Errorfirstname?<FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorfirstname}</FormLabel>:''}
                             <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='Last Name ' name='LastName' /* className='p-2 mt-2 mb-2' */ ref={LastName} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text id="basic-addon2" className="bg-light"> T </InputGroup.Text>
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorlastname}</FormLabel>
+                            {ErrorRegister.Errorlastname?<FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorlastname}</FormLabel>:''}
                             <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='Email Address ' name='Email' /* className='p-2 mt-2 mb-2' */ ref={Email} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text id="basic-addon2" className="bg-light"><Mailbox /></InputGroup.Text>
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorEmail}</FormLabel>
-                            <InputGroup className='mt-2 mb-2'>
+                            {ErrorRegister.ErrorEmail?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorEmail}</FormLabel>
+  :''}                          <InputGroup className='mt-2 mb-2'>
                                 <FormControl type='password' placeholder='Password ' name='Password' /* className='p-2 mt-2 mb-2' */ ref={Password} onBlur={handle} onFocus={setnull} />
 
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorPassword}</FormLabel>
+                            {ErrorRegister.ErrorPassword?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorPassword}</FormLabel>:''}
                             <InputGroup className='mt-2 mb-2'>
                                 <FormControl type='password' placeholder='Confirm Password ' name='ConfirmPassword' /* className='p-2 mt-2 mb-2' */ ref={ConfirmPassword} onBlur={handle} onFocus={setnull} />
 
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorConfirm}</FormLabel>
-                            <InputGroup className=' mt-2 mb-2'>
+                            {ErrorRegister.ErrorConfirm?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorConfirm}</FormLabel>
+:''}                            <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='Mobile No. ' name='MobileNo' /* className='p-2 mt-2 mb-2' */ ref={MobileNo} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text id="basic-addon2" className="bg-light"><Phone /></InputGroup.Text>
                             </InputGroup>
-                            <FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorMobile}</FormLabel><br />
+                            {ErrorRegister.ErrorMobile?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorMobile}</FormLabel>:''}<br />
                             <Button onClick={RegisterUser} className='mt-3'>Register</Button>
 
                         </Form>
