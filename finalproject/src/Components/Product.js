@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Button, Col, Container, Card, Row } from 'react-bootstrap'
+import { Button, Col, Container, Card, Row, Dropdown, DropdownButton } from 'react-bootstrap'
 import { ArrowDown, ArrowUp, CaretDownFill, CaretRightFill, Coin, Filter, StarFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import { ADDTOCART, FILTERPRODUCT, GETCARTCOUNT, GetCategory, GetColor, GetProduct } from '../config/myService';
 import ReactStarsRating from 'react-awesome-stars-rating'
 import '../Css/Product.css'
+import '../Css/ProductResponsive.css'
 import ReactPaginate from 'react-paginate'
 import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
@@ -213,17 +214,17 @@ export default function Product() {
             <Container fluid>
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>
-                        <span variant='light' onClick={showAll} className='bottom-border'>All Product</span>
+                        <span variant='light'  size="lg" onClick={showAll} className='bottom-border '>All Product</span>
                         <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
                         {ShowCategory ?
-                            <span>{Category.map((ele) =>
-                                <p variant='light' key={ele._id} style={{ width: '100%' }} className='filter' onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
+                            <span className='filter'>{Category.map((ele) =>
+                                <p variant='light' key={ele._id} style={{ width: '100%' }} className=''  onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
                             )}</span>
                             : ''}
-                        <span variant='light' onClick={colorButton}  className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</span>
+                        <span variant='light' onClick={colorButton} className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</span>
                         {ShowColor ?
-                            <span>{Color.map((ele) =>
-                                <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 filter' onClick={() => ColorFilter(ele)}></Button>
+                            <span className='filter'>{Color.map((ele) =>
+                                <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 ' onClick={() => ColorFilter(ele)}></Button>
                             )}</span>
                             : ''}<br />
                     </Col>

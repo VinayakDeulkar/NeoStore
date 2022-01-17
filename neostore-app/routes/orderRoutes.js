@@ -146,7 +146,7 @@ async function main(Data) {
                                             <table cellspacing="0" cellpadding="0" border="0" align="right">
                                                 <tr>
                                                     <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400;">
-                                                        <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="#" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
+                                                        <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="http://localhost:3000/" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
                                                     </td>
                                                     <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="#" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
                                                 </tr>

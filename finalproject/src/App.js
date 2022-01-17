@@ -9,6 +9,7 @@ import ChangePassword from './Components/ChangePassword';
 import Pdf from './Components/Pdf';
 import SnackbarProvider from 'react-simple-snackbar'
 import NotFound from './Components/NotFound';
+import ThankuPage from './Components/ThankuPage';
 // import loading from 'lazyloading.gif'
 const PageHeader=React.lazy(()=>import('./Components/PageHeader'))
 const LoginPage=React.lazy(()=>import('./Components/LoginPage'))
@@ -52,6 +53,7 @@ function App() {
                     <Route path='/ProductDetails' exact element={<ProductDetails/>}/>
                     <Route path='/Cart' exact element={<Cart/>}/>
                     <Route path='/Pdf' exact  element={<Pdf/>}/>
+                    <Route path='/ThankYou' exact element={<ThankuPage/>}/>
                     <Route path='/MyAccount' exact element={<MyAccount/>}>
                                     <Route path='' exact element={<Order/>}/>
                                     <Route path='Profile' exact element={<Profile/>}/>
@@ -60,9 +62,9 @@ function App() {
                     </Route>
                     <Route path="*" exact element={<NotFound/>}/>
                     </Routes>
+                    <PageFooter/>
                     </SnackbarProvider>
             </Router>
-            <PageFooter/>
             </Suspense>
     </>
   );

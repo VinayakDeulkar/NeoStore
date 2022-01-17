@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode'
 import { v4 as uuidv4 } from 'uuid'
 import { GETCARTCOUNT } from '../config/myService'
 import '../Css/PageHeader.css'
+import '../Css/PageHeaderResponsive.css'
 export default function PageHeader() {
     const history = useNavigate()
     const dispatch = useDispatch()

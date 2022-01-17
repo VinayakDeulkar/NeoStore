@@ -40,6 +40,12 @@
 .verticalline{
   border-left: 3px solid black;
 }
+
+@media screen and  (max-width: 912px) {
+  .verticalline{
+    border-left: none;
+  }
+  }
 .marginlogin{
   margin-bottom: 3%;
 }

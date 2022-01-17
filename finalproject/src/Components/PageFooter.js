@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import  { useSnackbar }  from 'react-simple-snackbar'
+const options = {
+    position: 'top-center',
+    style: {
+        fontSize: '20px',
+        textAlign: 'center',
+        color: 'white',
+    },
+    closeStyle: {
+        color: 'lightcoral',
+        fontSize: '16px',
+    },
+}
 export default function PageFooter() {
+    const [openSnackbar] = useSnackbar(options)
+    const Email = useRef('')
+    const history=useNavigate()
+    const subscribeSSS=()=>{
+        if(Email.current.value==''){
+            openSnackbar('Enter Email please')
+        }
+        else{
+            history('/ThankYou')
+        }
+    }
     return (
-        <div className='container-fluid' >
+        <div className='container-fluid'  >
             <Row style={{ background: '#212529' }} className='text-light ' >
                 <Col lg={4} className='text-center  '>
                     <h4>About Company</h4>
@@ -24,8 +49,8 @@ export default function PageFooter() {
                     <h4>Newsletter </h4>
                     <p >Signup to get exclusive offer from our favorite brands and to be well up in the news</p>
                     <Form>
-                        <FormControl type='email' placeholder='your email...' />
-                        <Button variant='light' className="mt-3">Subscribe</Button>
+                        <FormControl type='email' placeholder='your email...' ref={Email} />
+                        <Button variant='light' className="mt-3" onClick={subscribeSSS}>Subscribe</Button>
                     </Form>
                 </Col>
                 <Col lg={12} className='text-center'>
