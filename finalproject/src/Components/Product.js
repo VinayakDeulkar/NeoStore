@@ -214,11 +214,39 @@ export default function Product() {
             <Container fluid>
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>
-                        <span variant='light'  size="lg" onClick={showAll} className='bottom-border '>All Product</span>
-                        <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
+                        <span variant='light' size="lg" onClick={showAll} className='bottom-border '>All Product</span>
+                        {Category?
+                        <Dropdown className='filter'>
+                            <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
+                               Category
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {
+                                    Category.map((ele)=>
+                                    <Dropdown.Item  key={ele._id} style={{ width: '100%' }} onClick={() => CategoryFilter(ele)}>{ele.category_name}</Dropdown.Item>
+                                    )
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>:''}
+                        {Color?
+                        <Dropdown className='filter'>
+                        <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
+                           Color
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {
+                                Color.map((ele)=>
+                                <Dropdown.Item  key={ele._id}  onClick={() => ColorFilter(ele)}><Button  key={ele._id} size='lg' className='m-2 p-3 'style={{ backgroundColor: ele.color_code }} onClick={() => ColorFilter(ele)}></Button></Dropdown.Item>
+                                )
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>:''}
+                        {/* <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
                         {ShowCategory ?
                             <span className='filter'>{Category.map((ele) =>
-                                <p variant='light' key={ele._id} style={{ width: '100%' }} className=''  onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
+                                <p variant='light' key={ele._id} style={{ width: '100%' }} className='' onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
                             )}</span>
                             : ''}
                         <span variant='light' onClick={colorButton} className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</span>
@@ -226,7 +254,8 @@ export default function Product() {
                             <span className='filter'>{Color.map((ele) =>
                                 <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 ' onClick={() => ColorFilter(ele)}></Button>
                             )}</span>
-                            : ''}<br />
+                            : ''}<br /> */}
+                        
                     </Col>
                     <Col lg={9}>
                         <Row>
