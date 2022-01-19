@@ -336,7 +336,7 @@ export default function CheckOut() {
                                                     label={
                                                         <Card className='p-3 addresssec'  >
                                                             <Row>
-                                                                <Col lg={10}>
+                                                                <Col lg={10} className='orderaddress'>
                                                                     {ele.address}<br />
                                                                     {ele.City}-{ele.PinCode}<br />
                                                                     {ele.State},{ele.Country}<br />
