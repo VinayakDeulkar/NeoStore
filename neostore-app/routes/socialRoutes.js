@@ -63,7 +63,7 @@ router.post('/usersociallogin',(req,res)=>{
             res.status(200).json({"err":0,"msg":"Login Success","token":token})
         }
         else{
-            res.status(404).json({err:1,"msg":"Try to Login with password"})
+            res.json({err:1,"msg":"Try to Login with password"})
         }
     })
 })

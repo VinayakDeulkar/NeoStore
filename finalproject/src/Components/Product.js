@@ -210,7 +210,7 @@ export default function Product() {
         }
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Container fluid>
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>

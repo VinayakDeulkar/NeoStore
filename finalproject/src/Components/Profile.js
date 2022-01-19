@@ -72,7 +72,7 @@ export default function Profile() {
             })
     }
     return (
-        <div>
+        <div className='allpadding' >
             <h3>Profile</h3>
             <hr />
             {

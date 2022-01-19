@@ -36,7 +36,10 @@
     transform: rotate(360deg);
   }
 }
-
+.allpadding{
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 .verticalline{
   border-left: 3px solid black;
 }
@@ -56,6 +59,10 @@
   width: 300px;
   font-size: 20px;
 } 
+.pagefooter{
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 .facebook{
   background-color: #3b5998;
 }

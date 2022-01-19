@@ -27,8 +27,8 @@ export default function PageFooter() {
         }
     }
     return (
-        <div className='container-fluid'  >
-            <Row style={{ background: '#212529' }} className='text-light ' >
+        <div className='container-fluid '  >
+            <Row style={{ background: '#212529' }} className='text-light pagefooter' >
                 <Col lg={4} className='text-center  '>
                     <h4>About Company</h4>
                     <p >NeoSOFT Technologies is here at your quick and easy service for shooping</p>
@@ -53,7 +53,7 @@ export default function PageFooter() {
                         <Button variant='light' className="mt-3" onClick={subscribeSSS}>Subscribe</Button>
                     </Form>
                 </Col>
-                <Col lg={12} className='text-center'>
+                <Col lg={12} className='text-center mt-1'>
                     Copyright 2017 NeoSOFT Technologies All rights reserved | Design By Vinayak Deulkar
                 </Col>
             </Row>

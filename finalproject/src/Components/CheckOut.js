@@ -238,7 +238,7 @@ export default function CheckOut() {
             })
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Container fluid>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="Order">
                     <Row>
@@ -298,7 +298,7 @@ export default function CheckOut() {
                                     </Table>
                                     <Card className='review'>
                                         <Card.Header>
-                                            <h3> Review Order</h3>
+                                            <h3 className='revie text-center' > Review Order</h3>
                                         </Card.Header>
                                         <Card.Body>
                                             <Table>
@@ -340,10 +340,10 @@ export default function CheckOut() {
                                                                     {ele.address}<br />
                                                                     {ele.City}-{ele.PinCode}<br />
                                                                     {ele.State},{ele.Country}<br />
-                                                                    <Button onClick={() => Editstart(ele)}>Edit</Button>
+                                                                    <Button className='buton' onClick={() => Editstart(ele)}>Edit</Button>
                                                                 </Col>
                                                                 <Col lg={2} className='float-end'>
-                                                                    <Button variant='danger' onClick={() => deleteAddress(ele.Address_id)}><X /></Button>
+                                                                    <Button variant='danger' className='buton' onClick={() => deleteAddress(ele.Address_id)}><X /></Button>
                                                                 </Col>
                                                             </Row>
                                                         </Card>

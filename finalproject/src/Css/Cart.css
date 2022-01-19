@@ -19,6 +19,9 @@
       margin: 20px;
     box-shadow: 1px 1px 9px #343434;
   }
+  .revie{
+    margin-bottom: 0px;
+  }
   .productname{
     margin-left: 10px;
       display: inline-block;

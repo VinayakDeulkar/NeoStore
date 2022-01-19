@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Card, Col, Form, FormControl, InputGroup, Row, FormLabel, Button, Alert } from 'react-bootstrap'
 import SocialButton from './SocialButton'
 import { useNavigate } from 'react-router-dom'
-import { Facebook, Mailbox, Phone } from 'react-bootstrap-icons';
+import { Facebook, Google, Mailbox, Phone,TextareaT } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { AddUser, UserSocialLogin } from '../config/myService';
 import '../Css/RegisterResponsive.css'
@@ -162,7 +162,7 @@ export default function RegisterPage() {
     }
     return (<>
 
-        <div className=' container-fluid'>
+        <div className=' container-fluid allpadding'>
 
             <Row className='padding marginlogin mt-3'>
                 <Col lg={12} className='text-center mr-3 socialsec'>
@@ -185,7 +185,7 @@ export default function RegisterPage() {
 
                         size="lg"
                     >
-                        <img src='Image/Google-Symbol.png' height='30px' width='45px' /> sign in with Google
+                        <Google/> sign in with Google
                     </SocialButton>
                 </Col>
                 <Col lg={3} />
@@ -195,12 +195,12 @@ export default function RegisterPage() {
                             <FormLabel ><h3>Register To NeoSTORE</h3></FormLabel>
                           <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='First Name' aria-describedby="basic-addon2" name='FirstName' /* className=' mt-2 mb-2' */ ref={FirstName} onBlur={handle} onFocus={setnull} />
-                                <InputGroup.Text id="basic-addon2" className="bg-light">T</InputGroup.Text>
+                                <InputGroup.Text id="basic-addon2" className="bg-light"><TextareaT/></InputGroup.Text>
                             </InputGroup>
                             {ErrorRegister.Errorfirstname?<FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorfirstname}</FormLabel>:''}
                             <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='Last Name ' name='LastName' /* className='p-2 mt-2 mb-2' */ ref={LastName} onBlur={handle} onFocus={setnull} />
-                                <InputGroup.Text id="basic-addon2" className="bg-light"> T </InputGroup.Text>
+                                <InputGroup.Text id="basic-addon2" className="bg-light"> <TextareaT/> </InputGroup.Text>
                             </InputGroup>
                             {ErrorRegister.Errorlastname?<FormLabel style={{ color: 'red' }} >{ErrorRegister.Errorlastname}</FormLabel>:''}
                             <InputGroup className=' mt-2 mb-2'>
@@ -220,11 +220,10 @@ export default function RegisterPage() {
                             {ErrorRegister.ErrorConfirm?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorConfirm}</FormLabel>
 :''}                            <InputGroup className=' mt-2 mb-2'>
                                 <FormControl type='text' placeholder='Mobile No. ' name='MobileNo' /* className='p-2 mt-2 mb-2' */ ref={MobileNo} onBlur={handle} onFocus={setnull} />
-                                <InputGroup.Text id="basic-addon2" className="bg-light"><Phone /></InputGroup.Text>
+                                <InputGroup.Text id="basic-addon2" className="bg-light"><Phone />  </InputGroup.Text>
                             </InputGroup>
                             {ErrorRegister.ErrorMobile?<FormLabel style={{ color: 'red' }} >{ErrorRegister.ErrorMobile}</FormLabel>:''}<br />
-                            <Button onClick={RegisterUser} className='mt-3'>Register</Button>
-
+                            <Button onClick={RegisterUser} className='mt-1'>Register</Button>
                         </Form>
                         <Link to='/LoginPage' className='nav-link'>Existing User?</Link>
                     </Card>

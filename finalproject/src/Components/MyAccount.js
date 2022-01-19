@@ -79,7 +79,7 @@ export default function MyAccount() {
         setShow(false)
     }
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid allpadding'>
             <Row>
                 <Col lg={12}>
                     <h2>My Account</h2>

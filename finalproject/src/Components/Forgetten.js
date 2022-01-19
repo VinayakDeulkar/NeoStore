@@ -120,7 +120,7 @@ export default function Forgetten() {
     }
     return (<>
 
-        <div className='container-fluid'>
+        <div className='container-fluid allpadding'>
             <Row>
                 <Col lg={3} />
                 <Col lg={6} className='text-center'>
@@ -140,9 +140,9 @@ export default function Forgetten() {
                             }
 
                             <Form className='text-start'>
-                                <FormControl type='password' name='newpass' placeholder='Enter New Password ' ref={NewPassword} onBlur={handle} onFocus={setnull} className='mt-3 mb-3 ' />
+                                <FormControl type='password' name='newpass' placeholder='Enter New Password ' ref={NewPassword} onBlur={handle} onFocus={setnull} className='' />
                                 {ErrorForgetten.ErrorNewPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorNewPassword}</FormLabel>:''}<br/>
-                                <FormControl type='password' name='confirmpass' placeholder='Enter confirm Password' ref={ConfirmPassword} onBlur={handle} onFocus={setnull} className='mt-3 mb-3' />
+                                <FormControl type='password' name='confirmpass' placeholder='Enter confirm Password' ref={ConfirmPassword} onBlur={handle} onFocus={setnull} className='' />
                                 {ErrorForgetten.ErrorConfirmPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel>:''}<br />
                                 <div className='text-center'>
                                 <Button variant='dark' className='m-3' onClick={changepass}>Submit</Button>

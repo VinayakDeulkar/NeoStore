@@ -137,7 +137,7 @@ export default function Address() {
             })
     }
     return (
-        <div>
+        <div className='allpadding'>
             <h3>Address</h3>
             <hr />
             <table width='100%' className='border-bottom'>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Button, Col, Form, FormControl, InputGroup, FormLabel, Row } from 'react-bootstrap'
-import { Facebook, Phone } from 'react-bootstrap-icons';
+import { Facebook, Google, Phone } from 'react-bootstrap-icons';
 import SocialButton from './SocialButton'
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeUuid, CheckUser, UserSocialLogin, GETCARTCOUNT } from '../config/myService';
@@ -175,7 +175,7 @@ export default function LoginPage() {
     return (
         <>
 
-            <div className='container-fluid'>
+            <div className='container-fluid allpadding'>
 
                 <Row className='paddingfooter marginlogin mt-5'>
                     <Col lg={6} className='text-center loginpad'>
@@ -198,7 +198,7 @@ export default function LoginPage() {
                             className='SocialButton google'
                             size="lg"
                         >
-                            <img src='Image/Google-Symbol.png' height='30px' width='45px' /> sign in with Google
+                            <Google/> sign in with Google
                         </SocialButton>
                     </Col>
                     <Col lg={6} className='verticalline bg-light'>

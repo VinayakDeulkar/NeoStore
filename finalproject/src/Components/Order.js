@@ -51,7 +51,7 @@ export default function Order() {
         history('/Pdf', { state: ele })
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Container fluid>
 
                 <Table responsive>

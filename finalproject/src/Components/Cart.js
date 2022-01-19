@@ -228,7 +228,7 @@ export default function Cart() {
             })
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Container fluid>
                 <Row className='mt-2'>
 
@@ -293,7 +293,7 @@ export default function Cart() {
                     <Col lg={4} className='mb-5'>
                         <Card className='review'>
                             <Card.Header>
-                                <h3> Review Order</h3>
+                                <h3 className='text-center revie'> Review Order</h3>
                             </Card.Header>
                             <Card.Body>
                                 <Table>

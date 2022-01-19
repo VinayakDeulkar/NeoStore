@@ -109,7 +109,7 @@ export default function ChangePassword() {
             })
     }
     return (
-        <div>
+        <div className='allpadding'>
             <h3 className='text-center'>Change Password</h3><hr />
             <Form className='ps-5 pe-5'>
                 <FormGroup className='mt-2'>

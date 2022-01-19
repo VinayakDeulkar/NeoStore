@@ -112,7 +112,7 @@ export default function Dashborad() {
         }
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Carousel className='mt-3 mb-3'>
                 <Carousel.Item>
                     <img
@@ -147,7 +147,7 @@ export default function Dashborad() {
                                 <Card className='cardSIze' border='light'  >
                                     <Card.Img variant="top" src={`/Image/${ele.product_image}`} className='CardImage' onClick={() => DisplayProduct(ele)} />
                                     <Card.Body className='Cardsize'>
-                                        <Card.Title  > <span className='cardtext'> {ele.product_name}</span></Card.Title>
+                                        <Card.Title className='text-center' > <span className='cardtext'> {ele.product_name}</span></Card.Title>
                                         <Card.Text className='text-center'>
                                             <b>Rs.{ele.product_cost}</b><br />
 

@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap'
 import '../Css/ServerError.css'
 export default function NotFound() {
     return (
-        <div>
+        <div className='allpadding'>
             <Container className='m-4 p-5 bg-light'>
                 <h1 className=' text-center servererror words word-1'>
                     <span>! </span>

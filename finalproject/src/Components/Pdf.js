@@ -29,10 +29,10 @@ export default function Pdf() {
     }
     return (
         <div className='m-5 pdfclass'>
-            <Container fluid ref={ref}>
+            <Container fluid >
                 <Row className='pdfmargin'>
 
-                    <Col lg={12}>
+                    <Col lg={12} ref={ref}>
                         <Row>
                             <Col lg={6}>
                                 <h3><big><b>Neo<font color="#cc0000">STORE</font></b></big></h3>

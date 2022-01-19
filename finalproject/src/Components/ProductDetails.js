@@ -218,7 +218,7 @@ export default function ProductDetails() {
         }
     }
     return (
-        <div>
+        <div className='allpadding'>
             <Container >
                 <Row>
                     <Col lg={12} className='text-end'>

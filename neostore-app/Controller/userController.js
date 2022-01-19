@@ -12,7 +12,7 @@
 //            return({err:0,msg:'Data added success fully'})
 //        }
 //    })
-// }
+// } 
 // module.exports={
 //     addUser
 // }
