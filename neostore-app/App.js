@@ -10,19 +10,21 @@ app.use(cors())
 //load routes
 connectDB()
 const userRoutes=require('./routes/userRoutes')
-const socialRoutes=require('./routes/socialRoutes')
 const productRoutes=require('./routes/productRoutes')
-const colorRoutes=require('./routes/colorRoutes')
 const categoryRoutes=require('./routes/categoryRoutes')
-const cartRoutes=require('./routes/cartRoutes')
+const colorRoutes=require('./routes/colorRoutes')
 const orderRoutes=require('./routes/orderRoutes')
-app.use("/api/product",productRoutes)
-app.use("/api/order",orderRoutes)
+const socialRoutes=require('./routes/socialRoutes')
+const cartRoutes=require('./routes/cartRoutes')
 app.use("/api/user",userRoutes)
-app.use("/api/social",socialRoutes)
-app.use("/api/color",colorRoutes)
+app.use("/api/product",productRoutes)
 app.use("/api/category",categoryRoutes)
+app.use("/api/color",colorRoutes)
+app.use("/api/order",orderRoutes)
+app.use("/api/social",socialRoutes)
 app.use("/api/cart",cartRoutes)
+
+
 app.listen(PORT,(err)=>{
     if(err) throw err;
     console.log(`Work on ${PORT}`);

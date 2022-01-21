@@ -1,11 +1,6 @@
-const express=require('express')
+const express=require('express');
+const { GET_COLOR } = require('../Controller/ColorController');
 const router=express.Router();
-const colorModel=require('../db/colorSchema')
 
-router.get('/getcolor',(req,res)=>{
-    colorModel.find()
-    .then(color=>{
-        res.status(200).json({data:color})
-    })
-})
+router.get('/getcolor',GET_COLOR)
 module.exports=router

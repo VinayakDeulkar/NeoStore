@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Button, Col, Container, Card, Row, Dropdown, DropdownButton } from 'react-bootstrap'
-import { ArrowDown, ArrowUp, CaretDownFill, CaretRightFill, Coin, Filter, StarFill } from 'react-bootstrap-icons'
+import { Button, Col, Container, Card, Row, Dropdown } from 'react-bootstrap'
+import { ArrowDown, ArrowUp,  EmojiFrown , Coin, StarFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import { ADDTOCART, FILTERPRODUCT, GETCARTCOUNT, GetCategory, GetColor, GetProduct } from '../config/myService';
 import ReactStarsRating from 'react-awesome-stars-rating'
@@ -293,6 +293,7 @@ export default function Product() {
                                     </Col>
                                 )
                             }
+                            { FilterProduct && FilterProduct.length===0?(<h3 className='text-center mt-2' style={{height: '250px' }} > <EmojiFrown/> Sorry Product not Found</h3>):''}
                         </Row>
                     </Col>
                     <ReactPaginate

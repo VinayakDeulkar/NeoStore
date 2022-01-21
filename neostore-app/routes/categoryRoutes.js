@@ -1,11 +1,6 @@
-const express=require('express')
+const express=require('express');
+const { GET_CATEGORY } = require('../Controller/CategoryController');
 const router=express.Router();
-const categoryModel=require('../db/categorySchema')
 
-router.get('/getcategory',(req,res)=>{
-    categoryModel.find()
-    .then(category=>{
-        res.status(200).json({data:category})
-    })
-})
+router.get('/getcategory',GET_CATEGORY)
 module.exports=router
