@@ -2,6 +2,8 @@ const cartSchema = require('../db/cartSchema')
 exports.getCart = async (query) => {
     try {
         const cart = await cartSchema.find(query).populate(["product_id"])
+        // console.log(cart);
+        // console.log([cart]);
         return cart
     }
     catch (e) {

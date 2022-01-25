@@ -8,7 +8,6 @@ const { USER_SOCIAL_LOGIN, PROFILE_UPDATE, UPDATE_PROFILE_PIC, ADD_ADDRESS } = r
 function autenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
-    console.log(token);
     if (token == null) {
         res.json("Token not Found");
     } else {

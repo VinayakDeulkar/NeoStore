@@ -2,6 +2,7 @@ const orderModel = require('../db/orderSchema')
 const jwt = require('jsonwebtoken')
 const jwtSecret = 'sdsfdsfdsfdsf'
 const nodemailer = require('nodemailer')
+const orderService = require('../services/orderService')
 
 async function main(Data) {
     console.log('inside main');
@@ -264,27 +265,45 @@ async function main(Data) {
     })
 }
 const CONFIRM_ORDER = async (req, res) => {
-    let OrderData = new orderModel({ customer_id: req.body.customer_id, product_id: req.body.product_id, delivery_address: req.body.delivery_address, isDelivered: false, total_Productcost: req.body.total_Productcost })
-    await OrderData.save((err) => {
-        if (err) {
-            console.log(err);
-            res.status(400).json({ err: 1, msg: 'email must be diffenet' })
-        }
-        else {
-            console.log('inside else');
-            main(req.body)
-            res.status(200).json({ err: 0, msg: 'Order Confirmed' })
-        }
-    })
+
+    try {
+        console.log(req.body.id);
+        const order = await orderService.insertOrder({ customer_id: req.body.customer_id, product_id: req.body.product_id, delivery_address: req.body.delivery_address, isDelivered: false, total_Productcost: req.body.total_Productcost })
+        main(req.body)
+        return res.status(200).json({ err: 0, msg: 'Order Confirmed' })
+    }
+    catch (e) {
+        return res.status(400).json({ msg: e.message })
+    }
+    // let OrderData = new orderModel({ customer_id: req.body.customer_id, product_id: req.body.product_id, delivery_address: req.body.delivery_address, isDelivered: false, total_Productcost: req.body.total_Productcost })
+    // await OrderData.save((err) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(400).json({ err: 1, msg: 'email must be diffenet' })
+    //     }
+    //     else {
+    //         console.log('inside else');
+    //         main(req.body)
+    //         res.status(200).json({ err: 0, msg: 'Order Confirmed' })
+    //     }
+    // })
 }
 const ORDER_DETAILS = async (req, res) => {
-    await orderModel.find({ customer_id: req.body.id }, (err, data) => {
-        if (err) {
-            res.status(400).json({ err: 1, msg: 'email must be diffenet' })
-        }
-        else {
-            res.status(200).json({ err: 0, order: data })
-        }
-    })
+
+    try {
+        const order = await orderService.getOrder({ customer_id: req.body.id })
+        return res.status(200).json({ err: 0, order: order })
+    }
+    catch (e) {
+        return res.status(400).json({ msg: e.message })
+    }
+    // await orderModel.find({ customer_id: req.body.id }, (err, data) => {
+    //     if (err) {
+    //         res.status(400).json({ err: 1, msg: 'email must be diffenet' })
+    //     }
+    //     else {
+    //         res.status(200).json({ err: 0, order: data })
+    //     }
+    // })
 }
 module.exports = { CONFIRM_ORDER, ORDER_DETAILS }

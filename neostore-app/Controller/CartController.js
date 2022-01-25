@@ -3,6 +3,7 @@ const CartService = require('../services/cartService')
 const ADD_TO_CART = async (req, res) => {
     try {
         const cart = await CartService.getCart({ customer_id: req.body.customer_id, product_id: req.body.product_id })
+        console.log(cart);
         if (cart[0]) {
             cart[0].quantity = cart[0].quantity + 1;
             cart[0].total_Productcost = (cart[0].quantity * cart[0].product_cost)

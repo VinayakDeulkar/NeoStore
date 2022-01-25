@@ -20,6 +20,7 @@ const options = {
 }
 export default function Order() {
     const [Order, setOrder] = useState('')
+    const [Heights, setHeights] = useState('');
     const dispatch = useDispatch()
     const history = useNavigate()
     const [openSnackbar] = useSnackbar(options)
@@ -52,9 +53,8 @@ export default function Order() {
     }
     return (
         <div className='allpadding'>
-            <Container fluid>
-
-                <Table responsive>
+            <Container fluid >
+                <Table responsive >
                     <thead>
                         <tr>
                             <td>

@@ -15,7 +15,6 @@ const saltRounds = 10;
 function autenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
-    console.log(token);
     if (token == null) {
         res.status(404).json("Token not Found");
     } else {
