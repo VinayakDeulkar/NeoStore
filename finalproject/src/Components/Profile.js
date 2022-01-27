@@ -6,6 +6,7 @@ import { ProfileUpdate } from '../config/myService'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useSnackbar } from 'react-simple-snackbar'
+import { loginDisable } from '../State/actions/loginAction'
 const options = {
     position: 'top-center',
     style: {
@@ -62,7 +63,8 @@ export default function Profile() {
             .catch(err => {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
-                    dispatch({ type: 'disable' })
+                    dispatch(loginDisable(''))
+                    // dispatch({ type: 'disable' })
                     openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }

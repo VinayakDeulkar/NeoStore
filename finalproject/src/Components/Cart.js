@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import '../Css/Cart.css'
 import { Trash } from 'react-bootstrap-icons'
 import { useSnackbar } from 'react-simple-snackbar'
+import {cartActions} from '../State/actions/cartActions'
 const options = {
     position: 'top-center',
     style: {
@@ -203,7 +204,8 @@ export default function Cart() {
                             GETCARTCOUNT(data)
                                 .then(res => {
                                     console.log(res.data.count);
-                                    dispatch({ type: 'cart', payload: res.data.count })
+                                    dispatch(cartActions(res.data.count ))
+                                    // dispatch({ type: 'cart', payload: res.data.count })
                                 })
                                 .catch(err => {
                                     if (err) {

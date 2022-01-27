@@ -9,6 +9,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { GETCARTCOUNT } from '../config/myService'
 import '../Css/PageHeader.css'
 import '../Css/PageHeaderResponsive.css'
+import { loginEnable,loginDisable } from '../State/actions/loginAction'
+import { cartActions } from '../State/actions/cartActions'
+import { SearchAction } from '../State/actions/searchActions'
 export default function PageHeader() {
     const history = useNavigate()
     const dispatch = useDispatch()
@@ -19,7 +22,7 @@ export default function PageHeader() {
     useEffect(() => {
         if (localStorage.getItem('_token')) {
             console.log(localStorage.getItem('_token'));
-            dispatch({ type: 'enable' })
+            dispatch(loginEnable())
             console.log(Logged);
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
@@ -43,7 +46,8 @@ export default function PageHeader() {
             GETCARTCOUNT(data)
                 .then(res => {
                     setCartCount(res.data.count)
-                    dispatch({ type: 'cart', payload: res.data.count })
+                    dispatch(cartActions( res.data.count))
+                    // dispatch({ type: 'cart', payload: res.data.count })
                 })
                 .catch(err => {
                     if (err) {
@@ -54,7 +58,8 @@ export default function PageHeader() {
         else {
             let uuid = uuidv4()
             localStorage.setItem('uuid', uuid)
-            dispatch({ type: 'disable', payload: uuid })
+            dispatch(loginDisable(uuid))
+            // dispatch({ type: 'disable', payload: uuid })
         }
     }, [])
     useEffect(() => {
@@ -62,10 +67,10 @@ export default function PageHeader() {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { id: decode.uid[0]._id }
-            console.log(data);
             GETCARTCOUNT(data)
                 .then(res => {
                     setCartCount(res.data.count)
+                    dispatch( cartActions(res.data.count))
                     dispatch({ type: 'cart', payload: res.data.count })
                 })
                 .catch(err => {
@@ -95,13 +100,15 @@ export default function PageHeader() {
         let uuid = uuidv4()
         console.log(uuid);
         localStorage.setItem('uuid', uuid)
-        dispatch({ type: 'disable', payload: uuid })
+        dispatch(loginDisable(uuid))
+        // dispatch({ type: 'disable', payload: uuid })
         history('/')
     }
     const searchbar = (event) => {
         // history('/Product')
         const value = event.target.value
-        dispatch({ type: 'search', payload: value })
+        dispatch(SearchAction(value))
+        // dispatch({ type: 'search', payload: value })
     }
     const navigate = () => {
         history('/Product')

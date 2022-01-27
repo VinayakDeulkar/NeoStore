@@ -7,7 +7,8 @@ import { ChangeUuid, CheckUser, UserSocialLogin, GETCARTCOUNT } from '../config/
 import jwt_decode from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux';
 import '../Css/LoginResponsive.css'
-
+import { loginEnable } from '../State/actions/loginAction'
+import { cartActions } from '../State/actions/cartActions'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'top-center',
@@ -84,12 +85,14 @@ export default function LoginPage() {
                         ChangeUuid(data)
                             .then(res => {
                                 if (res.data.err == 0) {
-                                    dispatch({ type: 'enable' })
+                                    dispatch(loginEnable())
+                                    // dispatch({ type: 'enable' })
                                     let data = { id: decode.uid[0]._id }
                                     GETCARTCOUNT(data)
                                         .then(res => {
                                             console.log(res.data.count);
-                                            dispatch({ type: 'cart', payload: res.data.count })
+                                            dispatch(cartActions(res.data.count))
+                                            // dispatch({ type: 'cart', payload: res.data.count })
                                         })
                                         .catch(err => {
                                             if (err) {
@@ -137,12 +140,14 @@ export default function LoginPage() {
                     ChangeUuid(data)
                         .then(res => {
                             if (res.data.err == 0) {
-                                dispatch({ type: 'enable' })
+                                dispatch(loginEnable())
+                                // dispatch({ type: 'enable' })
                                 let data = { id: decode.uid[0]._id }
                                 GETCARTCOUNT(data)
                                     .then(res => {
                                         console.log(res.data.count);
-                                        dispatch({ type: 'cart', payload: res.data.count })
+                                        dispatch(cartActions(res.data.count))
+                                        // dispatch({ type: 'cart', payload: res.data.count })
                                     })
                                     .catch(err => {
                                         if (err) {
@@ -198,7 +203,7 @@ export default function LoginPage() {
                             className='SocialButton google'
                             size="lg"
                         >
-                            <Google/> sign in with Google
+                            <Google /> sign in with Google
                         </SocialButton>
                     </Col>
                     <Col lg={6} className='verticalline bg-light'>
@@ -208,13 +213,13 @@ export default function LoginPage() {
                                 <FormControl type='text' placeholder='Email Address' name='Email' ref={Email} onBlur={handle} onFocus={setnull} />
                                 <InputGroup.Text><Phone /></InputGroup.Text>
                             </InputGroup>
-                            {Error.Erroremail?
-                            <FormLabel style={{ color: 'red' }} >{Error.Erroremail}</FormLabel>:''}
+                            {Error.Erroremail ?
+                                <FormLabel style={{ color: 'red' }} >{Error.Erroremail}</FormLabel> : ''}
                             <InputGroup className='p-2 mt-2 mb-2'>
                                 <FormControl type='password' placeholder='Password ' name='Password' ref={Password} onBlur={handle} onFocus={setnull} />
                             </InputGroup>
-                            {Error.ErrorPassword?
-                            <FormLabel style={{ color: 'red' }} >{Error.ErrorPassword}</FormLabel>:''}
+                            {Error.ErrorPassword ?
+                                <FormLabel style={{ color: 'red' }} >{Error.ErrorPassword}</FormLabel> : ''}
                             <br />
                             <Button className='p-2 mt-2 mb-2' onClick={checkuser} >Login</Button>
                         </Form>

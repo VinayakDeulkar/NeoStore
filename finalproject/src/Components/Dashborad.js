@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import jwt_decode from 'jwt-decode'
 import { ADDTOCART, GETCARTCOUNT } from '../config/myService'
-
+import { cartActions } from '../State/actions/cartActions'
 import { useSnackbar } from 'react-simple-snackbar'
 const options = {
     position: 'top-center',
@@ -69,7 +69,8 @@ export default function Dashborad() {
                     GETCARTCOUNT(data)
                         .then(res => {
                             console.log(res.data.count);
-                            dispatch({ type: 'cart', payload: res.data.count })
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: res.data.count })
                         })
                         .catch(err => {
                             if (err) {
@@ -96,7 +97,8 @@ export default function Dashborad() {
                     GETCARTCOUNT(data)
                         .then(res => {
                             console.log(res.data.count);
-                            dispatch({ type: 'cart', payload: res.data.count })
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: res.data.count })
                         })
                         .catch(err => {
                             if (err) {

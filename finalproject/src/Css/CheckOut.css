@@ -66,6 +66,49 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  /*card css */
+
+
+  
+
+  .form-class{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+   .input-class {
+    background: #e7e9ec;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+    outline: none;
+    font-weight: 300;
+  }
+  
+  .rccs__card--unknown > div {
+    background:#1A1F71 !important;
+  }
+  .Center{
+    max-width:60%;
+      max-height:60%;
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      margin:auto;
+  }
+  
+  
+  .cardtext {
+    display: inline-block;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
+  /* cards cssc end*/
   
 @media screen and  (min-width: 374px) and  (max-width: 376px) {
   .bottom-border{

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Button, Col, Container, Card, Row, Dropdown } from 'react-bootstrap'
-import { ArrowDown, ArrowUp,  EmojiFrown , Coin, StarFill } from 'react-bootstrap-icons'
+import { ArrowDown, ArrowUp, EmojiFrown, Coin, StarFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import { ADDTOCART, FILTERPRODUCT, GETCARTCOUNT, GetCategory, GetColor, GetProduct } from '../config/myService';
 import ReactStarsRating from 'react-awesome-stars-rating'
@@ -11,6 +11,7 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
 import { useSnackbar } from 'react-simple-snackbar'
+import { cartActions } from '../State/actions/cartActions'
 const options = {
     position: 'top-center',
     style: {
@@ -167,7 +168,9 @@ export default function Product() {
                         .then(res => {
                             console.log(res.data.count);
                             let count = res.data.count
-                            dispatch({ type: 'cart', payload: count })
+
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: count })
                         })
                         .catch(err => {
                             if (err) {
@@ -194,7 +197,8 @@ export default function Product() {
                     GETCARTCOUNT(data)
                         .then(res => {
                             console.log(res.data.count);
-                            dispatch({ type: 'cart', payload: res.data.count })
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: res.data.count })
                         })
                         .catch(err => {
                             if (err) {
@@ -215,34 +219,34 @@ export default function Product() {
                 <Row className='mt-2'>
                     <Col lg={3} className='text-center   '>
                         <span variant='light' size="lg" onClick={showAll} className='bottom-border '>All Product</span>
-                        {Category?
-                        <Dropdown className='filter'>
-                            <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
-                               Category
-                            </Dropdown.Toggle>
+                        {Category ?
+                            <Dropdown className='filter'>
+                                <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
+                                    Category
+                                </Dropdown.Toggle>
 
-                            <Dropdown.Menu>
-                                {
-                                    Category.map((ele)=>
-                                    <Dropdown.Item  key={ele._id} style={{ width: '100%' }} onClick={() => CategoryFilter(ele)}>{ele.category_name}</Dropdown.Item>
-                                    )
-                                }
-                            </Dropdown.Menu>
-                        </Dropdown>:''}
-                        {Color?
-                        <Dropdown className='filter'>
-                        <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
-                           Color
-                        </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {
+                                        Category.map((ele) =>
+                                            <Dropdown.Item key={ele._id} style={{ width: '100%' }} onClick={() => CategoryFilter(ele)}>{ele.category_name}</Dropdown.Item>
+                                        )
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown> : ''}
+                        {Color ?
+                            <Dropdown className='filter'>
+                                <Dropdown.Toggle variant="light" id="dropdown-basic" className='bottom-border '>
+                                    Color
+                                </Dropdown.Toggle>
 
-                        <Dropdown.Menu className='colormenu text-center'>
-                            {
-                                Color.map((ele)=>
-                                <Dropdown.Item  key={ele._id}  onClick={() => ColorFilter(ele)}><Button  key={ele._id} size='lg' className='m-2 p-3 'style={{ backgroundColor: ele.color_code }} onClick={() => ColorFilter(ele)}></Button></Dropdown.Item>
-                                )
-                            }
-                        </Dropdown.Menu>
-                    </Dropdown>:''}
+                                <Dropdown.Menu className='colormenu text-center'>
+                                    {
+                                        Color.map((ele) =>
+                                            <Dropdown.Item key={ele._id} onClick={() => ColorFilter(ele)}><Button key={ele._id} size='lg' className='m-2 p-3 ' style={{ backgroundColor: ele.color_code }} onClick={() => ColorFilter(ele)}></Button></Dropdown.Item>
+                                        )
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown> : ''}
                         {/* <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
                         {ShowCategory ?
                             <span className='filter'>{Category.map((ele) =>
@@ -255,7 +259,7 @@ export default function Product() {
                                 <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 ' onClick={() => ColorFilter(ele)}></Button>
                             )}</span>
                             : ''}<br /> */}
-                        
+
                     </Col>
                     <Col lg={9}>
                         <Row>
@@ -293,7 +297,7 @@ export default function Product() {
                                     </Col>
                                 )
                             }
-                            { FilterProduct && FilterProduct.length===0?(<h3 className='text-center mt-2' style={{height: '250px' }} > <EmojiFrown/> Sorry Product not Found</h3>):''}
+                            {FilterProduct && FilterProduct.length === 0 ? (<h3 className='text-center mt-2' style={{ height: '250px' }} > <EmojiFrown /> Sorry Product not Found</h3>) : ''}
                         </Row>
                     </Col>
                     <ReactPaginate

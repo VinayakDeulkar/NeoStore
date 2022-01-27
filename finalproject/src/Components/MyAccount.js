@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import { useDispatch } from 'react-redux'
 
 import { useSnackbar } from 'react-simple-snackbar'
+import { loginDisable } from '../State/actions/loginAction'
 const options = {
     position: 'top-center',
     style: {
@@ -63,7 +64,8 @@ export default function MyAccount() {
                     if (err.message != 'Network Error') {
                         localStorage.clear()
                         openSnackbar('Session expired Login again please')
-                        dispatch({ type: 'disable' })
+                        dispatch(loginDisable(''))
+                        // dispatch({ type: 'disable' })
                         history('/LoginPage')
                     }
                     else {

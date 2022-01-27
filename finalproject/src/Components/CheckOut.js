@@ -4,10 +4,12 @@ import { CONFIRMORDER, DELETECONFIRMEDORDER, GETCART, GETCARTCOUNT } from '../co
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Col, Container, Nav, Row, Tab, Table, Card, Button, Form, Modal, FormGroup } from 'react-bootstrap'
-import { X } from 'react-bootstrap-icons';
+import { CreditCard, X } from 'react-bootstrap-icons';
 import { UserAddress, DELETEAddress, EDITADDRESS } from '../config/myService'
 import '../Css/CheckOut.css'
 import { useSnackbar } from 'react-simple-snackbar'
+import Cards from "react-credit-cards";
+import "react-credit-cards/es/styles-compiled.css";
 const options = {
     position: 'top-center',
     style: {
@@ -37,6 +39,7 @@ export default function CheckOut() {
     const City = useRef('')
     const State = useRef('')
     const Country = useRef('')
+    const [CardDetails, setCardDetails] = useState({ cvc: '', expiry: '', focused: '', name: '', number: '', issuer: "" });
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token);
@@ -75,7 +78,7 @@ export default function CheckOut() {
     const orderconfirm = async () => {
         console.log(SelectedAddress);
         if (SelectedAddress) {
-            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems ,Subtotal:Review.Subtotal }
+            let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems, Subtotal: Review.Subtotal }
             console.log(data);
             CONFIRMORDER(data)
                 .then((res) => {
@@ -94,7 +97,7 @@ export default function CheckOut() {
                                         console.log(res.data.count);
                                         let count = res.data.count
                                         dispatch({ type: 'cart', payload: count })
-                                        handleShow()
+                                        handleClose()
                                     })
                             }
                         })
@@ -237,6 +240,22 @@ export default function CheckOut() {
                 }
             })
     }
+
+    const handleCallback = ({ issuer }, isValid) => {
+        if (isValid) {
+            setCardDetails({ issuer });
+        }
+    };
+    const handleInputFocus = ({ target }) => {
+        console.log(target);
+        setCardDetails({
+            ...CardDetails,focused: target.name
+        });
+    };
+
+    const handleInputChange = ({ target }) => {
+        setCardDetails({ ...CardDetails,[target.name]: target.value });
+    };
     return (
         <div className='allpadding'>
             <Container fluid>
@@ -354,7 +373,7 @@ export default function CheckOut() {
 
                                     </div>
                                     <div className='text-center m-3'>
-                                        <Button onClick={orderconfirm} >Confirm Order</Button>
+                                        <Button onClick={() => setshow(true)} >Confirm Order</Button>
                                     </div>
                                 </Tab.Pane>
                             </Tab.Content>
@@ -415,10 +434,56 @@ export default function CheckOut() {
                         <Button onClick={Updateaddress}>Edit Address</Button>
                     </Form>
                 </Modal>
-                <Modal show={show} onHide={handleClose} centered>
+                <Modal show={show} onHide={()=>setshow(false)} centered>
                     <Modal.Body className='text-center'>
-                        <img src='/Image/orderconfirmed.gif' height='200px' width='200px' />
-                        <p>Order Placed!</p>
+                        <div id="PaymentForm">
+                            <Cards
+                                cvc={CardDetails.cvc}
+                                expiry={CardDetails.expiry}
+                                focused={CardDetails.focused}
+                                name={CardDetails.name}
+                                number={CardDetails.number}
+                            />
+                            <form action="" className="form-class">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    className="input-class"
+                                    placeholder="Your Name"
+                                    onChange={handleInputChange}
+                                    onFocus={handleInputFocus}
+                                />
+                                <input
+                                    type="number"
+                                    name="number"
+                                    className="input-class"
+                                    placeholder="Card Number"
+                                    onChange={handleInputChange}
+                                    onFocus={handleInputFocus}
+                                />
+                                <input
+                                    type="number"
+                                    name="expiry"
+                                    className="input-class"
+                                    placeholder="Expire Date"
+                                    onChange={handleInputChange}
+                                    onFocus={handleInputFocus}
+                                />
+                                <input
+                                    type="number"
+                                    name="cvc"
+                                    className="input-class"
+                                    placeholder="CVC"
+                                    onChange={handleInputChange}
+                                    onFocus={handleInputFocus}
+                                />
+                            </form>
+                        </div>
+                        <div className="d-grid">
+                            <Button variant="primary" size="lg" onClick={orderconfirm}>
+                                <CreditCard /> Pay  CheckOut
+                            </Button>
+                        </div>
                     </Modal.Body>
                 </Modal>
             </Container>

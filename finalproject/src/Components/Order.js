@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import '../Css/Order.css'
 import { useSnackbar } from 'react-simple-snackbar'
+import { loginDisable } from '../State/actions/loginAction'
 const options = {
     position: 'top-center',
     style: {
@@ -39,7 +40,8 @@ export default function Order() {
                 console.log(err.message);
                 if (err.message != 'Network Error') {
                     localStorage.clear()
-                    dispatch({ type: 'disable' })
+                    dispatch(loginDisable(''))
+                    // dispatch({ type: 'disable' })
                     openSnackbar('Session expired Login again please')
                     history('/LoginPage')
                 }

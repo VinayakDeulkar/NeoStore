@@ -11,6 +11,8 @@ import ReactImageMagnify from 'react-image-magnify'
 import jwt_decode from 'jwt-decode'
 import { ADDTOCART, GETCARTCOUNT } from '../config/myService';
 import { useSnackbar } from 'react-simple-snackbar'
+import { loginDisable } from '../State/actions/loginAction';
+import { cartActions } from '../State/actions/cartActions'
 const options = {
     position: 'top-center',
     style: {
@@ -97,14 +99,14 @@ export default function ProductDetails() {
                 imageHeight: 450, imageWidth: 450
             })
         }
-        
-        else if (windowDimensions.width == 412 ) {
+
+        else if (windowDimensions.width == 412) {
             console.log(windowDimensions.width);
             setImageDimension({
                 imageHeight: 380, imageWidth: 390
             })
         }
-        else if (windowDimensions.width == 390 ) {
+        else if (windowDimensions.width == 390) {
             setImageDimension({
                 imageHeight: 380, imageWidth: 360
             })
@@ -144,7 +146,8 @@ export default function ProductDetails() {
                 if (err.message != 'Network Error') {
                     localStorage.clear()
                     openSnackbar('Session expired Login again please')
-                    dispatch({ type: 'disable' })
+                    dispatch(loginDisable(''))
+                    // dispatch({ type: 'disable' })
                     history('/LoginPage')
                 }
                 else {
@@ -175,7 +178,8 @@ export default function ProductDetails() {
                     GETCARTCOUNT(data)
                         .then(res => {
                             console.log(res.data.count);
-                            dispatch({ type: 'cart', payload: res.data.count })
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: res.data.count })
                         })
                         .catch(err => {
                             if (err) {
@@ -202,7 +206,8 @@ export default function ProductDetails() {
                     GETCARTCOUNT(data)
                         .then(res => {
                             console.log(res.data.count);
-                            dispatch({ type: 'cart', payload: res.data.count })
+                            dispatch(cartActions(res.data.count))
+                            // dispatch({ type: 'cart', payload: res.data.count })
                         })
                         .catch(err => {
                             if (err) {

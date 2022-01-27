@@ -4,24 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {createStore} from 'redux'
+// import {createStore} from 'redux'
 import { Provider } from 'react-redux';
-const initialState={Login:false,searchitem:'',uuid:'',cart:0}
-function Reducer(state=initialState,actions) {
-  switch (actions.type) {
-    case 'enable':
-      return {...state,Login:true,uuid:''}
-    case 'disable':
-      return {...state,Login:false,uuid:actions.payload}
-    case 'search':
-      return {...state,searchitem:actions.payload}
-      case 'cart':
-        return {...state,cart:actions.payload}
-    default:
-      return state;
-  }
-}
-const store=createStore(Reducer)
+import store from './State/store'
+// const initialState={Login:false,searchitem:'',uuid:'',cart:0}
+// function Reducer(state=initialState,actions) {
+//   switch (actions.type) {
+//     case 'enable':
+//       return {...state,Login:true,uuid:''}
+//     case 'disable':
+//       return {...state,Login:false,uuid:actions.payload}
+//     case 'search':
+//       return {...state,searchitem:actions.payload}
+//       case 'cart':
+//         return {...state,cart:actions.payload}
+//     default:
+//       return state;
+//   }
+// }
+// const store=createStore(Reducer)
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
