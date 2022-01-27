@@ -42,8 +42,8 @@ export default function ProductDetails() {
     const [ShowRating, setShowRating] = useState(false)
     const dispatch = useDispatch()
     const [key, setkey] = useState('desc')
-    const Login = useSelector(state => state.Login)
-    const uuid = useSelector(state => state.uuid)
+    const Login = useSelector(state => state.loginReducer.Login)
+    const uuid = useSelector(state => state.loginReducer.uuid)
     const [ProductRATING, setProductRATING] = useState(location.state.product_rating)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [ImageDimension, setImageDimension] = useState({ imageHeight: 0, imageWidth: 0 })

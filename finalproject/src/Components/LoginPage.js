@@ -29,7 +29,7 @@ export default function LoginPage() {
     const history = useNavigate()
     const dispatch = useDispatch()
     const [openSnackbar] = useSnackbar(options)
-    const Uuid = useSelector(state => state.uuid)
+    const Uuid = useSelector(state => state.loginReducer.uuid)
     const regForEmail = RegExp(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/);
     const regForPassword = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const handle = (event) => {

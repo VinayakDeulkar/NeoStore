@@ -21,9 +21,9 @@ const options = {
     },
 }
 export default function Cart() {
-    const uuid = useSelector(state => state.uuid)
+    const uuid = useSelector(state => state.loginReducer.uuid)
     const [CartItems, setCartItems] = useState([])
-    const Login = useSelector(state => state.Login)
+    const Login = useSelector(state => state.loginReducer.Login)
     const [openSnackbar] = useSnackbar(options)
     const history = useNavigate()
     const dispatch = useDispatch()

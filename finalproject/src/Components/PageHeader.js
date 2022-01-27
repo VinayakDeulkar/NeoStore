@@ -15,21 +15,18 @@ import { SearchAction } from '../State/actions/searchActions'
 export default function PageHeader() {
     const history = useNavigate()
     const dispatch = useDispatch()
-    const Logged = useSelector(state => state.Login)
+    const Logged = useSelector(state => state.loginReducer.Login)
     const [CartCount, setCartCount] = useState(0)
-    const Uuid = useSelector(state => state.uuid)
-    const cart = useSelector(state => state.cart)
+    const Uuid = useSelector(state => state.loginReducer.uuid)
+    const cart = useSelector(state => state.cartReducer.cart)
     useEffect(() => {
         if (localStorage.getItem('_token')) {
-            console.log(localStorage.getItem('_token'));
             dispatch(loginEnable())
-            console.log(Logged);
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { id: decode.uid[0]._id }
             GETCARTCOUNT(data)
                 .then(res => {
-                    console.log(res.data.count);
                     setCartCount(res.data.count)
                 })
                 .catch(err => {
@@ -41,7 +38,8 @@ export default function PageHeader() {
         }
         else if (localStorage.getItem('uuid')) {
             let uuid = localStorage.getItem('uuid')
-            dispatch({ type: 'disable', payload: uuid })
+            dispatch(loginDisable(uuid))
+            // dispatch({ type: 'disable', payload: uuid })
             let data = { id: uuid }
             GETCARTCOUNT(data)
                 .then(res => {

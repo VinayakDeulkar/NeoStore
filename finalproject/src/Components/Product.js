@@ -38,9 +38,9 @@ export default function Product() {
     const productsPerPage = 3;
     const pageVisited = pagenumber * productsPerPage
     const pageCount = Math.ceil(FilterProduct.length / productsPerPage)
-    const searchItem = useSelector(state => state.searchitem)
-    const Login = useSelector(state => state.Login)
-    const uuid = useSelector(state => state.uuid)
+    const searchItem = useSelector(state => state.searchReducer.searchitem)
+    const Login = useSelector(state => state.loginReducer.Login)
+    const uuid = useSelector(state => state.loginReducer.uuid)
     const dispatch = useDispatch()
     useEffect(() => {
         GetProduct()

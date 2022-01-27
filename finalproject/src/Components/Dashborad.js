@@ -28,8 +28,8 @@ export default function Dashborad() {
     const [ProductData, setProductData] = useState('')
     const history = useNavigate()
     const dispatch = useDispatch()
-    const Login = useSelector(state => state.Login)
-    const uuid = useSelector(state => state.uuid)
+    const Login = useSelector(state => state.loginReducer.Login)
+    const uuid = useSelector(state => state.loginReducer.uuid)
     const [pagenumber, setpagenumber] = useState(0)
     const [openSnackbar] = useSnackbar(options)
     const productsPerPage = 4;
