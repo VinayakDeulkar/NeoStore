@@ -9,7 +9,7 @@ import { SETRATING } from '../config/myService';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactImageMagnify from 'react-image-magnify'
 import jwt_decode from 'jwt-decode'
-import { ADDTOCART, GETCARTCOUNT } from '../config/myService';
+import { ADDTOCART, GETCARTCOUNT, GETCART } from '../config/myService';
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction';
 import { cartActions } from '../State/actions/cartActions'
@@ -38,12 +38,14 @@ export default function ProductDetails() {
     const location = useLocation()
     const history = useNavigate()
     const [MainImage, setMainImage] = useState('')
+    const [Show, setShow] = useState(false)
     const [openSnackbar] = useSnackbar(options)
     const [ShowRating, setShowRating] = useState(false)
     const dispatch = useDispatch()
     const [key, setkey] = useState('desc')
     const Login = useSelector(state => state.loginReducer.Login)
     const uuid = useSelector(state => state.loginReducer.uuid)
+    const [CartIDS, setCartIDS] = useState('');
     const [ProductRATING, setProductRATING] = useState(location.state.product_rating)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [ImageDimension, setImageDimension] = useState({ imageHeight: 0, imageWidth: 0 })
@@ -51,7 +53,42 @@ export default function ProductDetails() {
         setMainImage(location.state.product_image)
         checkScreen()
         setWindowDimensions(getWindowDimensions());
-    }, [])
+        if (Login) {
+            let token = localStorage.getItem('_token')
+            let decode = jwt_decode(token);
+            let data = decode.uid[0]._id;
+            let id = { id: data }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+        else {
+            let id = { id: uuid }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+    }, [Show])
     const checkScreen = () => {
         if (windowDimensions.width == 360) {
             console.log('inside 360');
@@ -165,21 +202,18 @@ export default function ProductDetails() {
     }
     const AddToCart = (element) => {
         if (Login) {
-            console.log('inside login');
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: decode.uid[0]._id }
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: res.data.count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -192,22 +226,20 @@ export default function ProductDetails() {
                         history('/ServerError')
                     }
                 })
+            setShow(false)
         }
         else {
-            console.log('Inside not login');
-            console.log(uuid);
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
             console.log(data);
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: uuid }
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: res.data.count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -220,6 +252,7 @@ export default function ProductDetails() {
                         history('/ServerError')
                     }
                 })
+            setShow(false)
         }
     }
     return (
@@ -273,7 +306,11 @@ export default function ProductDetails() {
                             </span>
                         </p>
                         <p>
-                            <Button className=' m-2 ' onClick={() => AddToCart(location.state)}>ADD TO CART</Button>
+                            {CartIDS && CartIDS.includes(location.state._id) ?
+                                <Button disabled >Added</Button> :
+                                <Button className=' m-2 ' onClick={() => AddToCart(location.state)}>Add to Cart</Button>
+                            }
+                            {/* <Button className=' m-2 ' onClick={() => AddToCart(location.state)}>ADD TO CART</Button> */}
                             <Button variant='danger' className='m-2' onClick={ProductRating} >RATE PRODUCT</Button>
                         </p>
 

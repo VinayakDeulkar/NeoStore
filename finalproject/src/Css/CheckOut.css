@@ -11,7 +11,10 @@
     margin-left: 20px;
     width: 550px;
 }
-
+.red{
+  color: red;
+  margin-bottom: 10px;
+}
 .num{
     background-color: #4169E1;
     border-radius: 50%;

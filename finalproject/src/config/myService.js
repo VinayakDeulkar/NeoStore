@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ECOMMERCES_URL } from './url';
 const token=localStorage.getItem('_token');
-console.log(token);
 export function AddUser(data){
     return axios.post(`${ECOMMERCES_URL}user/adduser`,data)
 }

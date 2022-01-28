@@ -32,7 +32,6 @@ export default function Cart() {
         if (Login) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = decode.uid[0]._id;
             let id = { id: data }
             GETCART(id)
@@ -92,8 +91,6 @@ export default function Cart() {
                     openSnackbar(res.data.msg)
                     GETCART(cid)
                         .then(res => {
-                            console.log(res.data.cartData);
-
                             setCartItems(res.data.cartData)
                             let Subtotal = 0;
                             let GST = 0;
@@ -163,7 +160,6 @@ export default function Cart() {
             })
     }
     const checkout = () => {
-        console.log(CartItems);
         if (CartItems[0]) {
             if (Login) {
                 history('/CheckOut')
@@ -184,7 +180,6 @@ export default function Cart() {
             .then(res => {
                 if (res.data.err == 0) {
                     let cid = { id: element.customer_id }
-
                     openSnackbar(res.data.msg)
                     GETCART(cid)
                         .then(res => {
@@ -203,7 +198,6 @@ export default function Cart() {
                             let data = { id: element.customer_id }
                             GETCARTCOUNT(data)
                                 .then(res => {
-                                    console.log(res.data.count);
                                     dispatch(cartActions(res.data.count ))
                                     // dispatch({ type: 'cart', payload: res.data.count })
                                 })

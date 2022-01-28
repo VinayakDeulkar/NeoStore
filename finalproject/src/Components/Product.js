@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Button, Col, Container, Card, Row, Dropdown } from 'react-bootstrap'
 import { ArrowDown, ArrowUp, EmojiFrown, Coin, StarFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
-import { ADDTOCART, FILTERPRODUCT, GETCARTCOUNT, GetCategory, GetColor, GetProduct } from '../config/myService';
+import { ADDTOCART, FILTERPRODUCT, GETCARTCOUNT, GetCategory, GetColor, GetProduct, GETCART } from '../config/myService';
 import ReactStarsRating from 'react-awesome-stars-rating'
 import '../Css/Product.css'
 import '../Css/ProductResponsive.css'
@@ -27,9 +27,9 @@ const options = {
 export default function Product() {
     const [ProductData, setProductData] = useState('')
     const [openSnackbar] = useSnackbar(options)
-    const [ShowCategory, setShowCategory] = useState(false);
-    const [ShowColor, setShowColor] = useState(false)
+    const [Show, setShow] = useState(false)
     const [FilterProduct, setFilterProduct] = useState('')
+    const [CartIDS, setCartIDS] = useState('');
     const [Category, setCategory] = useState('');
     const [Color, setColor] = useState('')
     const history = useNavigate()
@@ -59,8 +59,42 @@ export default function Product() {
                 setColor(res.data.data)
             })
             .catch(err => { if (err) { history('/ServerError') } })
-
-    }, [])
+        if (Login) {
+            let token = localStorage.getItem('_token')
+            let decode = jwt_decode(token);
+            let data = decode.uid[0]._id;
+            let id = { id: data }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+        else {
+            let id = { id: uuid }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+    }, [Show])
     useEffect(() => {
         if (searchItem == '') {
             setFilterProduct(ProductData)
@@ -77,22 +111,6 @@ export default function Product() {
         }
     }, [searchItem])
 
-    const categoryButton = () => {
-        if (ShowCategory) {
-            setShowCategory(false)
-        }
-        else {
-            setShowCategory(true)
-        }
-    }
-    const colorButton = () => {
-        if (ShowColor) {
-            setShowColor(false)
-        }
-        else {
-            setShowColor(true)
-        }
-    }
     const CategoryFilter = (element) => {
         let SelectedCategory = { category_name: element.category_name, color_name: Selected.SelectedColor }
 
@@ -124,7 +142,6 @@ export default function Product() {
         setSelected({ SelectedColor: '', SelectedCategory: '' })
     }
     const SortByRating = () => {
-        console.log('working on sort');
         let Sorteddata = FilterProduct.sort((a, b) => {
             return b.product_rating - a.product_rating
         })
@@ -132,7 +149,6 @@ export default function Product() {
 
     }
     const SortPriceup = () => {
-        console.log('working on price sort');
         let Sorteddata = FilterProduct.sort((a, b) => {
             return b.product_cost - a.product_cost
         })
@@ -153,24 +169,18 @@ export default function Product() {
     }
     const AddToCart = (element) => {
         if (Login) {
-            console.log('inside login');
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: decode.uid[0]._id }
-                    console.log(data);
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
-                            let count = res.data.count
-
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -183,22 +193,19 @@ export default function Product() {
                         history('/ServerError')
                     }
                 })
+                setShow(false)
         }
         else {
-            console.log('Inside not login');
-            console.log(uuid);
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
-            console.log(data);
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: uuid }
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: res.data.count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -211,6 +218,7 @@ export default function Product() {
                         history('/ServerError')
                     }
                 })
+                setShow(false)
         }
     }
     return (
@@ -247,18 +255,6 @@ export default function Product() {
                                     }
                                 </Dropdown.Menu>
                             </Dropdown> : ''}
-                        {/* <span variant='light' onClick={categoryButton} className='bottom-border ' >{ShowCategory ? <CaretDownFill /> : <CaretRightFill />}Category</span>
-                        {ShowCategory ?
-                            <span className='filter'>{Category.map((ele) =>
-                                <p variant='light' key={ele._id} style={{ width: '100%' }} className='' onClick={() => CategoryFilter(ele)} >{ele.category_name}</p>
-                            )}</span>
-                            : ''}
-                        <span variant='light' onClick={colorButton} className='bottom-border '> {ShowColor ? <CaretDownFill /> : <CaretRightFill />}Color</span>
-                        {ShowColor ?
-                            <span className='filter'>{Color.map((ele) =>
-                                <Button style={{ backgroundColor: ele.color_code }} key={ele._id} size='lg' className='m-2 p-3 ' onClick={() => ColorFilter(ele)}></Button>
-                            )}</span>
-                            : ''}<br /> */}
 
                     </Col>
                     <Col lg={9}>
@@ -286,8 +282,11 @@ export default function Product() {
                                                 <Card.Title className='cardtext'>{ele.product_name}</Card.Title>
                                                 <Card.Text className='text-center'>
                                                     <b>Rs.{ele.product_cost}</b><br />
-
-                                                    <Button onClick={() => AddToCart(ele)} >Add to Cart</Button>
+                                                    {CartIDS && CartIDS.includes(ele._id) ?
+                                                        <Button disabled >Added</Button> :
+                                                        <Button onClick={() => AddToCart(ele)} >Add to Cart</Button>
+                                                    }
+                                                    {/* <Button onClick={() => AddToCart(ele)} >Add to Cart</Button> */}
                                                     <br />
                                                     <ReactStarsRating value={parseFloat(ele.product_rating)} isEdit={false} isHalf={true} className='mt-2' />
                                                 </Card.Text>

@@ -33,6 +33,7 @@ export default function CheckOut() {
     const [Show, setShow] = useState('')
     const [EditShow, setEditShow] = useState(false)
     const [UpdateAddress, setUpdateAddress] = useState('')
+    const [CreditCardError, setCreditCardError] = useState({ cvc: '', cardname: '', cardnumber: '', cardexpiry: '' });
     const [show, setshow] = useState(false)
     const Address = useRef('')
     const Pincode = useRef('')
@@ -40,6 +41,10 @@ export default function CheckOut() {
     const State = useRef('')
     const Country = useRef('')
     const [CardDetails, setCardDetails] = useState({ cvc: '', expiry: '', focused: '', name: '', number: '', issuer: "" });
+    const regForCVC = RegExp(/^[0-9]{3}$/)
+    const regFoCardNumber = RegExp(/^[0-9]{16}$/)
+    const regForDate = RegExp(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)
+    const regForCardName = RegExp(/[A-Za-z ]+/)
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token);
@@ -247,15 +252,49 @@ export default function CheckOut() {
         }
     };
     const handleInputFocus = ({ target }) => {
-        console.log(target);
         setCardDetails({
-            ...CardDetails,focused: target.name
+            ...CardDetails, focused: target.name
         });
     };
 
     const handleInputChange = ({ target }) => {
-        setCardDetails({ ...CardDetails,[target.name]: target.value });
+        setCardDetails({ ...CardDetails, [target.name]: target.value });
     };
+    const handleerror = ({ target }) => {
+        switch (target.name) {
+            case 'name':
+                let error_for_cardname = regForCardName.test(target.value) ? '' : 'Enter Valid Card Name';
+                setCreditCardError({
+                    ...CreditCardError, cardname: error_for_cardname
+                })
+                break;
+            case 'number':
+                let error_for_cardnumber = regFoCardNumber.test(target.value) ? '' : 'Enter Valid Card Number';
+                setCreditCardError({
+                    ...CreditCardError, cardnumber: error_for_cardnumber
+                })
+                break;
+            case 'expiry':
+                let date=new Date()
+                let month=date.getMonth()+1;
+                let year=date.getFullYear().toString().slice(2)
+                let getMonth=parseInt(target.value/100)
+                let getYear=target.value.toString().slice(2)
+                let error_for_expiry = regForDate.test(target.value) && ((year<getYear) || (year==getYear && month<getMonth))  ? '' : 'Enter Valid expiry date (month/year)';
+                setCreditCardError({
+                    ...CreditCardError, cardexpiry: error_for_expiry
+                })
+                break;
+            case 'cvc':
+                let error_for_cvc = regForCVC.test(target.value) ? '' : 'CVC should be 3 ';
+                setCreditCardError({
+                    ...CreditCardError, cvc: error_for_cvc
+                })
+                break;
+            default:
+                break;
+        }
+    }
     return (
         <div className='allpadding'>
             <Container fluid>
@@ -434,7 +473,7 @@ export default function CheckOut() {
                         <Button onClick={Updateaddress}>Edit Address</Button>
                     </Form>
                 </Modal>
-                <Modal show={show} onHide={()=>setshow(false)} centered>
+                <Modal show={show} onHide={() => setshow(false)} centered>
                     <Modal.Body className='text-center'>
                         <div id="PaymentForm">
                             <Cards
@@ -452,7 +491,14 @@ export default function CheckOut() {
                                     placeholder="Your Name"
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
+                                    onBlur={handleerror}
                                 />
+                                {
+                                    CreditCardError.cardname ?
+                                        <div className="red text-start">
+                                            {CreditCardError.cardname}
+                                        </div> : ''
+                                }
                                 <input
                                     type="number"
                                     name="number"
@@ -460,7 +506,14 @@ export default function CheckOut() {
                                     placeholder="Card Number"
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
+                                    onBlur={handleerror}
                                 />
+                                {
+                                    CreditCardError.cardnumber ?
+                                        <div className="red text-start">
+                                            {CreditCardError.cardnumber}
+                                        </div> : ''
+                                }
                                 <input
                                     type="number"
                                     name="expiry"
@@ -468,7 +521,14 @@ export default function CheckOut() {
                                     placeholder="Expire Date"
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
+                                    onBlur={handleerror}
                                 />
+                                {
+                                    CreditCardError.cardexpiry ?
+                                        <div className="red text-start">
+                                            {CreditCardError.cardexpiry}
+                                        </div> : ''
+                                }
                                 <input
                                     type="number"
                                     name="cvc"
@@ -476,7 +536,15 @@ export default function CheckOut() {
                                     placeholder="CVC"
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
+                                    onBlur={handleerror}
                                 />
+
+                                {
+                                    CreditCardError.cvc ?
+                                        <div className="red text-start">
+                                            {CreditCardError.cvc}
+                                        </div> : ''
+                                }
                             </form>
                         </div>
                         <div className="d-grid">

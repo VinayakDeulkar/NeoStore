@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Carousel, Row, Col, Container, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { GetPopularProduct } from '../config/myService'
+import { GetPopularProduct, GETCART } from '../config/myService'
 import '../Css/Dashborad.css'
 import '../Css/DashBoradResponsive.css'
 import ReactStarsRating from 'react-awesome-stars-rating'
 import ReactPaginate from 'react-paginate'
-import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import jwt_decode from 'jwt-decode'
 import { ADDTOCART, GETCARTCOUNT } from '../config/myService'
@@ -26,6 +25,8 @@ const options = {
 }
 export default function Dashborad() {
     const [ProductData, setProductData] = useState('')
+    const [CartIDS, setCartIDS] = useState('');
+    const [Show, setShow] = useState(false);
     const history = useNavigate()
     const dispatch = useDispatch()
     const Login = useSelector(state => state.loginReducer.Login)
@@ -38,7 +39,6 @@ export default function Dashborad() {
     useEffect(() => {
         GetPopularProduct()
             .then(res => {
-                console.log(res.data.data);
                 setProductData(res.data.data)
             })
             .catch(err => {
@@ -46,7 +46,42 @@ export default function Dashborad() {
                     history('/ServerError')
                 }
             })
-    }, [])
+        if (Login) {
+            let token = localStorage.getItem('_token')
+            let decode = jwt_decode(token);
+            let data = decode.uid[0]._id;
+            let id = { id: data }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+        else {
+            let id = { id: uuid }
+            GETCART(id)
+                .then(res => {
+                    let arr = []
+                    res.data.cartData.map((ele) =>
+                        arr.push(ele.product_id._id)
+                    )
+                    setCartIDS(arr)
+                })
+                .catch(err => {
+                    if (err) {
+                        history('/ServerError')
+                    }
+                })
+        }
+    }, [Show])
 
     const DisplayProduct = (element) => {
         history('/ProductDetails', { state: element })
@@ -56,21 +91,18 @@ export default function Dashborad() {
     }
     const AddToCart = (element) => {
         if (Login) {
-            console.log('inside login');
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: decode.uid[0]._id }
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: res.data.count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -83,22 +115,19 @@ export default function Dashborad() {
                         history('/ServerError')
                     }
                 })
+            setShow(false)
         }
         else {
-            console.log('Inside not login');
-            console.log(uuid);
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
-            console.log(data);
             ADDTOCART(data)
                 .then(res => {
-                    console.log(res.data.msg);
                     let data = { id: uuid }
                     openSnackbar(res.data.msg)
                     GETCARTCOUNT(data)
                         .then(res => {
-                            console.log(res.data.count);
                             dispatch(cartActions(res.data.count))
                             // dispatch({ type: 'cart', payload: res.data.count })
+                            setShow(true)
                         })
                         .catch(err => {
                             if (err) {
@@ -111,6 +140,7 @@ export default function Dashborad() {
                         history('/ServerError')
                     }
                 })
+            setShow(false)
         }
     }
     return (
@@ -153,7 +183,12 @@ export default function Dashborad() {
                                         <Card.Text className='text-center'>
                                             <b>Rs.{ele.product_cost}</b><br />
 
-                                            <Button onClick={() => AddToCart(ele)} >Add to Cart</Button><br />
+                                            {CartIDS && CartIDS.includes(ele._id) ?
+                                                <Button disabled >Added</Button> :
+                                                <Button onClick={() => AddToCart(ele)} >Add to Cart</Button>
+                                            }
+                                            {/* <Button onClick={() => AddToCart(ele)} >Add to Cart</Button> */}
+                                            <br />
                                             <ReactStarsRating value={parseFloat(ele.product_rating)} isEdit={false} isHalf={true} className='mt-2' />
 
                                         </Card.Text>
