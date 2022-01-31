@@ -168,7 +168,7 @@ export default function RegisterPage() {
                 <Col lg={12} className='text-center mr-3 socialsec'>
                     <SocialButton
                         provider="facebook"
-                        appId="2362435687224371"
+                        appId={process.env.REACT_APP_FACEBOOKID}
                         onLoginSuccess={handleSocialLogin}
                         onLoginFailure={handleSocialLoginFailure}
                         className='SocialButton facebook text-white  mb-5'
@@ -178,7 +178,7 @@ export default function RegisterPage() {
                     </SocialButton>
                     <SocialButton
                         provider="google"
-                        appId="57326886237-e5s64g1s5givufhqfckv4ucj5iegp14f.apps.googleusercontent.com"
+                        appId={process.env.REACT_APP_GOOGLEID}
                         onLoginSuccess={handleSocialLogin}
                         onLoginFailure={handleSocialLoginFailure}
                         className='SocialButton google ms-3 '

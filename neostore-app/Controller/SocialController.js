@@ -86,7 +86,7 @@ const PROFILE_UPDATE = async (req, res) => {
         if (profile) {
             const user = await User.findquery({ email: req.body.email })
             if (!user[0]) {
-                return res.status(400).json({ err: 1, "msg": "Unable to genrate jwt" })
+                return res.status(200).json({ err: 1, "msg": "Unable to genrate jwt" })
             }
             else {
                 let payload = { uid: user }
@@ -126,9 +126,9 @@ const UPDATE_PROFILE_PIC = async (req, res) => {
     try {
         const profilepic = await User.updatequery({ email: req.body.email }, { $set: { profilepic: req.file.filename } })
         if (profilepic) {
-            const user = User.findquery({ email: req.body.email })
+            const user = await User.findquery({ email: req.body.email })
             if (!user[0]) {
-                return res.status(400).json({ err: 1, "msg": "Unable to genrate jwt" })
+                return res.status(200).json({ err: 1, "msg": "Unable to genrate jwt" })
             }
             else {
                 let payload = { uid: user }
@@ -170,7 +170,7 @@ const ADD_ADDRESS = async (req, res) => {
             const newadd = await User.updatequery({ email: req.body.email }, { $set: { Address: addadrres[0].Address } })
             const user = await User.findquery({ email: req.body.email })
             if (!user[0]) {
-                res.status(400).json({ err: 1, "msg": "Unable to genrate jwt" })
+                res.status(200).json({ err: 1, "msg": "Unable to genrate jwt" })
             }
             else {
                 let payload = { uid: user }

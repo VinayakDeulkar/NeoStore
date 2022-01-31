@@ -15,6 +15,9 @@
   color: red;
   margin-bottom: 10px;
 }
+.input-class{
+  margin-bottom: 10px !important;
+}
 .num{
     background-color: #4169E1;
     border-radius: 50%;

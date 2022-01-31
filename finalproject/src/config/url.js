@@ -1,1 +1,1 @@
-export const ECOMMERCES_URL="http://localhost:8899/api/";
+export const ECOMMERCES_URL=process.env.REACT_APP_URL;

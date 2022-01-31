@@ -12,7 +12,7 @@ const ADD_TO_CART = async (req, res) => {
                 return res.status(200).json({ err: 0, msg: ' product quantity added success fully' })
             }
             else {
-                return res.status(400).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
+                return res.status(200).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
             }
         }
         else {
@@ -118,7 +118,7 @@ const INC_QUANTITY = async (req, res) => {
             return res.status(200).json({ err: 0, msg: ' product quantity added success fully' })
         }
         else {
-            return res.status(400).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
+            return res.status(200).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
         }
     }
     catch (e) {
@@ -158,7 +158,7 @@ const DEC_QUANTITY = async (req, res) => {
             return res.status(200).json({ err: 0, msg: ' product quantity subtracted success fully' })
         }
         else {
-            return res.status(400).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
+            return res.status(200).json({ err: 1, msg: 'You can only add 10 product quantity at a time' })
         }
     }
     catch (e) {

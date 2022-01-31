@@ -504,6 +504,7 @@ export default function CheckOut() {
                                     name="number"
                                     className="input-class"
                                     placeholder="Card Number"
+                                    maxLength={16}
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
                                     onBlur={handleerror}
@@ -519,6 +520,7 @@ export default function CheckOut() {
                                     name="expiry"
                                     className="input-class"
                                     placeholder="Expire Date"
+                                    maxLength={4}
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
                                     onBlur={handleerror}
@@ -534,6 +536,7 @@ export default function CheckOut() {
                                     name="cvc"
                                     className="input-class"
                                     placeholder="CVC"
+                                    maxLength={3}
                                     onChange={handleInputChange}
                                     onFocus={handleInputFocus}
                                     onBlur={handleerror}

@@ -181,13 +181,12 @@ export default function LoginPage() {
         <>
 
             <div className='container-fluid allpadding'>
-
                 <Row className='paddingfooter marginlogin mt-5'>
                     <Col lg={6} className='text-center loginpad'>
 
                         <SocialButton
                             provider="facebook"
-                            appId="2362435687224371"
+                            appId={process.env.REACT_APP_FACEBOOKID}
                             onLoginSuccess={handleSocialLogin}
                             onLoginFailure={handleSocialLoginFailure}
                             className='SocialButton facebook text-white'
@@ -197,7 +196,7 @@ export default function LoginPage() {
                         </SocialButton><br />
                         <SocialButton
                             provider="google"
-                            appId="57326886237-e5s64g1s5givufhqfckv4ucj5iegp14f.apps.googleusercontent.com"
+                            appId={process.env.REACT_APP_GOOGLEID}
                             onLoginSuccess={handleSocialLogin}
                             onLoginFailure={handleSocialLoginFailure}
                             className='SocialButton google'

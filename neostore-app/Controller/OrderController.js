@@ -3,22 +3,22 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = 'sdsfdsfdsfdsf'
 const nodemailer = require('nodemailer')
 const orderService = require('../services/orderService')
-
+require('dotenv').config()
 async function main(Data) {
     console.log('inside main');
     let transpoter = nodemailer.createTransport({
         service: 'gmail',
         secure: false,
         auth: {
-            user: "emperorrock50@gmail.com",
-            pass: "EmperorRock50"
+            user: process.env.NODE_USER_EMAIL,
+            pass: process.env.NODE_USER_PASSWORD
         },
         tls: {
             rejectUnauthorized: false
         }
     })
     let mailOptions = {
-        from: 'emperorrock50@gmail.com',
+        from: process.env.NODE_USER_EMAIL,
         to: Data.email,
         subject: 'Order Confirm!!!',
         html: `

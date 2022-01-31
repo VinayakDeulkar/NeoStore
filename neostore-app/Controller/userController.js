@@ -12,15 +12,15 @@ async function main(email, otp) {
         service: 'gmail',
         secure: false,
         auth: {
-            user: "emperorrock50@gmail.com",
-            pass: "EmperorRock50"
+            user: process.env.NODE_USER_EMAIL,
+            pass: process.env.NODE_USER_PASSWORD
         },
         tls: {
             rejectUnauthorized: false
         }
     })
     let mailOptions = {
-        from: 'emperorrock50@gmail.com',
+        from: process.env.NODE_USER_EMAIL,
         to: email,
         subject: 'OTP for password Recovery',
         text: `Here is the OTP for password recovery ${otp}`
@@ -72,11 +72,11 @@ const LOGIN_USER = async (req, res) => {
             return res.status(200).json({ "err": 0, "msg": "Login Success", "token": token })
         }
         else {
-            return res.status(400).json({ err: 1, "msg": "Password not match" })
+            return res.status(200).json({ err: 1, "msg": "Password not match" })
         }
     }
     catch {
-        return res.json({ err: 1, "msg": "Email or password is not correct" })
+        return res.status(400).res.json({ err: 1, "msg": "Email or password is not correct" })
     }
     // await userModel.find({ email: Email, soical: false }, (err, data) => {
     //     if (!data[0]) {
@@ -123,7 +123,7 @@ const GENRATE_OTP = async (req, res) => {
         console.log(otp);
         const genrate = await User.findquery({ email: req.body.email })
         if (!genrate[0]) {
-            return res.status(400).json({ err: 1, msg: 'User Not Found' })
+            return res.status(200).json({ err: 1, msg: 'User Not Found' })
         }
         else {
             main(req.body.email, otp)
@@ -155,7 +155,7 @@ const CHNAGE_PASSWORD = async (req, res) => {
             const user = await User.findquery({ email: req.body.email })
             if (!user[0]) {
                 console.log('inside email not found');
-                return res.status(400).json({ err: 1, "msg": "Email  is not correct" })
+                return res.status(200).json({ err: 1, "msg": "Email  is not correct" })
             }
             else {
                 let payload = { uid: user }
@@ -164,7 +164,7 @@ const CHNAGE_PASSWORD = async (req, res) => {
             }
         }
         else {
-            return res.json({ err: 1, msg: 'Unable to change password' })
+            return res.status(200).json({ err: 1, msg: 'Unable to change password' })
         }
     }
     catch {
@@ -206,7 +206,7 @@ const DELETE_ADDRESS = async (req, res) => {
             return res.status(200).json({ "err": 0, "msg": "Address Deleted Successfully", "token": token })
         }
         else {
-            return res.status(400).json({ 'err': 1, "msg": 'Unable to genrate token' })
+            return res.status(200).json({ 'err': 1, "msg": 'Unable to genrate token' })
         }
     }
     catch {
@@ -249,7 +249,7 @@ const EDIT_ADDRESS = async (req, res) => {
                 return res.status(200).json({ "err": 0, "msg": "Address Updated Successfully", "token": token })
             }
             else {
-                return res.status(400).json({ err: 1, "msg": "Unable to genrate jwt" })
+                return res.status(200).json({ err: 1, "msg": "Unable to genrate jwt" })
             }
         }
     }
