@@ -9,8 +9,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { GETCARTCOUNT } from '../config/myService'
 import '../Css/PageHeader.css'
 import '../Css/PageHeaderResponsive.css'
-import { loginEnable,loginDisable } from '../State/actions/loginAction'
+import { loginEnable, loginDisable } from '../State/actions/loginAction'
 import { cartActions } from '../State/actions/cartActions'
+import { GET_CART } from '../State/actions/getCartAction'
 import { SearchAction } from '../State/actions/searchActions'
 export default function PageHeader() {
     const history = useNavigate()
@@ -25,15 +26,16 @@ export default function PageHeader() {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { id: decode.uid[0]._id }
-            GETCARTCOUNT(data)
-                .then(res => {
-                    setCartCount(res.data.count)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(data))
+            // GETCARTCOUNT(data)
+            //     .then(res => {
+            //         setCartCount(res.data.count)
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
 
         }
         else if (localStorage.getItem('uuid')) {
@@ -41,17 +43,18 @@ export default function PageHeader() {
             dispatch(loginDisable(uuid))
             // dispatch({ type: 'disable', payload: uuid })
             let data = { id: uuid }
-            GETCARTCOUNT(data)
-                .then(res => {
-                    setCartCount(res.data.count)
-                    dispatch(cartActions( res.data.count))
-                    // dispatch({ type: 'cart', payload: res.data.count })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(data))
+            // GETCARTCOUNT(data)
+            //     .then(res => {
+            //         setCartCount(res.data.count)
+            //         dispatch(cartActions( res.data.count))
+            //         // dispatch({ type: 'cart', payload: res.data.count })
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
         }
         else {
             let uuid = uuidv4()
@@ -61,36 +64,39 @@ export default function PageHeader() {
         }
     }, [])
     useEffect(() => {
-        if (localStorage.getItem('_token')) {
-            let token = localStorage.getItem('_token')
-            let decode = jwt_decode(token);
-            let data = { id: decode.uid[0]._id }
-            GETCARTCOUNT(data)
-                .then(res => {
-                    setCartCount(res.data.count)
-                    dispatch( cartActions(res.data.count))
-                    dispatch({ type: 'cart', payload: res.data.count })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+        if (cart >= 0) {
+            setCartCount(cart)
         }
-        else if (Uuid) {
-            let data = { id: Uuid }
-            console.log(Uuid);
-            GETCARTCOUNT(data)
-                .then(res => {
-                    setCartCount(res.data.count)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+        // if (localStorage.getItem('_token')) {
+        //     let token = localStorage.getItem('_token')
+        //     let decode = jwt_decode(token);
+        //     let data = { id: decode.uid[0]._id }
+        //     GETCARTCOUNT(data)
+        //         .then(res => {
+        //             setCartCount(res.data.count)
+        //             dispatch( cartActions(res.data.count))
+        //             dispatch({ type: 'cart', payload: res.data.count })
+        //         })
+        //         .catch(err => {
+        //             if (err) {
+        //                 history('/ServerError')
+        //             }
+        //         })
+        // }
+        // else if (Uuid) {
+        //     let data = { id: Uuid }
+        //     console.log(Uuid);
+        //     GETCARTCOUNT(data)
+        //         .then(res => {
+        //             setCartCount(res.data.count)
+        //         })
+        //         .catch(err => {
+        //             if (err) {
+        //                 history('/ServerError')
+        //             }
+        //         })
 
-        }
+        // }
 
     }, [cart])
     const LogoutUser = () => {
@@ -140,18 +146,18 @@ export default function PageHeader() {
                             />
                         </Form>
                         <div className='prfil'>
-                        <Button variant='light' className='cartbutton' onClick={ShowCart}> <Cart /><sup className='sup' > {CartCount} </sup> Cart</Button>
-                        {Logged ?
-                            <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
-                                <Dropdown.Item href="/MyAccount" className='dropitem'>My Account</Dropdown.Item>
-                                <Dropdown.Item href="/" className='dropitem' onClick={LogoutUser}>Logout</Dropdown.Item>
+                            <Button variant='light' className='cartbutton' onClick={ShowCart}> <Cart /><sup className='sup' > {CartCount} </sup> Cart</Button>
+                            {Logged ?
+                                <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
+                                    <Dropdown.Item href="/MyAccount" className='dropitem'>My Account</Dropdown.Item>
+                                    <Dropdown.Item href="/" className='dropitem' onClick={LogoutUser}>Logout</Dropdown.Item>
 
-                            </DropdownButton> :
-                            <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
-                                <Dropdown.Item href="/LoginPage" className='dropitem' >Login</Dropdown.Item>
-                            </DropdownButton>
-                        }
-                            
+                                </DropdownButton> :
+                                <DropdownButton id="dropdown-basic-button" drop='start' title={<PersonBadgeFill />} variant="light" className='dropdownbtn' >
+                                    <Dropdown.Item href="/LoginPage" className='dropitem' >Login</Dropdown.Item>
+                                </DropdownButton>
+                            }
+
                         </div>
 
                     </Nav>

@@ -46,9 +46,9 @@ export function GetColor(){
 export function FILTERPRODUCT(data){
     return axios.post(`${ECOMMERCES_URL}product/FilterProduct`,data)
 }
-export function GetPopularProduct(){
-    return axios.get(`${ECOMMERCES_URL}product/getpopularproduct`)
-}
+// export function GetPopularProduct(){
+//     return axios.get(`${ECOMMERCES_URL}product/getpopularproduct`)
+// }
 export function SETRATING(data){
     return axios.post(`${ECOMMERCES_URL}product/setrating`,data)
 }

@@ -13,6 +13,9 @@ import { ADDTOCART, GETCARTCOUNT, GETCART } from '../config/myService';
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction';
 import { cartActions } from '../State/actions/cartActions'
+import { GET_CART } from '../State/actions/getCartAction';
+import { Add_To_Cart } from '../State/actions/addToCart';
+import { Set_Rating } from '../State/actions/setRatingAction';
 const options = {
     position: 'top-center',
     style: {
@@ -44,7 +47,10 @@ export default function ProductDetails() {
     const dispatch = useDispatch()
     const [key, setkey] = useState('desc')
     const Login = useSelector(state => state.loginReducer.Login)
+    const Ratings = useSelector(state => state.setRatingReducer.rating)
     const uuid = useSelector(state => state.loginReducer.uuid)
+    const CartData = useSelector(state => state.getCartReducer.cartData)
+    const CartMSG = useSelector(state => state.addtoCartReducer)
     const [CartIDS, setCartIDS] = useState('');
     const [ProductRATING, setProductRATING] = useState(location.state.product_rating)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
@@ -58,37 +64,49 @@ export default function ProductDetails() {
             let decode = jwt_decode(token);
             let data = decode.uid[0]._id;
             let id = { id: data }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
+            // GETCART(id)
+            //     .then(res => {
+            //         let arr = []
+            //         res.data.cartData.map((ele) =>
+            //             arr.push(ele.product_id._id)
+            //         )
+            //         setCartIDS(arr)
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
         }
         else {
             let id = { id: uuid }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
+            // GETCART(id)
+            //     .then(res => {
+            //         let arr = []
+            //         res.data.cartData.map((ele) =>
+            //             arr.push(ele.product_id._id)
+            //         )
+            //         setCartIDS(arr)
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
         }
     }, [Show])
+    useEffect(() => {
+        let arr = []
+        if (CartData.cartData) {
+            CartData.cartData.map((ele) =>
+                arr.push(ele.product_id._id)
+            )
+            setCartIDS(arr)
+            dispatch(cartActions(CartData.cartData.length))
+        }
+    }, [CartData.cartData])
     const checkScreen = () => {
         if (windowDimensions.width == 360) {
             console.log('inside 360');
@@ -160,37 +178,43 @@ export default function ProductDetails() {
     const Cut = () => {
         history('/Product')
     }
+    useEffect(() => {
+        if (Ratings) {
+            openSnackbar(Ratings.msg)
+            setShowRating(false)
+        }
+    }, [Ratings.msg]);
+
     const Rating = (value) => {
-        console.log(value);
 
         let finalRating = ((parseFloat(value) + parseFloat(location.state.product_rating)) / 2);
-        console.log(finalRating);
         let data = { product_id: location.state._id, product_rating: finalRating }
-        console.log(data);
-        SETRATING(data)
-            .then(res => {
-                if (res.data.err == 1) {
-                    console.log(res.data.msg);
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    openSnackbar(res.data.msg)
-                    setProductRATING(finalRating)
-                    setShowRating(false)
-                }
-            })
-            .catch(err => {
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    openSnackbar('Session expired Login again please')
-                    dispatch(loginDisable(''))
-                    // dispatch({ type: 'disable' })
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Set_Rating(data))
+        setProductRATING(finalRating)
+        // SETRATING(data)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             console.log(res.data.msg);
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             openSnackbar(res.data.msg)
+        //             setProductRATING(finalRating)
+        //             setShowRating(false)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             openSnackbar('Session expired Login again please')
+        //             dispatch(loginDisable(''))
+        //             // dispatch({ type: 'disable' })
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
     const ProductRating = () => {
         if (localStorage.getItem('_token')) {
@@ -200,59 +224,69 @@ export default function ProductDetails() {
             history('/LoginPage')
         }
     }
+
+    useEffect(() => {
+        console.log(CartMSG);
+        if (Show) {
+            openSnackbar(CartMSG.msg.msg)
+            setShow(false)
+        }
+    }, [CartMSG.msg])
     const AddToCart = (element) => {
         if (Login) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: decode.uid[0]._id }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: res.data.count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-            setShow(false)
+            dispatch(Add_To_Cart(data))
+            // ADDTOCART(data)
+            //     .then(res => {
+            //         let data = { id: decode.uid[0]._id }
+            //         openSnackbar(res.data.msg)
+            //         GETCARTCOUNT(data)
+            //             .then(res => {
+            //                 dispatch(cartActions(res.data.count))
+            //                 // dispatch({ type: 'cart', payload: res.data.count })
+            //                 setShow(true)
+            //             })
+            //             .catch(err => {
+            //                 if (err) {
+            //                     history('/ServerError')
+            //                 }
+            //             })
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
+            setShow(true)
         }
         else {
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
-            console.log(data);
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: uuid }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: res.data.count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-            setShow(false)
+            dispatch(Add_To_Cart(data))
+            // console.log(data);
+            // ADDTOCART(data)
+            //     .then(res => {
+            //         let data = { id: uuid }
+            //         openSnackbar(res.data.msg)
+            //         GETCARTCOUNT(data)
+            //             .then(res => {
+            //                 dispatch(cartActions(res.data.count))
+            //                 // dispatch({ type: 'cart', payload: res.data.count })
+            //                 setShow(true)
+            //             })
+            //             .catch(err => {
+            //                 if (err) {
+            //                     history('/ServerError')
+            //                 }
+            //             })
+            //     })
+            //     .catch(err => {
+            //         if (err) {
+            //             history('/ServerError')
+            //         }
+            //     })
+            setShow(true)
         }
     }
     return (

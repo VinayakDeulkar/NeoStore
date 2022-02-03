@@ -7,7 +7,11 @@ import { useNavigate } from 'react-router-dom'
 import '../Css/Cart.css'
 import { Trash } from 'react-bootstrap-icons'
 import { useSnackbar } from 'react-simple-snackbar'
-import {cartActions} from '../State/actions/cartActions'
+import { cartActions } from '../State/actions/cartActions'
+import { GET_CART } from '../State/actions/getCartAction'
+import { Add_Quantity } from '../State/actions/addQuantityAction'
+import { Sub_Quantity } from '../State/actions/subQuantityAction'
+import { Delete_item } from '../State/actions/deleteItemAction'
 const options = {
     position: 'top-center',
     style: {
@@ -27,137 +31,170 @@ export default function Cart() {
     const [openSnackbar] = useSnackbar(options)
     const history = useNavigate()
     const dispatch = useDispatch()
+    const CartDAta = useSelector(state => state.getCartReducer.cartData)
+    const AddQuanMsg = useSelector(state => state.addQuantityReducer)
+    const SubQuanMsg = useSelector(state => state.DecQuantityReducer)
+    const DeleteIetmMsg = useSelector(state => state.deleteItemReducer)
     const [Review, setReview] = useState({ Subtotal: 0, GST: 0, OrderTotal: 0 })
+
     useEffect(() => {
         if (Login) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = decode.uid[0]._id;
             let id = { id: data }
-            GETCART(id)
-                .then(res => {
-                    setCartItems(res.data.cartData)
-                    let Subtotal = 0;
-                    let GST = 0;
-                    let OrderTotal = 0;
-                    res.data.cartData.forEach(element => {
-                        Subtotal = Subtotal + element.total_Productcost;
-                    });
-                    GST = (Subtotal * (5 / 100)) / 100;
-                    OrderTotal = Subtotal + GST;
-                    setReview({
-                        ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                    })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
         }
         else {
-
-            // let uuid=localStorage.getItem('uuid')
             let id = { id: uuid }
-            GETCART(id)
-                .then(res => {
-                    setCartItems(res.data.cartData)
-                    let Subtotal = 0;
-                    let GST = 0;
-                    let OrderTotal = 0;
-                    res.data.cartData.forEach(element => {
-                        Subtotal = Subtotal + element.total_Productcost;
-                    });
-                    GST = (Subtotal * (5 / 100)) / 100;
-                    OrderTotal = Subtotal + GST;
-                    setReview({
-                        ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                    })
-
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
         }
     }, [])
+    useEffect(() => {
+        if (CartDAta) {
+            setCartItems(CartDAta.cartData)
+            let Subtotal = 0;
+            let GST = 0;
+            let OrderTotal = 0;
+            CartDAta.cartData.forEach(element => {
+                Subtotal = Subtotal + element.total_Productcost;
+            });
+            GST = (Subtotal * (5 / 100)) / 100;
+            OrderTotal = Subtotal + GST;
+            setReview({
+                ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+            })
+            dispatch(cartActions(CartDAta.cartData.length))
+        }
+    }, [CartDAta.cartData]);
+    useEffect(() => {
+        if (AddQuanMsg.msg) {
+            openSnackbar(AddQuanMsg.msg.msg)
+            if (Login) {
+                let token = localStorage.getItem('_token')
+                let decode = jwt_decode(token);
+                let data = decode.uid[0]._id;
+                let id = { id: data }
+                dispatch(GET_CART(id))
+            }
+            else {
+                let id = { id: uuid }
+                dispatch(GET_CART(id))
+            }
+        }
+    }, [AddQuanMsg.msg]);
+
+    useEffect(() => {
+        if (SubQuanMsg.msg) {
+            openSnackbar(SubQuanMsg.msg.msg)
+            if (Login) {
+                let token = localStorage.getItem('_token')
+                let decode = jwt_decode(token);
+                let data = decode.uid[0]._id;
+                let id = { id: data }
+                dispatch(GET_CART(id))
+            }
+            else {
+                let id = { id: uuid }
+                dispatch(GET_CART(id))
+            }
+        }
+    }, [SubQuanMsg.msg]);
+
+    useEffect(() => {
+        if (DeleteIetmMsg.msg) {
+            openSnackbar(DeleteIetmMsg.msg.msg)
+            if (Login) {
+                let token = localStorage.getItem('_token')
+                let decode = jwt_decode(token);
+                let data = decode.uid[0]._id;
+                let id = { id: data }
+                dispatch(GET_CART(id))
+            }
+            else {
+                let id = { id: uuid }
+                dispatch(GET_CART(id))
+            }
+        }
+    }, [DeleteIetmMsg.msg]);
     const AddQuantity = (element) => {
         let id = { id: element._id }
-        INCQUANTITY(id)
-            .then(res => {
-                if (res.data.err == 0) {
-                    let cid = { id: element.customer_id }
-                    openSnackbar(res.data.msg)
-                    GETCART(cid)
-                        .then(res => {
-                            setCartItems(res.data.cartData)
-                            let Subtotal = 0;
-                            let GST = 0;
-                            let OrderTotal = 0;
-                            res.data.cartData.forEach(element => {
-                                Subtotal = Subtotal + element.total_Productcost;
-                            });
-                            GST = (Subtotal * (5 / 100)) / 100;
-                            OrderTotal = Subtotal + GST;
-                            setReview({
-                                ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                            })
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                }
-                else {
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Add_Quantity(id))
+        // INCQUANTITY(id)
+        //     .then(res => {
+        //         if (res.data.err == 0) {
+        //             let cid = { id: element.customer_id }
+        //             openSnackbar(res.data.msg)
+        //             GETCART(cid)
+        //                 .then(res => {
+        //                     setCartItems(res.data.cartData)
+        //                     let Subtotal = 0;
+        //                     let GST = 0;
+        //                     let OrderTotal = 0;
+        //                     res.data.cartData.forEach(element => {
+        //                         Subtotal = Subtotal + element.total_Productcost;
+        //                     });
+        //                     GST = (Subtotal * (5 / 100)) / 100;
+        //                     OrderTotal = Subtotal + GST;
+        //                     setReview({
+        //                         ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+        //                     })
+        //                 })
+        //                 .catch(err => {
+        //                     if (err) {
+        //                         history('/ServerError')
+        //                     }
+        //                 })
+        //         }
+        //         else {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err) {
+        //             history('/ServerError')
+        //         }
+        //     })
 
     }
     const DecQuantity = (element) => {
         let id = { id: element._id }
-        DECQUANTITY(id)
-            .then(res => {
-                if (res.data.err == 0) {
-                    let cid = { id: element.customer_id }
-                    openSnackbar(res.data.msg)
-                    GETCART(cid)
-                        .then(res => {
-                            setCartItems(res.data.cartData)
-                            let Subtotal = 0;
-                            let GST = 0;
-                            let OrderTotal = 0;
-                            res.data.cartData.forEach(element => {
-                                Subtotal = Subtotal + element.total_Productcost;
-                            });
-                            GST = (Subtotal * (5 / 100)) / 100;
-                            OrderTotal = Subtotal + GST;
-                            setReview({
-                                ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                            })
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                }
-                else {
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Sub_Quantity(id))
+        // DECQUANTITY(id)
+        //     .then(res => {
+        //         if (res.data.err == 0) {
+        //             let cid = { id: element.customer_id }
+        //             openSnackbar(res.data.msg)
+        //             GETCART(cid)
+        //                 .then(res => {
+        //                     setCartItems(res.data.cartData)
+        //                     let Subtotal = 0;
+        //                     let GST = 0;
+        //                     let OrderTotal = 0;
+        //                     res.data.cartData.forEach(element => {
+        //                         Subtotal = Subtotal + element.total_Productcost;
+        //                     });
+        //                     GST = (Subtotal * (5 / 100)) / 100;
+        //                     OrderTotal = Subtotal + GST;
+        //                     setReview({
+        //                         ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+        //                     })
+        //                 })
+        //                 .catch(err => {
+        //                     if (err) {
+        //                         history('/ServerError')
+        //                     }
+        //                 })
+        //         }
+        //         else {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err) {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
     const checkout = () => {
         if (CartItems[0]) {
@@ -176,52 +213,54 @@ export default function Cart() {
     }
     const deleteItem = (element) => {
         let id = { id: element._id }
-        DELETEITEM(id)
-            .then(res => {
-                if (res.data.err == 0) {
-                    let cid = { id: element.customer_id }
-                    openSnackbar(res.data.msg)
-                    GETCART(cid)
-                        .then(res => {
-                            setCartItems(res.data.cartData)
-                            let Subtotal = 0;
-                            let GST = 0;
-                            let OrderTotal = 0;
-                            res.data.cartData.forEach(element => {
-                                Subtotal = Subtotal + element.total_Productcost;
-                            });
-                            GST = (Subtotal * (5 / 100)) / 100;
-                            OrderTotal = Subtotal + GST;
-                            setReview({
-                                ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                            })
-                            let data = { id: element.customer_id }
-                            GETCARTCOUNT(data)
-                                .then(res => {
-                                    dispatch(cartActions(res.data.count ))
-                                    // dispatch({ type: 'cart', payload: res.data.count })
-                                })
-                                .catch(err => {
-                                    if (err) {
-                                        history('/ServerError')
-                                    }
-                                })
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                }
-                else {
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Delete_item(id))
+
+        // DELETEITEM(id)
+        //     .then(res => {
+        //         if (res.data.err == 0) {
+        //             let cid = { id: element.customer_id }
+        //             openSnackbar(res.data.msg)
+        //             GETCART(cid)
+        //                 .then(res => {
+        //                     setCartItems(res.data.cartData)
+        //                     let Subtotal = 0;
+        //                     let GST = 0;
+        //                     let OrderTotal = 0;
+        //                     res.data.cartData.forEach(element => {
+        //                         Subtotal = Subtotal + element.total_Productcost;
+        //                     });
+        //                     GST = (Subtotal * (5 / 100)) / 100;
+        //                     OrderTotal = Subtotal + GST;
+        //                     setReview({
+        //                         ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+        //                     })
+        //                     let data = { id: element.customer_id }
+        //                     GETCARTCOUNT(data)
+        //                         .then(res => {
+        //                             dispatch(cartActions(res.data.count))
+        //                             // dispatch({ type: 'cart', payload: res.data.count })
+        //                         })
+        //                         .catch(err => {
+        //                             if (err) {
+        //                                 history('/ServerError')
+        //                             }
+        //                         })
+        //                 })
+        //                 .catch(err => {
+        //                     if (err) {
+        //                         history('/ServerError')
+        //                     }
+        //                 })
+        //         }
+        //         else {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err) {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
     return (
         <div className='allpadding'>

@@ -4,10 +4,11 @@ import { ArrowLeftRight, List, Newspaper, PersonBadge } from 'react-bootstrap-ic
 import { BrowserRouter as Router, Link, Outlet, Route, Routes, useNavigate, } from 'react-router-dom'
 import { ProfilePicUpdate } from '../config/myService'
 import jwt_decode from 'jwt-decode'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction'
+import { Update_profile_pic } from '../State/actions/myAccountAction'
 const options = {
     position: 'top-center',
     style: {
@@ -26,15 +27,23 @@ export default function MyAccount() {
     const history = useNavigate()
     const dispatch = useDispatch()
     const [openSnackbar] = useSnackbar(options)
+    const UpdatedProfile = useSelector(state => state.myAccountReducer.NewProfile)
     useEffect(() => {
         if (localStorage.getItem('_token')) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = decode.uid[0];
             setUser(data)
         }
-    }, [localStorage.getItem('_token')])
+    }, [])
+    useEffect(() => {
+        if (UpdatedProfile) {
+            localStorage.setItem('_token', UpdatedProfile.token)
+            let decode = jwt_decode(UpdatedProfile.token);
+            let data = decode.uid[0];
+            setUser(data)
+        }
+    }, [UpdatedProfile]);
     const showdata = () => {
         setShow(true)
     }
@@ -43,35 +52,36 @@ export default function MyAccount() {
         data.append('file', document.getElementById('profile').files[0])
         data.append('email', User.email)
         if (document.getElementById('profile').files[0]) {
-            ProfilePicUpdate(data)
-                .then((res) => {
-                    console.log(res.data);
-                    if (res.data.err == 0) {
-                        localStorage.setItem('_token', res.data.token)
-                        let decode = jwt_decode(res.data.token);
-                        console.log(decode.uid[0]);
-                        let data = decode.uid[0];
-                        setUser(data)
+            dispatch(Update_profile_pic(data))
+            // ProfilePicUpdate(data)
+            //     .then((res) => {
+            //         console.log(res.data);
+            //         if (res.data.err == 0) {
+            //             localStorage.setItem('_token', res.data.token)
+            //             let decode = jwt_decode(res.data.token);
+            //             console.log(decode.uid[0]);
+            //             let data = decode.uid[0];
+            //             setUser(data)
 
-                        openSnackbar(res.data.msg)
-                    }
-                    else {
+            //             openSnackbar(res.data.msg)
+            //         }
+            //         else {
 
-                        openSnackbar(res.data.msg)
-                    }
-                })
-                .catch(err => {
-                    if (err.message != 'Network Error') {
-                        localStorage.clear()
-                        openSnackbar('Session expired Login again please')
-                        dispatch(loginDisable(''))
-                        // dispatch({ type: 'disable' })
-                        history('/LoginPage')
-                    }
-                    else {
-                        history('/ServerError')
-                    }
-                })
+            //             openSnackbar(res.data.msg)
+            //         }
+            //     })
+            //     .catch(err => {
+            //         if (err.message != 'Network Error') {
+            //             localStorage.clear()
+            //             openSnackbar('Session expired Login again please')
+            //             dispatch(loginDisable(''))
+            //             // dispatch({ type: 'disable' })
+            //             history('/LoginPage')
+            //         }
+            //         else {
+            //             history('/ServerError')
+            //         }
+            //     })
         }
         else {
 

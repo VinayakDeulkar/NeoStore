@@ -10,8 +10,14 @@ import '../Css/ProductResponsive.css'
 import ReactPaginate from 'react-paginate'
 import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
+import { FilterProductS } from '../State/actions/filterProductAction'
 import { useSnackbar } from 'react-simple-snackbar'
 import { cartActions } from '../State/actions/cartActions'
+import { GET_CART } from '../State/actions/getCartAction'
+import { GetProductALLData } from '../State/actions/getAllProductAction'
+import { GET_CATEGORY } from '../State/actions/categoryAction';
+import { GET_COLOR } from '../State/actions/colorAction';
+import { Add_To_Cart } from '../State/actions/addToCart';
 const options = {
     position: 'top-center',
     style: {
@@ -41,60 +47,54 @@ export default function Product() {
     const searchItem = useSelector(state => state.searchReducer.searchitem)
     const Login = useSelector(state => state.loginReducer.Login)
     const uuid = useSelector(state => state.loginReducer.uuid)
+    const ProductDAta = useSelector(state => state.productReducer.product)
+    const FilterProductData = useSelector(state => state.productReducer.FilterProduct)
+    const CategoryData = useSelector(state => state.categoryReducer.Category)
+    const ColorData = useSelector(state => state.colorReducer.Color)
+    const CartDAta = useSelector(state => state.getCartReducer.cartData)
+    const CartMSG = useSelector(state => state.addtoCartReducer)
     const dispatch = useDispatch()
     useEffect(() => {
-        GetProduct()
-            .then(res => {
-                setFilterProduct(res.data.data)
-                setProductData(res.data.data)
-            })
-            .catch(err => { if (err) { history('/ServerError') } })
-        GetCategory()
-            .then(res => {
-                setCategory(res.data.data)
-            })
-            .catch(err => { if (err) { history('/ServerError') } })
-        GetColor()
-            .then(res => {
-                setColor(res.data.data)
-            })
-            .catch(err => { if (err) { history('/ServerError') } })
+        dispatch(GetProductALLData())
+        dispatch(GET_CATEGORY())
+        dispatch(GET_COLOR())
         if (Login) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = decode.uid[0]._id;
             let id = { id: data }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
+            let arr = []
+            if (CartDAta.cartData) {
+                CartDAta.cartData.map((ele) =>
+                    arr.push(ele.product_id._id)
+                )
+                setCartIDS(arr)
+            }
         }
         else {
             let id = { id: uuid }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
+            let arr = []
+            console.log(CartDAta.cartData);
+            if (CartDAta.cartData) {
+                CartDAta.cartData.map((ele) =>
+                    arr.push(ele.product_id._id)
+                )
+                setCartIDS(arr)
+            }
         }
     }, [Show])
+    useEffect(() => {
+        let arr = []
+        if (CartDAta) {
+            CartDAta.cartData.map((ele) =>
+                arr.push(ele.product_id._id)
+            )
+            setCartIDS(arr)
+            dispatch(cartActions(CartDAta.cartData.length))
+        }
+    }, [CartDAta.cartData])
     useEffect(() => {
         if (searchItem == '') {
             setFilterProduct(ProductData)
@@ -110,32 +110,40 @@ export default function Product() {
             setFilterProduct(data)
         }
     }, [searchItem])
-
+    useEffect(() => {
+        if (CategoryData.data) {
+            setCategory(CategoryData.data)
+        }
+    }, [CategoryData.data]);
+    useEffect(() => {
+        if (ColorData.data) {
+            setColor(ColorData.data)
+        }
+    }, [ColorData.data]);
+    useEffect(() => {
+        if (ProductDAta.data) {
+            setFilterProduct(ProductDAta.data)
+            setProductData(ProductDAta.data)
+        }
+    }, [ProductDAta.data]);
+    useEffect(() => {
+        if (FilterProductData.data) {
+            setFilterProduct(FilterProductData.data)
+        }
+    }, [FilterProductData.data]);
     const CategoryFilter = (element) => {
         let SelectedCategory = { category_name: element.category_name, color_name: Selected.SelectedColor }
-
-        FILTERPRODUCT(SelectedCategory)
-            .then(res => {
-                setSelected({
-                    ...Selected, SelectedCategory: element.category_name
-                })
-                setFilterProduct(res.data.data)
-            })
-            .catch(err => { if (err) { history('/ServerError') } })
-
-
+        setSelected({
+            ...Selected, SelectedCategory: element.category_name
+        })
+        dispatch(FilterProductS(SelectedCategory))
     }
     const ColorFilter = (element) => {
         let SelectedColor = { category_name: Selected.SelectedCategory, color_name: element.color_name }
-
-        FILTERPRODUCT(SelectedColor)
-            .then(res => {
-                setSelected({
-                    ...Selected, SelectedColor: element.color_name
-                })
-                setFilterProduct(res.data.data)
-            })
-            .catch(err => { if (err) { history('/ServerError') } })
+        setSelected({
+            ...Selected, SelectedColor: element.color_name
+        })
+        dispatch(FilterProductS(SelectedColor))
     }
     const showAll = () => {
         setFilterProduct(ProductData)
@@ -172,55 +180,21 @@ export default function Product() {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: decode.uid[0]._id }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-                setShow(false)
+            dispatch(Add_To_Cart(data))
+            setShow(true)
         }
         else {
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: uuid }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: res.data.count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-                setShow(false)
+            dispatch(Add_To_Cart(data))
+            setShow(true)
         }
     }
+    useEffect(() => {
+        if (Show) {
+            openSnackbar(CartMSG.msg.msg)
+            setShow(false)
+        }
+    }, [CartMSG.msg]);
     return (
         <div className='allpadding'>
             <Container fluid>

@@ -2,10 +2,11 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Button, Form, FormGroup, FormLabel } from 'react-bootstrap'
 import { CHNAGEPASSWORD } from '../config/myService'
 import jwt_decode from 'jwt-decode'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction'
+import { Change_Password } from '../State/actions/changePasswordAction'
 const options = {
     position: 'top-center',
     style: {
@@ -27,6 +28,7 @@ export default function ChangePassword() {
     const regForPassword = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const history = useNavigate()
     const dispatch = useDispatch()
+    const ChangePasswordMsg = useSelector(state => state.ChangePasswordReducer.msg)
     const [ErrorChangePass, setErrorChangePass] = useState({ erroroldpass: '', errornewpass: '', errorconfirmpass: '' })
     useEffect(() => {
         if (localStorage.getItem('_token')) {
@@ -80,35 +82,45 @@ export default function ChangePassword() {
                 break;
         }
     }
+    useEffect(() => {
+        console.log(ChangePasswordMsg);
+        if (ChangePasswordMsg.success) {
+            localStorage.setItem('_token', ChangePasswordMsg.msg.token)
+            openSnackbar(ChangePasswordMsg.msg.msg)
+            history("/MyAccount");
+        }
+    }, [ChangePasswordMsg]);
+
     const changePassword = () => {
         let data = { email: User.email, password: Oldpassword.current.value, newpassword: NewPassword.current.value };
-        CHNAGEPASSWORD(data)
-            .then(res => {
-                if (res.data.err == 1) {
-                    console.log(res.data.msg);
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    localStorage.setItem('_token', res.data.token)
-                    let decode = jwt_decode(res.data.token);
-                    openSnackbar(res.data.msg)
-                    history("/MyAccount");
-                }
-            })
-            .catch(err => {
-                console.log(err.message);
-                if (err.message != 'Network Error') {
-                    openSnackbar('Session expired Login again please')
-                    localStorage.clear()
-                    dispatch(loginDisable(''))
-                    // dispatch({ type: 'disable' })
-                    history('/LoginPage')
-                }
-                else {
-                    openSnackbar('Server Error')
-                    history('/ServerError')
-                }
-            })
+        dispatch(Change_Password(data))
+        // CHNAGEPASSWORD(data)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             console.log(res.data.msg);
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             localStorage.setItem('_token', res.data.token)
+        //             let decode = jwt_decode(res.data.token);
+        //             openSnackbar(res.data.msg)
+        //             history("/MyAccount");
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log(err.message);
+        //         if (err.message != 'Network Error') {
+        //             openSnackbar('Session expired Login again please')
+        //             localStorage.clear()
+        //             dispatch(loginDisable(''))
+        //             // dispatch({ type: 'disable' })
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             openSnackbar('Server Error')
+        //             history('/ServerError')
+        //         }
+        //     })
     }
     return (
         <div className='allpadding'>

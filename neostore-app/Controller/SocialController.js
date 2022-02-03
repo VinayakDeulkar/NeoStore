@@ -82,6 +82,7 @@ const USER_SOCIAL_LOGIN = async (req, res) => {
 }
 const PROFILE_UPDATE = async (req, res) => {
     try {
+        console.log(req.body);
         const profile = await User.updatequery({ email: req.body.email }, { $set: { firstname: req.body.firstname, lastname: req.body.lastname, mobileno: req.body.mobileno } })
         if (profile) {
             const user = await User.findquery({ email: req.body.email })

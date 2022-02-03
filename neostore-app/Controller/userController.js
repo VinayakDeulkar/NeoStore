@@ -69,14 +69,14 @@ const LOGIN_USER = async (req, res) => {
         if (bcrypt.compareSync(Password, loginuser[0].password)) {
             let payload = { uid: loginuser }
             const token = jwt.sign(payload, jwtSecret, { expiresIn: 360 })
-            return res.status(200).json({ "err": 0, "msg": "Login Success", "token": token })
+            return res.status(200).json({ "err": 0, status:200,"msg": "Login Success", "token": token })
         }
         else {
-            return res.status(200).json({ err: 1, "msg": "Password not match" })
+            return res.status(401).json({ status:401, "msg": "Password not match" })
         }
     }
     catch {
-        return res.status(400).res.json({ err: 1, "msg": "Email or password is not correct" })
+        return res.status(400).res.json({ err: 1, status:400,"msg": "Email or password is not correct" })
     }
     // await userModel.find({ email: Email, soical: false }, (err, data) => {
     //     if (!data[0]) {
@@ -95,8 +95,8 @@ const LOGIN_USER = async (req, res) => {
 const FORGOT_PASSWORD = async (req, res) => {
     try {
         const hash = bcrypt.hashSync(req.body.password, saltRounds)
-        const forgotpassword = await User.updatequery({ email: req.body.email.email }, { $set: { password: hash } })
-        return res.status(200).json({ err: 0, msg: `${req.body.email.email} password recover successfully` })
+        const forgotpassword = await User.updatequery({ email: req.body.email }, { $set: { password: hash } })
+        return res.status(200).json({ err: 0, msg: `${req.body.email} password recover successfully` })
     }
     catch {
         return res.status(400).json({ err: 1, msg: 'Unable to change password' })

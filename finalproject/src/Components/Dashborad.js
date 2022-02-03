@@ -8,9 +8,11 @@ import ReactStarsRating from 'react-awesome-stars-rating'
 import ReactPaginate from 'react-paginate'
 import { useDispatch, useSelector } from 'react-redux'
 import jwt_decode from 'jwt-decode'
-import { ADDTOCART, GETCARTCOUNT } from '../config/myService'
 import { cartActions } from '../State/actions/cartActions'
 import { useSnackbar } from 'react-simple-snackbar'
+import { GetProductData } from '../State/actions/productAction'
+import { GET_CART } from '../State/actions/getCartAction'
+import { Add_To_Cart } from '../State/actions/addToCart'
 const options = {
     position: 'top-center',
     style: {
@@ -35,53 +37,49 @@ export default function Dashborad() {
     const [openSnackbar] = useSnackbar(options)
     const productsPerPage = 4;
     const pageVisited = pagenumber * productsPerPage
-    const pageCount = Math.ceil(ProductData.length / productsPerPage)
+    const PopularProduct = useSelector(state => state.productReducer.product)
+    const CartDAta = useSelector(state => state.getCartReducer.cartData)
+    const CartMSG = useSelector(state => state.addtoCartReducer)
+    const pageCount = Math.ceil(PopularProduct.length / productsPerPage)
     useEffect(() => {
-        GetPopularProduct()
-            .then(res => {
-                setProductData(res.data.data)
-            })
-            .catch(err => {
-                if (err) {
-                    history('/ServerError')
-                }
-            })
+        dispatch(GetProductData())
         if (Login) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = decode.uid[0]._id;
             let id = { id: data }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            console.log(id);
+            dispatch(GET_CART(id))
+            if (CartDAta.cartData) {
+                let arr = []
+                CartDAta.cartData.map((ele) =>
+                    arr.push(ele.product_id._id)
+                )
+                setCartIDS(arr)
+            }
         }
         else {
             let id = { id: uuid }
-            GETCART(id)
-                .then(res => {
-                    let arr = []
-                    res.data.cartData.map((ele) =>
-                        arr.push(ele.product_id._id)
-                    )
-                    setCartIDS(arr)
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
+            dispatch(GET_CART(id))
+            let arr = []
+            if (CartDAta.cartData) {
+                CartDAta.cartData.map((ele) =>
+                    arr.push(ele.product_id._id)
+                )
+                setCartIDS(arr)
+            }
         }
     }, [Show])
+    useEffect(() => {
+        let arr = []
+        if (CartDAta) {
+            CartDAta.cartData.map((ele) =>
+                arr.push(ele.product_id._id)
+            )
+            setCartIDS(arr)
+            dispatch(cartActions(CartDAta.cartData.length))
+        }
+    }, [CartDAta.cartData])
 
     const DisplayProduct = (element) => {
         history('/ProductDetails', { state: element })
@@ -94,55 +92,22 @@ export default function Dashborad() {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
             let data = { customer_id: decode.uid[0]._id, product_id: element._id, product_cost: element.product_cost }
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: decode.uid[0]._id }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: res.data.count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-            setShow(false)
+            dispatch(Add_To_Cart(data))
+            setShow(true)
         }
         else {
             let data = { customer_id: uuid, product_id: element._id, product_cost: element.product_cost }
-            ADDTOCART(data)
-                .then(res => {
-                    let data = { id: uuid }
-                    openSnackbar(res.data.msg)
-                    GETCARTCOUNT(data)
-                        .then(res => {
-                            dispatch(cartActions(res.data.count))
-                            // dispatch({ type: 'cart', payload: res.data.count })
-                            setShow(true)
-                        })
-                        .catch(err => {
-                            if (err) {
-                                history('/ServerError')
-                            }
-                        })
-                })
-                .catch(err => {
-                    if (err) {
-                        history('/ServerError')
-                    }
-                })
-            setShow(false)
+            dispatch(Add_To_Cart(data))
+            setShow(true)
         }
     }
+    useEffect(() => {
+        if (Show) {
+            openSnackbar(CartMSG.msg.msg)
+            setShow(false)
+        }
+    }, [CartMSG.msg]);
+
     return (
         <div className='allpadding'>
             <Carousel className='mt-3 mb-3'>
@@ -174,7 +139,7 @@ export default function Dashborad() {
                 <Row>
                     <h3 className='text-center'>Popular Product</h3>
                     {
-                        ProductData && ProductData.slice(pageVisited, pageVisited + productsPerPage).map((ele) =>
+                        PopularProduct.data && PopularProduct.data.slice(pageVisited, pageVisited + productsPerPage).map((ele) =>
                             <Col lg={3} md={6} sm={12} xs={12} key={ele._id}>
                                 <Card className='cardSIze' border='light'  >
                                     <Card.Img variant="top" src={`/Image/${ele.product_image}`} className='CardImage' onClick={() => DisplayProduct(ele)} />

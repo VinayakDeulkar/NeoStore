@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import jwt_decode from 'jwt-decode'
 import { CONFIRMORDER, DELETECONFIRMEDORDER, GETCART, GETCARTCOUNT } from '../config/myService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Col, Container, Nav, Row, Tab, Table, Card, Button, Form, Modal, FormGroup } from 'react-bootstrap'
 import { CreditCard, X } from 'react-bootstrap-icons';
@@ -10,6 +10,14 @@ import '../Css/CheckOut.css'
 import { useSnackbar } from 'react-simple-snackbar'
 import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
+import { EDIT_Address } from '../State/actions/editAddressAction'
+import { DELETE_Address } from '../State/actions/deleteAddressAction'
+import { ADD_Address } from '../State/actions/AddressAction'
+import { cartActions } from '../State/actions/cartActions';
+import { GET_CART } from '../State/actions/getCartAction'
+import { Confirm_Order } from '../State/actions/confirmOrderAction';
+import { DELETE_Confrim_order } from '../State/actions/deleteConfirmAction';
+import { loginDisable } from '../State/actions/loginAction';
 const options = {
     position: 'top-center',
     style: {
@@ -40,6 +48,11 @@ export default function CheckOut() {
     const City = useRef('')
     const State = useRef('')
     const Country = useRef('')
+    const UserAddress = useSelector(state => state.addAddressReducer)
+    const EditAddres = useSelector(state => state.editAddressReducer)
+    const DeleteAddress = useSelector(state => state.deleteAddressReducer)
+    const cart = useSelector(state => state.getCartReducer.cartData)
+    const OrderMsg = useSelector(state => state.confirmOrderReducer.msg)
     const [CardDetails, setCardDetails] = useState({ cvc: '', expiry: '', focused: '', name: '', number: '', issuer: "" });
     const regForCVC = RegExp(/^[0-9]{3}$/)
     const regFoCardNumber = RegExp(/^[0-9]{16}$/)
@@ -48,94 +61,119 @@ export default function CheckOut() {
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token);
-        console.log(decode.uid[0]);
         let data = decode.uid[0]._id;
         setUserData(decode.uid[0])
         let id = { id: data }
-        GETCART(id)
-            .then(res => {
-                setCartItems(res.data.cartData)
-                let Subtotal = 0;
-                let GST = 0;
-                let OrderTotal = 0;
-                res.data.cartData.forEach(element => {
-                    Subtotal = Subtotal + element.total_Productcost;
-                });
-                GST = (Subtotal * (5 / 100)) / 100;
-                OrderTotal = Subtotal + GST;
-                setReview({
-                    ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
-                })
-            })
-            .catch(err => {
-                console.log(err.message);
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    dispatch({ type: 'disable' })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(GET_CART(id))
+        // GETCART(id)
+        //     .then(res => {
+        //         setCartItems(res.data.cartData)
+        //         let Subtotal = 0;
+        //         let GST = 0;
+        //         let OrderTotal = 0;
+        //         res.data.cartData.forEach(element => {
+        //             Subtotal = Subtotal + element.total_Productcost;
+        //         });
+        //         GST = (Subtotal * (5 / 100)) / 100;
+        //         OrderTotal = Subtotal + GST;
+        //         setReview({
+        //             ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+        //         })
+        //     })
+        //     .catch(err => {
+        //         console.log(err.message);
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             dispatch({ type: 'disable' })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }, [])
+    useEffect(() => {
+        if (cart.cartData) {
+            setCartItems(cart.cartData)
+            let Subtotal = 0;
+            let GST = 0;
+            let OrderTotal = 0;
+            cart.cartData.forEach(element => {
+                Subtotal = Subtotal + element.total_Productcost;
+            });
+            GST = (Subtotal * (5 / 100)) / 100;
+            OrderTotal = Subtotal + GST;
+            setReview({
+                ...Review, Subtotal: Subtotal, GST: GST, OrderTotal: OrderTotal
+            })
+            dispatch(cartActions(cart.cartData.length))
+        }
+    }, [cart.cartData]);
+    useEffect(() => {
+        if (OrderMsg.msg) {
+            openSnackbar(OrderMsg.msg)
+            let id = { id: UserData._id }
+            dispatch(DELETE_Confrim_order(id))
+            dispatch(GET_CART(id))
+            handleClose()
+        }
+    }, [OrderMsg.msg]);
+
+
+
     const orderconfirm = async () => {
-        console.log(SelectedAddress);
         if (SelectedAddress) {
             let data = { delivery_address: SelectedAddress, product_id: CartItems, total_Productcost: Review.OrderTotal, customer_id: UserData._id, email: UserData.email, cart: CartItems, Subtotal: Review.Subtotal }
-            console.log(data);
-            CONFIRMORDER(data)
-                .then((res) => {
-                    if (res.data.err == 0) {
-                        console.log(res.data.err);
-                        let id1 = { id: UserData._id }
-                        console.log(id1);
-                        openSnackbar(res.data.msg)
-                        DELETECONFIRMEDORDER(id1).then(res => {
-                            console.log(res.data);
-                            if (res.data.err == 0) {
-                                console.log(res.data);
-                                let id2 = { id: UserData._id }
-                                GETCARTCOUNT(id2)
-                                    .then((res) => {
-                                        console.log(res.data.count);
-                                        let count = res.data.count
-                                        dispatch({ type: 'cart', payload: count })
-                                        handleClose()
-                                    })
-                            }
-                        })
-                            .catch(err => {
-                                console.log(err);
-                                if (err.message != 'Network Error') {
-                                    localStorage.clear()
-                                    dispatch({ type: 'disable' })
-                                    openSnackbar('Session expired Login again please')
-                                    history('/LoginPage')
-                                }
-                                else {
-                                    history('/ServerError')
-                                }
-                            })
-                    }
+            dispatch(Confirm_Order(data))
+            // CONFIRMORDER(data)
+            //     .then((res) => {
+            //         if (res.data.err == 0) {
+            //             console.log(res.data.err);
+            //             let id1 = { id: UserData._id }
+            //             console.log(id1);
+            //             openSnackbar(res.data.msg)
+            //             DELETECONFIRMEDORDER(id1).then(res => {
+            //                 console.log(res.data);
+            //                 if (res.data.err == 0) {
+            //                     console.log(res.data);
+            //                     let id2 = { id: UserData._id }
+            //                     GETCARTCOUNT(id2)
+            //                         .then((res) => {
+            //                             console.log(res.data.count);
+            //                             let count = res.data.count
+            //                             dispatch({ type: 'cart', payload: count })
+            //                             handleClose()
+            //                         })
+            //                 }
+            //             })
+            //                 .catch(err => {
+            //                     console.log(err);
+            //                     if (err.message != 'Network Error') {
+            //                         localStorage.clear()
+            //                         dispatch({ type: 'disable' })
+            //                         openSnackbar('Session expired Login again please')
+            //                         history('/LoginPage')
+            //                     }
+            //                     else {
+            //                         history('/ServerError')
+            //                     }
+            //                 })
+            //         }
 
-                })
-                .catch(err => {
-                    console.log(err);
-                    if (err.message != 'Network Error') {
-                        openSnackbar('Session expired Login again please')
-                        localStorage.clear()
-                        dispatch({ type: 'disable' })
-                        history('/LoginPage')
-                    }
-                    else {
-                        history('/ServerError')
-                    }
-                })
-
-
-
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //         if (err.message != 'Network Error') {
+            //             openSnackbar('Session expired Login again please')
+            //             localStorage.clear()
+            //             dispatch({ type: 'disable' })
+            //             history('/LoginPage')
+            //         }
+            //         else {
+            //             history('/ServerError')
+            //         }
+            //     })
         }
         else {
             openSnackbar('Please select Address')
@@ -149,66 +187,133 @@ export default function CheckOut() {
     const NewAddress = () => {
         setShow(true)
     }
+    useEffect(() => {
+        if (UserAddress.success) {
+            localStorage.setItem('_token', UserAddress.Address.token)
+            let decode = jwt_decode(UserAddress.Address.token);
+            let data = decode.uid[0];
+            setUserData(data)
+            openSnackbar(UserAddress.Address.msg)
+        }
+        else if(UserAddress.success==false && UserAddress.Address.msg){
+            if (UserAddress.Address.msg != 'Network Error') {
+                openSnackbar('Session expired Login again please')
+                localStorage.clear()
+                dispatch(loginDisable())
+                history('/LoginPage')
+            }
+            else {
+                openSnackbar('Server Error')
+                history('/ServerError')
+            }
+        }
+    }, [UserAddress.success]);
+    useEffect(() => {
+        if (EditAddres.success) {
+            localStorage.setItem('_token', EditAddres.Address.token)
+            let decode = jwt_decode(EditAddres.Address.token);
+            let data = decode.uid[0];
+            setUserData(data)
+            openSnackbar(EditAddres.Address.msg)
+        }
+        else  if(EditAddres.success==false && EditAddres.Address.msg){
+            if (EditAddres.Address.msg != 'Network Error') {
+                openSnackbar('Session expired Login again please')
+                localStorage.clear()
+                dispatch(loginDisable())
+                history('/LoginPage')
+            }
+            else {
+                openSnackbar('Server Error')
+                history('/ServerError')
+            }
+        }
+    }, [EditAddres.success]);
+
+    useEffect(() => {
+        if (DeleteAddress.success) {
+            localStorage.setItem('_token', DeleteAddress.Address.token)
+            let decode = jwt_decode(DeleteAddress.Address.token);
+            let data = decode.uid[0];
+            setUserData(data)
+            openSnackbar(DeleteAddress.Address.msg)
+        }
+        else  if(DeleteAddress.success==false && DeleteAddress.Address.msg){
+            if (DeleteAddress.Address.msg != 'Network Error') {
+                openSnackbar('Session expired Login again please')
+                localStorage.clear()
+                dispatch(loginDisable())
+                history('/LoginPage')
+            }
+            else {
+                openSnackbar('Server Error')
+                history('/ServerError')
+            }
+        }
+    }, [DeleteAddress.success]);
+
+
     const AddAddress = () => {
         let data = { address: Address.current.value, PinCode: Pincode.current.value, City: City.current.value, State: State.current.value, Country: Country.current.value }
         let finalData = { email: UserData.email, ADDRESS: data }
-        console.log(finalData);
-        UserAddress(finalData)
-            .then(res => {
-                if (res.data.err == 1) {
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    localStorage.setItem('_token', res.data.token)
-                    let decode = jwt_decode(res.data.token);
-                    let data = decode.uid[0];
-                    setUserData(data)
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                console.log(err.message);
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    dispatch({ type: 'disable' })
-                    dispatch({ type: 'cart', payload: 0 })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(ADD_Address(finalData))
+        // UserAddress(finalData)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             localStorage.setItem('_token', res.data.token)
+        //             let decode = jwt_decode(res.data.token);
+        //             let data = decode.uid[0];
+        //             setUserData(data)
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log(err.message);
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             dispatch({ type: 'disable' })
+        //             dispatch({ type: 'cart', payload: 0 })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
         setShow(false)
     }
     const deleteAddress = (element) => {
         let data = { email: UserData.email, address_id: element }
         console.log(data);
-        DELETEAddress(data)
-            .then(res => {
-                if (res.data.err == 1) {
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    localStorage.setItem('_token', res.data.token)
-                    let decode = jwt_decode(res.data.token);
-                    let data = decode.uid[0];
-                    openSnackbar(res.data.msg)
-                    setUserData(data)
-                }
-            })
-            .catch(err => {
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    dispatch({ type: 'disable' })
-                    dispatch({ type: 'cart', payload: 0 })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(DELETE_Address(data))
+        // DELETEAddress(data)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             localStorage.setItem('_token', res.data.token)
+        //             let decode = jwt_decode(res.data.token);
+        //             let data = decode.uid[0];
+        //             openSnackbar(res.data.msg)
+        //             setUserData(data)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             dispatch({ type: 'disable' })
+        //             dispatch({ type: 'cart', payload: 0 })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
     const Editstart = (element) => {
         console.log(element);
@@ -218,32 +323,34 @@ export default function CheckOut() {
     const Updateaddress = () => {
         console.log(UpdateAddress);
         let data = { email: UserData.email, address: UpdateAddress }
-        EDITADDRESS(data)
-            .then(res => {
-                if (res.data.err == 1) {
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    localStorage.setItem('_token', res.data.token)
-                    let decode = jwt_decode(res.data.token);
-                    let data = decode.uid[0];
-                    setUserData(data)
-                    setEditShow(false)
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                if (err.message != 'Network Error') {
-                    dispatch({ type: 'disable' })
-                    dispatch({ type: 'cart', payload: 0 })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                    localStorage.clear()
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(EDIT_Address(data))
+        setEditShow(false)
+        // EDITADDRESS(data)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             localStorage.setItem('_token', res.data.token)
+        //             let decode = jwt_decode(res.data.token);
+        //             let data = decode.uid[0];
+        //             setUserData(data)
+        //             setEditShow(false)
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err.message != 'Network Error') {
+        //             dispatch({ type: 'disable' })
+        //             dispatch({ type: 'cart', payload: 0 })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //             localStorage.clear()
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
 
     const handleCallback = ({ issuer }, isValid) => {
@@ -275,12 +382,12 @@ export default function CheckOut() {
                 })
                 break;
             case 'expiry':
-                let date=new Date()
-                let month=date.getMonth()+1;
-                let year=date.getFullYear().toString().slice(2)
-                let getMonth=parseInt(target.value/100)
-                let getYear=target.value.toString().slice(2)
-                let error_for_expiry = regForDate.test(target.value) && ((year<getYear) || (year==getYear && month<getMonth))  ? '' : 'Enter Valid expiry date (month/year)';
+                let date = new Date()
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear().toString().slice(2)
+                let getMonth = parseInt(target.value / 100)
+                let getYear = target.value.toString().slice(2)
+                let error_for_expiry = regForDate.test(target.value) && ((year < getYear) || (year == getYear && month < getMonth)) ? '' : 'Enter Valid expiry date (month/year)';
                 setCreditCardError({
                     ...CreditCardError, cardexpiry: error_for_expiry
                 })

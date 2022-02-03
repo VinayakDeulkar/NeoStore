@@ -1,10 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Button, Card, Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import { Forgettenpass, GenrateOTP } from '../config/myService'
 import { useNavigate } from 'react-router-dom'
 import PageHeader from './PageHeader'
 import { useSnackbar } from 'react-simple-snackbar'
+import { useDispatch, useSelector } from 'react-redux'
+import { Forget_password } from '../State/actions/forgetPasswordAction'
+import { Genrate_OTP } from '../State/actions/genrateOtpAction'
 const options = {
     position: 'top-center',
     style: {
@@ -28,30 +31,43 @@ export default function Forgetten() {
     const ConfirmPassword = useRef('')
     const OTP = useRef('')
     const history = useNavigate()
+    const dispatch = useDispatch()
+    const GenratedOTP = useSelector(state => state.genrateOtpReducer.msg)
+    const ForgetMsg = useSelector(state => state.forgetReducer.forgetpass)
     const [ErrorForgetten, setErrorForgetten] = useState({ ErrorNewPassword: '', ErrorConfirmPassword: '' })
     const regForPassword = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/);
     const sendotp = () => {
         let email = { email: Email.current.value }
-        GenrateOTP(email)
-            .then(res => {
-                if (res.data.err === 1) {
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    setUserEmail(email)
-                    console.log(res.data.otp);
-                    setGenratedOtp(res.data.otp)
-                    openSnackbar(res.data.msg)
-                    setflag(false)
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Genrate_OTP(email))
+        // GenrateOTP(email)
+        //     .then(res => {
+        //         if (res.data.err === 1) {
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             setUserEmail(email)
+        //             console.log(res.data.otp);
+        //             setGenratedOtp(res.data.otp)
+        //             openSnackbar(res.data.msg)
+        //             setflag(false)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err) {
+        //             history('/ServerError')
+        //         }
+        //     })
 
     }
+    useEffect(() => {
+        if (GenratedOTP.otp) {
+            setUserEmail(Email.current.value)
+            setGenratedOtp(GenratedOTP.otp)
+            openSnackbar(GenratedOTP.msg)
+            setflag(false)
+        }
+    }, [GenratedOTP]);
+
     const handle = (event) => {
         const name = event.target.name;
         switch (name) {
@@ -87,26 +103,34 @@ export default function Forgetten() {
                 break;
         }
     }
+    useEffect(() => {
+        if (ForgetMsg) {
+            openSnackbar(ForgetMsg.msg)
+            history('/LoginPage')
+        }
+    }, [ForgetMsg]);
+
     const changepass = () => {
         let otp = OTP.current.value;
         if (otp === GenratedOtp) {
             if (NewPassword.current.value != '' && ConfirmPassword.current.value != '') {
                 let data = { email: UserEmail, password: NewPassword.current.value }
-                Forgettenpass(data)
-                    .then(res => {
-                        if (res.data.err == 1) {
-                            openSnackbar(res.data.msg)
-                        }
-                        else {
-                            openSnackbar(res.data.msg)
-                            history('/LoginPage')
-                        }
-                    })
-                    .catch(err => {
-                        if (err) {
-                            history('/ServerError')
-                        }
-                    })
+                dispatch(Forget_password(data))
+                // Forgettenpass(data)
+                //     .then(res => {
+                //         if (res.data.err == 1) {
+                //             openSnackbar(res.data.msg)
+                //         }
+                //         else {
+                //             openSnackbar(res.data.msg)
+                //             history('/LoginPage')
+                //         }
+                //     })
+                //     .catch(err => {
+                //         if (err) {
+                //             history('/ServerError')
+                //         }
+                //     })
             }
             else {
 
@@ -141,11 +165,11 @@ export default function Forgetten() {
 
                             <Form className='text-start'>
                                 <FormControl type='password' name='newpass' placeholder='Enter New Password ' ref={NewPassword} onBlur={handle} onFocus={setnull} className='' />
-                                {ErrorForgetten.ErrorNewPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorNewPassword}</FormLabel>:''}<br/>
+                                {ErrorForgetten.ErrorNewPassword ? <FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorNewPassword}</FormLabel> : ''}<br />
                                 <FormControl type='password' name='confirmpass' placeholder='Enter confirm Password' ref={ConfirmPassword} onBlur={handle} onFocus={setnull} className='' />
-                                {ErrorForgetten.ErrorConfirmPassword?<FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel>:''}<br />
+                                {ErrorForgetten.ErrorConfirmPassword ? <FormLabel style={{ color: 'red' }} >{ErrorForgetten.ErrorConfirmPassword}</FormLabel> : ''}<br />
                                 <div className='text-center'>
-                                <Button variant='dark' className='m-3' onClick={changepass}>Submit</Button>
+                                    <Button variant='dark' className='m-3' onClick={changepass}>Submit</Button>
                                 </div>
 
                             </Form>

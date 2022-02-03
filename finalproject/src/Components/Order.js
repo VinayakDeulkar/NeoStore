@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 import { GETORDER } from '../config/myService'
 import { Button, Container, Table } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import '../Css/Order.css'
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction'
+import { Get_Order } from '../State/actions/getOrderAction'
+import { GET_CART } from '../State/actions/getCartAction'
+import { cartActions } from '../State/actions/cartActions'
 const options = {
     position: 'top-center',
     style: {
@@ -21,35 +25,48 @@ const options = {
 }
 export default function Order() {
     const [Order, setOrder] = useState('')
-    const [Heights, setHeights] = useState('');
     const dispatch = useDispatch()
     const history = useNavigate()
     const [openSnackbar] = useSnackbar(options)
+    const OrderData = useSelector(state => state.getOrderReducer.Order)
+    const CartDAta = useSelector(state => state.getCartReducer.cartData)
     useEffect(() => {
         let token = localStorage.getItem('_token')
         let decode = jwt_decode(token);
-        console.log(decode.uid[0]);
         let data = decode.uid[0]._id;
         let id = { id: data }
-        GETORDER(id)
-            .then(res => {
-                console.log(res.data);
-                setOrder(res.data.order)
-            })
-            .catch(err => {
-                console.log(err.message);
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    dispatch(loginDisable(''))
-                    // dispatch({ type: 'disable' })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Get_Order(id))
+        dispatch(GET_CART(id))
+        // GETORDER(id)
+        //     .then(res => {
+        //         console.log(res.data);
+        //         setOrder(res.data.order)
+        //     })
+        //     .catch(err => {
+        //         console.log(err.message);
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             dispatch(loginDisable(''))
+        //             // dispatch({ type: 'disable' })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }, [])
+    useEffect(() => {
+        if (OrderData.order) {
+            setOrder(OrderData.order)
+        }
+    }, [OrderData.order]);
+
+    useEffect(() => {
+        if (CartDAta) {
+            dispatch(cartActions(CartDAta.cartData.length))
+        }
+    }, [CartDAta.cartData]);
     const OpenPdf = (ele) => {
         history('/Pdf', { state: ele })
     }

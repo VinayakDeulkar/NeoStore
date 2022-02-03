@@ -4,9 +4,10 @@ import { Button, Form, InputGroup, Table } from 'react-bootstrap'
 import { Pen } from 'react-bootstrap-icons'
 import { ProfileUpdate } from '../config/myService'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'react-simple-snackbar'
 import { loginDisable } from '../State/actions/loginAction'
+import { Update_Profile } from '../State/actions/profileUpdateAction'
 const options = {
     position: 'top-center',
     style: {
@@ -24,13 +25,13 @@ export default function Profile() {
     const [show, setshow] = useState(true)
     const [openSnackbar] = useSnackbar(options)
     const [UpdateUser, setUpdateUser] = useState('')
+    const NewProfile = useSelector(state => state.profileUpdateReducer.msg)
     const history = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorage.getItem('_token')) {
             let token = localStorage.getItem('_token')
             let decode = jwt_decode(token);
-            console.log(decode.uid[0]);
             let data = decode.uid[0]
             setUser(data)
             setUpdateUser(data)
@@ -39,40 +40,52 @@ export default function Profile() {
     const handleClose = () => setshow(true);
     const handleShow = () => {
         setshow(false)
-
     }
     const profileupdate = () => {
         console.log(UpdateUser);
-        ProfileUpdate(UpdateUser)
-            .then(res => {
-                if (res.data.err == 1) {
-                    console.log(res.data.msg);
-                    openSnackbar(res.data.msg)
-                }
-                else {
-                    localStorage.setItem('_token', res.data.token)
-                    let decode = jwt_decode(res.data.token);
-                    let updatedata = decode.uid[0]
-                    console.log(updatedata);
-                    setUser(updatedata)
-                    setUpdateUser(updatedata)
-                    setshow(true)
-                    openSnackbar(res.data.msg)
-                }
-            })
-            .catch(err => {
-                if (err.message != 'Network Error') {
-                    localStorage.clear()
-                    dispatch(loginDisable(''))
-                    // dispatch({ type: 'disable' })
-                    openSnackbar('Session expired Login again please')
-                    history('/LoginPage')
-                }
-                else {
-                    history('/ServerError')
-                }
-            })
+        dispatch(Update_Profile(UpdateUser))
+        // ProfileUpdate(UpdateUser)
+        //     .then(res => {
+        //         if (res.data.err == 1) {
+        //             console.log(res.data.msg);
+        //             openSnackbar(res.data.msg)
+        //         }
+        //         else {
+        //             localStorage.setItem('_token', res.data.token)
+        //             let decode = jwt_decode(res.data.token);
+        //             let updatedata = decode.uid[0]
+        //             console.log(updatedata);
+        //             setUser(updatedata)
+        //             setUpdateUser(updatedata)
+        //             setshow(true)
+        //             openSnackbar(res.data.msg)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         if (err.message != 'Network Error') {
+        //             localStorage.clear()
+        //             dispatch(loginDisable(''))
+        //             // dispatch({ type: 'disable' })
+        //             openSnackbar('Session expired Login again please')
+        //             history('/LoginPage')
+        //         }
+        //         else {
+        //             history('/ServerError')
+        //         }
+        //     })
     }
+    useEffect(() => {
+        if (NewProfile) {
+            localStorage.setItem('_token', NewProfile.token)
+            let decode = jwt_decode(NewProfile.token);
+            let updatedata = decode.uid[0]
+            setUser(updatedata)
+            setUpdateUser(updatedata)
+            setshow(true)
+            openSnackbar(NewProfile.msg)
+        }
+    }, [NewProfile]);
+
     return (
         <div className='allpadding' >
             <h3>Profile</h3>
