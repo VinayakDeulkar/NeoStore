@@ -1,10 +1,10 @@
 
-import * as Actions from '../actions/productAction'
+import * as Actions from '../actions/getAllProductAction'
 const initialState = { product: '' ,success:false}
-export const productReducer = (state = initialState, actions) => {
+export const getAllProductReducer = (state = initialState, actions) => {
     switch ( actions.type )
     {
-        case Actions.GetProductData_SUCCESS:
+        case Actions.GetProductALLData_SUCCESS:
         {
             return {
                 ...initialState,
@@ -12,7 +12,7 @@ export const productReducer = (state = initialState, actions) => {
                 product:actions.payload
             };
         }
-        case Actions.GetProductData_FAILED:
+        case Actions.GetProductALLData_FAILED:
         {
             return {
                 success: false,

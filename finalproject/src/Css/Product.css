@@ -8,7 +8,20 @@
 }
 .card-effect{
     border-bottom: solid 1px ;
-}
+    animation: move 0.7s ease-in ;
+  }
+  
+  @keyframes move {
+    0% {
+      transform: translate(30%, 0);
+    }
+    50% {
+      text-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
+    }
+    100% {
+      transform: translate(0%, 0);
+    }
+  }
 .cardtext {
     display: inline-block;
     width: 300px;

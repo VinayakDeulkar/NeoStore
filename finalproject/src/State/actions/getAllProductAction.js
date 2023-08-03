@@ -1,12 +1,19 @@
-
 import { GetProduct } from "../../config/productService";
-export function GetProductALLData() {
+export const GetProductALLData_SUCCESS = 'GetProductALLData_SUCCESS';
+export const GetProductALLData_FAILED = 'GetProductALLData_FAILED'
+export function GetProductALLData(data) {
     return (dispatch) => {
-        return GetProduct().then(res => {
+        return GetProduct(data).then(res => {
             dispatch({
-                type: 'Popular_Product_All',
+                type: GetProductALLData_SUCCESS,
                 payload: res.data
             })
         })
+            .catch(error => {
+                return dispatch({
+                    type: GetProductALLData_FAILED,
+                    payload: error
+                });
+            });
     }
 }

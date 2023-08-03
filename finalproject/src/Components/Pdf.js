@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap'
 import { ArrowLeftSquare, Download } from 'react-bootstrap-icons'
 import ReactToPdf from 'react-to-pdf'
+import { useReactToPrint } from 'react-to-print'
 import '../Css/Pdf.css'
 import jwt_decode from 'jwt-decode'
 const options = {
@@ -16,6 +17,10 @@ export default function Pdf() {
     const [UserData, setUserData] = useState('')
     const ref = React.createRef();
     const history = useNavigate()
+
+    const handlePrint = useReactToPrint({
+        content: () => ref.current,
+    });
     useEffect(() => {
         console.log(location.state);
         let token = localStorage.getItem('_token')
@@ -101,6 +106,7 @@ export default function Pdf() {
                         <Button onClick={toPdf}> <Download />  Download pdf</Button>
                     )}
                 </ReactToPdf>
+                <Button onClick={handlePrint}>Print this out!</Button>
             </div>
         </div>
     )

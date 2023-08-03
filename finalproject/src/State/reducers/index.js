@@ -26,6 +26,8 @@ import { deleteItemReducer } from "./deleteItemReducer";
 import { ChangePasswordReducer } from "./ChangePasswordReducer"
 import { confirmOrderReducer } from "./ConfirmOrderReducer";
 import { deleteconfirmOrderReducer } from "./deleteConfirmOrderReducer";
+import { FilterproductReducer } from "./filterProductReducer";
+import { getAllProductReducer } from "./getAllProductReducer";
 const allReducer = combineReducers({
     loginReducer,
     cartReducer,
@@ -53,6 +55,8 @@ const allReducer = combineReducers({
     deleteItemReducer,
     ChangePasswordReducer,
     confirmOrderReducer,
-    deleteconfirmOrderReducer
+    deleteconfirmOrderReducer,
+    getAllProductReducer,
+    FilterproductReducer
 })
 export default allReducer
